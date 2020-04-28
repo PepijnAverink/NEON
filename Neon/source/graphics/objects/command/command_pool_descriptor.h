@@ -10,7 +10,7 @@ namespace Neon
 		// ------------------------------------------
 		// CommandPoolDescriptor class
 		// Serves as a descriptor for the CommandPool class and is used on it's creation.
-		// The purpose of the name is purely debugging and the Type has a default fallback so the user does not have to specify anything for a default CommandPool object.
+		// The purpose of the name is purely for debugging and the Type has a default fallback so the user does not have to specify anything for a default CommandPool object.
 		// ------------------------------------------
 		class CommandPoolDescriptor
 		{

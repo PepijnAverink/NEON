@@ -217,38 +217,12 @@ namespace Neon
 			//	exit(1);
 			}
 
-		//	std::cout << "acquired image" << std::endl;
-
-		//	// Wait for image to be available and draw
-		//	VkSubmitInfo submitInfo = {};
-		//	submitInfo.sType = VK_STRUCTURE_TYPE_SUBMIT_INFO;
-		//
-		//	submitInfo.waitSemaphoreCount = 1;
-		//	submitInfo.pWaitSemaphores = &imageAvailableSemaphore;
-		//
-		//	submitInfo.signalSemaphoreCount = 1;
-		//	submitInfo.pSignalSemaphores = &renderingFinishedSemaphore;
-		//
-		//	// This is the stage where the queue should wait on the semaphore (it doesn't have to wait with drawing, for example)
-		//	VkPipelineStageFlags waitDstStageMask = VK_PIPELINE_STAGE_TRANSFER_BIT;
-		//	submitInfo.pWaitDstStageMask = &waitDstStageMask;
-		//
-		//	submitInfo.commandBufferCount = 1;
-		//	submitInfo.pCommandBuffers = &NEON_CAST(VKCommandBuffer*, commandBuffers[imageIndex])->m_CommandBufferObj;
-		//
-		//	if (vkQueueSubmit(NEON_CAST(VKCommandQueue*, commandQueue)->m_CommandQueueObj, 1, &submitInfo, VK_NULL_HANDLE) != VK_SUCCESS) {
-		//		std::cerr << "failed to submit draw command buffer" << std::endl;
-		//		exit(1);
-		//	}
 			commandQueue->ExecuteCommandBuffer(commandBuffers[imageIndex], submitFence);
 
 			submitFence->WaitForFence();
 			submitFence->Reset();
 
-		//	std::cout << "submitted draw command buffer" << std::endl;
-
-			// Present drawn image
-			// Note: semaphore here is not strictly necessary, because commands are processed in submission order within a single queue
+	
 			VkPresentInfoKHR presentInfo = {};
 			presentInfo.sType = VK_STRUCTURE_TYPE_PRESENT_INFO_KHR;
 		//	presentInfo.waitSemaphoreCount = 1;
@@ -265,10 +239,7 @@ namespace Neon
 
 			if (res != VK_SUCCESS) {
 				std::cerr << "failed to submit present command buffer" << std::endl;
-			//	exit(1);
 			}
-
-		//	std::cout << "submitted presentation command buffer" << std::endl;
 		}
 
 		void VKGraphicsContext::CreateInstance()
@@ -920,7 +891,6 @@ namespace Neon
 			// Record the command buffer for every swap chain image
 			for (uint32_t i = 0; i < swapChainImages.size(); i++) {
 				// Change layout of image to be optimal for clearing
-				// Note: previous layout doesn't matter, which will likely cause contents to be discarded
 				VkImageMemoryBarrier presentToClearBarrier = {};
 				presentToClearBarrier.sType = VK_STRUCTURE_TYPE_IMAGE_MEMORY_BARRIER;
 				presentToClearBarrier.srcAccessMask = VK_ACCESS_MEMORY_READ_BIT;

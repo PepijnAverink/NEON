@@ -24,6 +24,7 @@ namespace Neon
 #if defined(NEON_DEBUG)
 			std::string		   m_Name;
 #endif
+			uint32_t		   m_VertexStride;
 			uint32_t		   m_VertexCount;
 			BufferUsage		   m_BufferUsage;
 

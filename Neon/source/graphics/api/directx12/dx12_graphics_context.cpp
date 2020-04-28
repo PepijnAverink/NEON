@@ -29,7 +29,6 @@ namespace Neon
 			int adapterIndex  = 0;
 			bool adapterFound = false;
 
-									   // find first hardware gpu that supports d3d 12
 			while (dxgiFactory->EnumAdapters1(adapterIndex, &adapter) != DXGI_ERROR_NOT_FOUND)
 			{
 				DXGI_ADAPTER_DESC1 desc;
@@ -270,75 +269,39 @@ namespace Neon
 				{   0.0f,  0.75f, 0.7f, 0.0f, 1.0f, 0.0f, 1.0f }
 			};
 
-			int vBufferSize = sizeof(vList);
+			// Setup vertexBufferDescriptor
+			VertexBufferDescriptor vertBufferDesc = {};
+			vertBufferDesc.Name			= "VertexBuffer";
+			vertBufferDesc.Usage		= BufferUsage::NEON_BUFFER_USAGE_STATIC;
+			vertBufferDesc.Vertices		= vList;
+			vertBufferDesc.Size			= sizeof(vList);
+			vertBufferDesc.VertexStride	= sizeof(Vertex);
+			vertBufferDesc.Offset		= 0;
+			vertBufferDesc.VertexCount	= 8;
+			vertBufferDesc.VMemoryPool	= nullptr;
 
-			// create default heap
-			m_Device->CreateCommittedResource(&CD3DX12_HEAP_PROPERTIES(D3D12_HEAP_TYPE_DEFAULT), D3D12_HEAP_FLAG_NONE, &CD3DX12_RESOURCE_DESC::Buffer(vBufferSize),
-				D3D12_RESOURCE_STATE_COPY_DEST, nullptr, IID_PPV_ARGS(&vertexBuffer));
-			vertexBuffer->SetName(L"Vertex Buffer Resource Heap");
-
-			// create upload heap
-			ID3D12Resource* vBufferUploadHeap;
-			m_Device->CreateCommittedResource(&CD3DX12_HEAP_PROPERTIES(D3D12_HEAP_TYPE_UPLOAD),  D3D12_HEAP_FLAG_NONE,  &CD3DX12_RESOURCE_DESC::Buffer(vBufferSize), 
-				D3D12_RESOURCE_STATE_GENERIC_READ,  nullptr, IID_PPV_ARGS(&vBufferUploadHeap));
-			vBufferUploadHeap->SetName(L"Vertex Buffer Upload Resource Heap");
-
-			// store vertex buffer in upload heap
-			D3D12_SUBRESOURCE_DATA vertexData = {};
-			vertexData.pData				  = reinterpret_cast<BYTE*>(vList);
-			vertexData.RowPitch				  = vBufferSize;
-			vertexData.SlicePitch			  = vBufferSize;
-
-			// copy the data from the upload heap to the default heap
-			UpdateSubresources(NEON_CAST(DX12CommandBuffer*, m_CommandBuffers[0])->m_CommandListObj, vertexBuffer, vBufferUploadHeap, 0, 0, 1, &vertexData);
-
-			// transition the vertex buffer data from copy destination state to vertex buffer state
-			NEON_CAST(DX12CommandBuffer*, m_CommandBuffers[0])->m_CommandListObj->ResourceBarrier(1, &CD3DX12_RESOURCE_BARRIER::Transition(vertexBuffer, D3D12_RESOURCE_STATE_COPY_DEST, D3D12_RESOURCE_STATE_VERTEX_AND_CONSTANT_BUFFER));
-
+			// Create the vertexBuffer
+			m_VertexBuffer = VertexBuffer::Create(m_CommandBuffers[0], &vertBufferDesc);
 
 			DWORD iList[] = {
 				0, 1, 2, // first triangle
 				0, 3, 1, // second triangle
 			};
 
-			int iBufferSize = sizeof(iList);
+			IndexBufferDescriptor indexBufferDesc = {};
+			indexBufferDesc.Name		= "IndexBuffer";
+			indexBufferDesc.IndexCount	= 6;
+			indexBufferDesc.Size		= sizeof(iList);
+			indexBufferDesc.Format		= BufferFormat::NEON_BUFFER_FORMAT_UINT32;
+			indexBufferDesc.Indices		= iList;
+			indexBufferDesc.Usage		= BufferUsage::NEON_BUFFER_USAGE_STATIC;
+			indexBufferDesc.IMemoryPool = nullptr;
 
-			// create default heap to hold index buffer
-			m_Device->CreateCommittedResource(&CD3DX12_HEAP_PROPERTIES(D3D12_HEAP_TYPE_DEFAULT),  D3D12_HEAP_FLAG_NONE,  &CD3DX12_RESOURCE_DESC::Buffer(iBufferSize), 
-				D3D12_RESOURCE_STATE_COPY_DEST, nullptr,  IID_PPV_ARGS(&indexBuffer));
-			vertexBuffer->SetName(L"Index Buffer Resource Heap");
-
-			// create upload heap to upload index buffer
-			ID3D12Resource* iBufferUploadHeap;
-			m_Device->CreateCommittedResource(&CD3DX12_HEAP_PROPERTIES(D3D12_HEAP_TYPE_UPLOAD), D3D12_HEAP_FLAG_NONE,  &CD3DX12_RESOURCE_DESC::Buffer(vBufferSize), 
-				D3D12_RESOURCE_STATE_GENERIC_READ, nullptr, IID_PPV_ARGS(&iBufferUploadHeap));
-			vBufferUploadHeap->SetName(L"Index Buffer Upload Resource Heap");
-
-			// store vertex buffer in upload heap
-			D3D12_SUBRESOURCE_DATA indexData = {};
-			indexData.pData					 = reinterpret_cast<BYTE*>(iList);
-			indexData.RowPitch				 = iBufferSize;
-			indexData.SlicePitch			 = iBufferSize;
-
-			// copy the data from the upload heap to the default heap
-			UpdateSubresources(NEON_CAST(DX12CommandBuffer*, m_CommandBuffers[0])->m_CommandListObj, indexBuffer, iBufferUploadHeap, 0, 0, 1, &indexData);
-
-			// transition the vertex buffer data from copy destination state to vertex buffer state
-			NEON_CAST(DX12CommandBuffer*, m_CommandBuffers[0])->m_CommandListObj->ResourceBarrier(1, &CD3DX12_RESOURCE_BARRIER::Transition(indexBuffer, D3D12_RESOURCE_STATE_COPY_DEST, D3D12_RESOURCE_STATE_VERTEX_AND_CONSTANT_BUFFER));
-
-			// create a vertex buffer view
-			indexBufferView.BufferLocation	= indexBuffer->GetGPUVirtualAddress();
-			indexBufferView.Format			= DXGI_FORMAT_R32_UINT; // 32-bit unsigned integer
-			indexBufferView.SizeInBytes		= iBufferSize;
+			m_IndexBuffer = IndexBuffer::Create(m_CommandBuffers[0], &indexBufferDesc);
 
 			// Execute commandBuffer 
 			m_CommandBuffers[0]->EndRecording();
 			m_CommandQueue->ExecuteCommandBuffer(m_CommandBuffers[0], m_AcuireFence);
-
-			// create a vertex buffer view
-			vertexBufferView.BufferLocation = vertexBuffer->GetGPUVirtualAddress();
-			vertexBufferView.StrideInBytes = sizeof(Vertex);
-			vertexBufferView.SizeInBytes = vBufferSize;
 
 			// Fill out the Viewport
 			viewport.TopLeftX = 0;
@@ -411,8 +374,8 @@ namespace Neon
 				NEON_CAST(DX12CommandBuffer*, m_CommandBuffers[frameIndex])->m_CommandListObj->RSSetViewports(1, &viewport); 
 				NEON_CAST(DX12CommandBuffer*, m_CommandBuffers[frameIndex])->m_CommandListObj->RSSetScissorRects(1, &scissorRect); 
 				NEON_CAST(DX12CommandBuffer*, m_CommandBuffers[frameIndex])->m_CommandListObj->IASetPrimitiveTopology(D3D_PRIMITIVE_TOPOLOGY_TRIANGLELIST); 
-				NEON_CAST(DX12CommandBuffer*, m_CommandBuffers[frameIndex])->m_CommandListObj->IASetVertexBuffers(0, 1, &vertexBufferView);
-				NEON_CAST(DX12CommandBuffer*, m_CommandBuffers[frameIndex])->m_CommandListObj->IASetIndexBuffer(&indexBufferView);
+				NEON_CAST(DX12CommandBuffer*, m_CommandBuffers[frameIndex])->m_CommandListObj->IASetVertexBuffers(0, 1, &NEON_CAST(DX12VertexBuffer*, m_VertexBuffer)->m_VertexBufferView);
+				NEON_CAST(DX12CommandBuffer*, m_CommandBuffers[frameIndex])->m_CommandListObj->IASetIndexBuffer(&NEON_CAST(DX12IndexBuffer*, m_IndexBuffer)->m_IndexBufferView);
 				NEON_CAST(DX12CommandBuffer*, m_CommandBuffers[frameIndex])->m_CommandListObj->DrawIndexedInstanced(6, 1, 0, 0, 0);
 				NEON_CAST(DX12CommandBuffer*, m_CommandBuffers[frameIndex])->m_CommandListObj->DrawIndexedInstanced(6, 1, 0, 4, 0); // draw second quad
 

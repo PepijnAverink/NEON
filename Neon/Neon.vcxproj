@@ -159,6 +159,7 @@
     <ClInclude Include="source\graphics\api\directx12\objects\command\dx12_command_queue_type.h" />
     <ClInclude Include="source\graphics\api\directx12\objects\swapchain\dx12_swapchain.h" />
     <ClInclude Include="source\graphics\api\directx12\objects\sync\dx12_fence.h" />
+    <ClInclude Include="source\graphics\api\directx12\resources\buffer\dx12_index_buffer.h" />
     <ClInclude Include="source\graphics\api\directx12\resources\buffer\dx12_vertex_buffer.h" />
     <ClInclude Include="source\graphics\api\directx12\resources\memory\dx12_memory_pool.h" />
     <ClInclude Include="source\graphics\api\vulkan\objects\command\vk_command_buffer_type.h" />
@@ -245,6 +246,7 @@
     <ClCompile Include="source\graphics\api\directx12\objects\command\dx12_command_queue.cpp" />
     <ClCompile Include="source\graphics\api\directx12\objects\swapchain\dx12_swapchain.cpp" />
     <ClCompile Include="source\graphics\api\directx12\objects\sync\dx12_fence.cpp" />
+    <ClCompile Include="source\graphics\api\directx12\resources\buffer\dx12_index_buffer.cpp" />
     <ClCompile Include="source\graphics\api\directx12\resources\buffer\dx12_vertex_buffer.cpp" />
     <ClCompile Include="source\graphics\api\directx12\resources\memory\dx12_memory_pool.cpp" />
     <ClCompile Include="source\graphics\api\vulkan\objects\command\vk_command_pool.cpp" />

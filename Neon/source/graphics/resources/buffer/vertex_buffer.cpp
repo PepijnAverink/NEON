@@ -31,7 +31,8 @@ namespace Neon
 		}
 
 		VertexBuffer::VertexBuffer(const VertexBufferDescriptor* _vertexBufferDescriptor)
-			: m_VertexCount(_vertexBufferDescriptor->VertexCount)
+			: m_VertexStride(_vertexBufferDescriptor->VertexStride)
+			, m_VertexCount(_vertexBufferDescriptor->VertexCount)
 			, m_BufferUsage(_vertexBufferDescriptor->Usage)
 			, m_MemoryPool(_vertexBufferDescriptor->VMemoryPool)
 			, m_Size(_vertexBufferDescriptor->Size)

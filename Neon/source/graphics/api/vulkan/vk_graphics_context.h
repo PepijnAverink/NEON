@@ -71,7 +71,6 @@ namespace Neon
 			std::vector<CommandBuffer*> commandBuffers;
 
 			Fence* submitFence;
-			Fence* submitCmdFence;
 			Fence* acuireFence;
 
 			PFN_vkSetDebugUtilsObjectNameEXT SetDebugUtilsObjectName;

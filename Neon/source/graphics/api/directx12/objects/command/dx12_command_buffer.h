@@ -24,6 +24,7 @@ namespace Neon
 		private:
 			friend class DX12CommandQueue;
 			friend class DX12VertexBuffer;
+			friend class DX12IndexBuffer;
 			friend class DX12GraphicsContext;
 			ID3D12GraphicsCommandList* m_CommandListObj;
 		};

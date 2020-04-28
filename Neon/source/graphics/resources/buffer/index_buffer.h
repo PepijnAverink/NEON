@@ -1,16 +1,17 @@
 #pragma once
 #include "./graphics/resources/buffer/index_buffer_descriptor.h"
+#include "./graphics/graphics_defines.h"
 
 namespace Neon
 {
 	namespace Graphics
 	{
+		class CommandBuffer;
 		class IndexBuffer
 		{
 		public:
-			static IndexBuffer* Create(const IndexBufferDescriptor* _indexBufferDescriptor);
-
-			virtual ~IndexBuffer() { }
+			static IndexBuffer* Create(CommandBuffer* _commandBuffer, const IndexBufferDescriptor* _indexBufferDescriptor);
+			virtual ~IndexBuffer() {}
 
 			virtual void* Map()   const = 0;
 			virtual void  Unmap() const = 0;

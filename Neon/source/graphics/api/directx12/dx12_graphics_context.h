@@ -14,7 +14,9 @@
 #include "./graphics/api/directx12/objects/command/dx12_command_pool.h"
 #include "./graphics/api/directx12/objects/command/dx12_command_buffer.h"
 #include "./graphics/api/directx12/objects/command/dx12_command_queue.h"
+
 #include "./graphics/api/directx12/resources/buffer/dx12_vertex_buffer.h"
+#include "./graphics/api/directx12/resources/buffer/dx12_index_buffer.h"
 
 namespace Neon
 {
@@ -54,14 +56,6 @@ namespace Neon
 			D3D12_VIEWPORT viewport;
 			D3D12_RECT scissorRect;
 
-			// VertexBuffer
-			ID3D12Resource* vertexBuffer; 
-			D3D12_VERTEX_BUFFER_VIEW vertexBufferView;
-
-			// IndexBuffer
-			ID3D12Resource* indexBuffer;
-			D3D12_INDEX_BUFFER_VIEW indexBufferView;
-
 			ID3D12Resource* depthStencilBuffer;
 			ID3D12DescriptorHeap* dsDescriptorHeap;
 
@@ -73,6 +67,9 @@ namespace Neon
 
 			Fence*		   m_SubmitFence;
 			Fence*		   m_AcuireFence;
+
+			VertexBuffer*  m_VertexBuffer;
+			IndexBuffer*   m_IndexBuffer;
 		};
 	}
 }

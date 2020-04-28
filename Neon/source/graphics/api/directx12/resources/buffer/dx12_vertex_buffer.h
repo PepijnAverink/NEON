@@ -19,7 +19,7 @@ namespace Neon
 
 		private:
 			friend class DX12GraphicsContext; // TODO:: remove me
-			Microsoft::WRL::ComPtr<ID3D12Resource> m_VertexBuffer;
+			ID3D12Resource*						   m_VertexBuffer;
 			D3D12_VERTEX_BUFFER_VIEW			   m_VertexBufferView;
 		};
 	}

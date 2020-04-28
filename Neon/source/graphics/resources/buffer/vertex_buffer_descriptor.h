@@ -15,6 +15,7 @@ namespace Neon
 
 			std::string Name;
 			void*		Vertices;
+			uint32_t	VertexStride;
 			uint32_t	VertexCount;
 
 			BufferUsage Usage;
