@@ -1,0 +1,290 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|Win32">
+      <Configuration>Debug</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|Win32">
+      <Configuration>Release</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Debug|x64">
+      <Configuration>Debug</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|x64">
+      <Configuration>Release</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <VCProjectVersion>15.0</VCProjectVersion>
+    <ProjectGuid>{31E1ED16-2D27-43F5-9532-1F70CF84C884}</ProjectGuid>
+    <RootNamespace>Neon</RootNamespace>
+    <WindowsTargetPlatformVersion>10.0.18362.0</WindowsTargetPlatformVersion>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <PlatformToolset>v141</PlatformToolset>
+    <CharacterSet>MultiByte</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <PlatformToolset>v141</PlatformToolset>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+    <CharacterSet>MultiByte</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <PlatformToolset>v141</PlatformToolset>
+    <CharacterSet>MultiByte</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <PlatformToolset>v141</PlatformToolset>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+    <CharacterSet>MultiByte</CharacterSet>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings">
+  </ImportGroup>
+  <ImportGroup Label="Shared">
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup />
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <Optimization>Disabled</Optimization>
+      <SDLCheck>true</SDLCheck>
+      <ConformanceMode>true</ConformanceMode>
+      <AdditionalIncludeDirectories>D:\Development\VK\1.2.135.0\Include;$(ProjectDir)dependencies/includes/;$(ProjectDir)source/;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>__DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <LanguageStandard>stdcpp17</LanguageStandard>
+    </ClCompile>
+    <Link>
+      <SubSystem>Console</SubSystem>
+      <AdditionalDependencies>d3d12.lib;dxgi.lib;d3dcompiler.lib;dxguid.lib;vulkan-1.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>D:\Development\VK\1.2.135.0\Lib32;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <Optimization>Disabled</Optimization>
+      <SDLCheck>true</SDLCheck>
+      <ConformanceMode>true</ConformanceMode>
+      <AdditionalIncludeDirectories>D:\Development\VK\1.2.135.0\Include;$(ProjectDir)dependencies/includes/;$(ProjectDir)source/;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>__DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <LanguageStandard>stdcpp17</LanguageStandard>
+    </ClCompile>
+    <Link>
+      <SubSystem>Console</SubSystem>
+      <AdditionalDependencies>d3d12.lib;dxgi.lib;d3dcompiler.lib;dxguid.lib;vulkan-1.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>D:\Development\VK\1.2.135.0\Lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <Optimization>MaxSpeed</Optimization>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <SDLCheck>true</SDLCheck>
+      <ConformanceMode>true</ConformanceMode>
+      <AdditionalIncludeDirectories>D:\Development\VK\1.2.135.0\Include;$(ProjectDir)dependencies/includes/;$(ProjectDir)source/;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>__RELEASE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <LanguageStandard>stdcpp17</LanguageStandard>
+    </ClCompile>
+    <Link>
+      <SubSystem>Console</SubSystem>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <OptimizeReferences>true</OptimizeReferences>
+      <AdditionalDependencies>d3d12.lib;dxgi.lib;d3dcompiler.lib;dxguid.lib;vulkan-1.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>D:\Development\VK\1.2.135.0\Lib32;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <Optimization>MaxSpeed</Optimization>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <SDLCheck>true</SDLCheck>
+      <ConformanceMode>true</ConformanceMode>
+      <AdditionalIncludeDirectories>D:\Development\VK\1.2.135.0\Include;$(ProjectDir)dependencies/includes/;$(ProjectDir)source/;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>__RELEASE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <LanguageStandard>stdcpp17</LanguageStandard>
+    </ClCompile>
+    <Link>
+      <SubSystem>Console</SubSystem>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <OptimizeReferences>true</OptimizeReferences>
+      <AdditionalDependencies>d3d12.lib;dxgi.lib;d3dcompiler.lib;dxguid.lib;vulkan-1.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>D:\Development\VK\1.2.135.0\Lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <ClInclude Include="resource.h" />
+    <ClInclude Include="source\core\core_defines.h" />
+    <ClInclude Include="source\core\engine.h" />
+    <ClInclude Include="source\core\game.h" />
+    <ClInclude Include="source\core\window\window.h" />
+    <ClInclude Include="source\core\window\window_descriptor.h" />
+    <ClInclude Include="source\gameplay\neon_game.h" />
+    <ClInclude Include="source\graphics\api\directx12\dx12_error.h" />
+    <ClInclude Include="source\graphics\api\directx12\dx12_graphics_context.h" />
+    <ClInclude Include="source\graphics\api\directx12\objects\command\dx12_command_pool.h" />
+    <ClInclude Include="source\graphics\api\directx12\objects\command\dx12_command_buffer.h" />
+    <ClInclude Include="source\graphics\api\directx12\objects\command\dx12_command_buffer_type.h" />
+    <ClInclude Include="source\graphics\api\directx12\objects\command\dx12_command_queue.h" />
+    <ClInclude Include="source\graphics\api\directx12\objects\command\dx12_command_queue_type.h" />
+    <ClInclude Include="source\graphics\api\directx12\objects\swapchain\dx12_swapchain.h" />
+    <ClInclude Include="source\graphics\api\directx12\objects\sync\dx12_fence.h" />
+    <ClInclude Include="source\graphics\api\directx12\resources\buffer\dx12_vertex_buffer.h" />
+    <ClInclude Include="source\graphics\api\directx12\resources\memory\dx12_memory_pool.h" />
+    <ClInclude Include="source\graphics\api\vulkan\objects\command\vk_command_buffer_type.h" />
+    <ClInclude Include="source\graphics\api\vulkan\objects\command\vk_command_pool.h" />
+    <ClInclude Include="source\graphics\api\vulkan\objects\command\vk_command_buffer.h" />
+    <ClInclude Include="source\graphics\api\vulkan\objects\command\vk_command_queue.h" />
+    <ClInclude Include="source\graphics\api\vulkan\objects\command\vk_command_queue_type.h" />
+    <ClInclude Include="source\graphics\api\vulkan\objects\sync\vk_fence.h" />
+    <ClInclude Include="source\graphics\api\vulkan\pipeline\rasterizer\vk_cull_faces.h" />
+    <ClInclude Include="source\graphics\api\vulkan\pipeline\rasterizer\vk_cull_modes.h" />
+    <ClInclude Include="source\graphics\api\vulkan\pipeline\rasterizer\vk_fill_modes.h" />
+    <ClInclude Include="source\graphics\api\vulkan\pipeline\topology\vk_topology.h" />
+    <ClInclude Include="source\graphics\api\vulkan\pipeline\vk_graphics_pipeline.h" />
+    <ClInclude Include="source\graphics\api\vulkan\resources\buffer\vk_index_buffer.h" />
+    <ClInclude Include="source\graphics\api\vulkan\resources\buffer\vk_vertex_buffer.h" />
+    <ClInclude Include="source\graphics\api\vulkan\resources\memory\vk_memory_pool.h" />
+    <ClInclude Include="source\graphics\api\vulkan\vk_error.h" />
+    <ClInclude Include="source\graphics\api\vulkan\vk_graphics_context.h" />
+    <ClInclude Include="source\graphics\graphics_context.h" />
+    <ClInclude Include="source\graphics\graphics_defines.h" />
+    <ClInclude Include="source\graphics\graphics_driver.h" />
+    <ClInclude Include="source\graphics\hardware\adapter\adapter_type.h" />
+    <ClInclude Include="source\graphics\hardware\adapter\display_mode_descriptor.h" />
+    <ClInclude Include="source\graphics\hardware\adapter\video_adapter_descriptor.h" />
+    <ClInclude Include="source\graphics\hardware\adapter\video_output_descriptor.h" />
+    <ClInclude Include="source\graphics\objects\command\command_pool.h" />
+    <ClInclude Include="source\graphics\objects\command\command_buffer.h" />
+    <ClInclude Include="source\graphics\objects\command\command_buffer_descriptor.h" />
+    <ClInclude Include="source\graphics\objects\command\command_buffer_state.h" />
+    <ClInclude Include="source\graphics\objects\command\command_buffer_type.h" />
+    <ClInclude Include="source\graphics\objects\command\command_pool_descriptor.h" />
+    <ClInclude Include="source\graphics\objects\command\command_queue.h" />
+    <ClInclude Include="source\graphics\objects\command\command_queue_descriptor.h" />
+    <ClInclude Include="source\graphics\objects\command\command_queue_type.h" />
+    <ClInclude Include="source\graphics\objects\command_generic\scissor.h" />
+    <ClInclude Include="source\graphics\objects\command_generic\viewport.h" />
+    <ClInclude Include="source\graphics\objects\swapchain\swapchain.h" />
+    <ClInclude Include="source\graphics\objects\swapchain\swapchain_descriptor.h" />
+    <ClInclude Include="source\graphics\objects\sync\fence.h" />
+    <ClInclude Include="source\graphics\objects\sync\fence_descriptor.h" />
+    <ClInclude Include="source\graphics\objects\sync\fence_return.h" />
+    <ClInclude Include="source\graphics\objects\sync\fence_status.h" />
+    <ClInclude Include="source\graphics\objects\sync\resource_barrier.h" />
+    <ClInclude Include="source\graphics\pipeline\graphics_pipeline_descriptor.h" />
+    <ClInclude Include="source\graphics\pipeline\inputLayout\input_layout_element.h" />
+    <ClInclude Include="source\graphics\pipeline\inputLayout\input_layout_element_format.h" />
+    <ClInclude Include="source\graphics\pipeline\inputLayout\input_layout.h" />
+    <ClInclude Include="source\graphics\pipeline\graphics_pipeline.h" />
+    <ClInclude Include="source\graphics\pipeline\rasterizer\cull_faces.h" />
+    <ClInclude Include="source\graphics\pipeline\rasterizer\cull_modes.h" />
+    <ClInclude Include="source\graphics\pipeline\rasterizer\fill_modes.h" />
+    <ClInclude Include="source\graphics\pipeline\rasterizer\rasterizer_state.h" />
+    <ClInclude Include="source\graphics\pipeline\topology\topology.h" />
+    <ClInclude Include="source\graphics\resources\buffer\buffer_format.h" />
+    <ClInclude Include="source\graphics\resources\buffer\buffer_usage.h" />
+    <ClInclude Include="source\graphics\resources\buffer\index_buffer.h" />
+    <ClInclude Include="source\graphics\resources\buffer\index_buffer_descriptor.h" />
+    <ClInclude Include="source\graphics\resources\buffer\uniform_buffer.h" />
+    <ClInclude Include="source\graphics\resources\buffer\uniform_buffer_descriptor.h" />
+    <ClInclude Include="source\graphics\resources\buffer\vertex_array.h" />
+    <ClInclude Include="source\graphics\resources\buffer\vertex_array_descriptor.h" />
+    <ClInclude Include="source\graphics\resources\buffer\vertex_buffer.h" />
+    <ClInclude Include="source\graphics\resources\buffer\vertex_buffer_descriptor.h" />
+    <ClInclude Include="source\graphics\resources\format.h" />
+    <ClInclude Include="source\graphics\resources\memory\memory_pool.h" />
+    <ClInclude Include="source\graphics\resources\memory\memory_pool_descriptor.h" />
+    <ClInclude Include="source\graphics\resources\memory\memory_access.h" />
+    <ClInclude Include="source\graphics\resources\shader\shader.h" />
+    <ClInclude Include="source\graphics\resources\shader\shader_descriptor.h" />
+    <ClInclude Include="source\graphics\resources\texture\render_texture2D.h" />
+    <ClInclude Include="source\graphics\resources\texture\render_texture2D_descriptor.h" />
+    <ClInclude Include="source\graphics\resources\texture\texture_format.h" />
+    <ClInclude Include="source\platform\windows\core\window\windows_window.h" />
+    <ClInclude Include="source\utilities\casting\casting_helper.h" />
+    <ClInclude Include="source\utilities\version_ID.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="source\core\engine.cpp" />
+    <ClCompile Include="source\core\window\window.cpp" />
+    <ClCompile Include="source\gameplay\neon_game.cpp" />
+    <ClCompile Include="source\graphics\api\directx12\dx12_graphics_context.cpp" />
+    <ClCompile Include="source\graphics\api\directx12\objects\command\dx12_command_pool.cpp" />
+    <ClCompile Include="source\graphics\api\directx12\objects\command\dx12_command_buffer.cpp" />
+    <ClCompile Include="source\graphics\api\directx12\objects\command\dx12_command_queue.cpp" />
+    <ClCompile Include="source\graphics\api\directx12\objects\swapchain\dx12_swapchain.cpp" />
+    <ClCompile Include="source\graphics\api\directx12\objects\sync\dx12_fence.cpp" />
+    <ClCompile Include="source\graphics\api\directx12\resources\buffer\dx12_vertex_buffer.cpp" />
+    <ClCompile Include="source\graphics\api\directx12\resources\memory\dx12_memory_pool.cpp" />
+    <ClCompile Include="source\graphics\api\vulkan\objects\command\vk_command_pool.cpp" />
+    <ClCompile Include="source\graphics\api\vulkan\objects\command\vk_command_buffer.cpp" />
+    <ClCompile Include="source\graphics\api\vulkan\objects\command\vk_command_queue.cpp" />
+    <ClCompile Include="source\graphics\api\vulkan\objects\sync\vk_fence.cpp" />
+    <ClCompile Include="source\graphics\api\vulkan\pipeline\vk_graphics_pipeline.cpp" />
+    <ClCompile Include="source\graphics\api\vulkan\resources\buffer\vk_index_buffer.cpp" />
+    <ClCompile Include="source\graphics\api\vulkan\resources\buffer\vk_vertex_buffer.cpp" />
+    <ClCompile Include="source\graphics\api\vulkan\resources\memory\vk_memory_pool.cpp" />
+    <ClCompile Include="source\graphics\api\vulkan\vk_graphics_context.cpp" />
+    <ClCompile Include="source\graphics\graphics_context.cpp" />
+    <ClCompile Include="source\graphics\graphics_driver.cpp" />
+    <ClCompile Include="source\graphics\hardware\adapter\display_mode_descriptor.cpp" />
+    <ClCompile Include="source\graphics\objects\command\command_pool.cpp" />
+    <ClCompile Include="source\graphics\objects\command\command_buffer.cpp" />
+    <ClCompile Include="source\graphics\objects\command\command_queue.cpp" />
+    <ClCompile Include="source\graphics\objects\swapchain\swapchain.cpp" />
+    <ClCompile Include="source\graphics\objects\sync\fence.cpp" />
+    <ClCompile Include="source\graphics\objects\sync\resource_barrier.cpp" />
+    <ClCompile Include="source\graphics\pipeline\inputLayout\input_layout_element.cpp" />
+    <ClCompile Include="source\graphics\pipeline\inputLayout\input_layout.cpp" />
+    <ClCompile Include="source\graphics\pipeline\graphics_pipeline.cpp" />
+    <ClCompile Include="source\graphics\resources\buffer\index_buffer.cpp" />
+    <ClCompile Include="source\graphics\resources\buffer\uniform_buffer.cpp" />
+    <ClCompile Include="source\graphics\resources\buffer\vertex_array.cpp" />
+    <ClCompile Include="source\graphics\resources\buffer\vertex_buffer.cpp" />
+    <ClCompile Include="source\graphics\resources\memory\memory_pool.cpp" />
+    <ClCompile Include="source\graphics\resources\shader\shader.cpp" />
+    <ClCompile Include="source\graphics\resources\texture\render_texture2D.cpp" />
+    <ClCompile Include="source\platform\windows\core\window\windows_window.cpp" />
+    <ClCompile Include="source\platform\windows\main.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="Neon.rc" />
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="icon1.ico" />
+  </ItemGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets">
+  </ImportGroup>
+</Project>

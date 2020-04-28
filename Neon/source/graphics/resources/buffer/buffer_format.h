@@ -1,0 +1,19 @@
+#pragma once
+
+namespace Neon
+{
+	namespace Graphics
+	{
+		enum BufferFormat
+		{
+			NEON_BUFFER_FORMAT_NONE		= 0x00,
+			NEON_BUFFER_FORMAT_FLOAT32	= 0x01,
+			NEON_BUFFER_FORMAT_SINT32	= 0x02,
+			NEON_BUFFER_FORMAT_UINT32	= 0x03,
+			NEON_BUFFER_FORMAT_SINT16	= 0x04,
+			NEON_BUFFER_FORMAT_UINT16	= 0x05,
+			NEON_BUFFER_FORMAT_SINT8	= 0x06,
+			NEON_BUFFER_FORMAT_UINT8	= 0x07,
+		};
+	}
+}

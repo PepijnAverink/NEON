@@ -1,0 +1,31 @@
+#pragma once
+#include "./graphics/objects/command/command_buffer.h"
+
+#include <./vulkan/vulkan.h>
+
+namespace Neon
+{
+	namespace Graphics
+	{
+		class VKCommandBuffer final : public CommandBuffer
+		{
+		public:
+			VKCommandBuffer(const CommandBufferDescriptor* _commandBufferDescriptor);
+			virtual ~VKCommandBuffer() { }
+
+			virtual void StartRecording()  const override;
+			virtual void EndRecording()	   const override;
+
+			virtual void Reset() const override;
+
+			// Commands
+			virtual void SetViewport(const Viewport _viewport) const override;
+
+		private:
+			friend class VKGraphicsContext; // TODO:: Remove me
+			friend class VKCommandQueue;
+			VkCommandBuffer			 m_CommandBufferObj;
+			VkCommandBufferBeginInfo m_BeginInfo;
+		};
+	}
+}
