@@ -29,10 +29,22 @@ git clone git@github.com:PepijnAverink/NEON.git
 
 **Note:** This project is still a work in progress and the documentation listed below may get out of date or change as the project progresses.
 
-### API Selection
+### API Selection & GraphicsContext
+The user can select which graphics API to use by creating a **GraphicsDriver** object. This a global object used by the project to check which API to use, and its not interacted with by the user untill the object is destroyed.
 
+Possible values for GraphicsAPI parameter:
+* DIRECTX12
+* VULKAN
 
+```cpp
+// Creating a new GraphicsDriver
+Graphics::GraphicsDriver::Create(Graphics::GraphicsAPI);
 
+...
+
+// Destroying GraphicsDriver object
+Graphics::GraphicsDriver::Destroy();
+```
 ### CommandPool
 A **CommandPoolDescriptor** Serves as a descriptor for the *CommandPool* object and is used on its creation.
 The purpose of the _Name_ is purely for debugging, it will store a user friendly name in the obejct itself (Only stored in _Debug_) and this _Name_ will also show up in a graphics debugger. 
@@ -43,6 +55,7 @@ A single CommandPool object can be used for multiple CommandBuffer objects, but 
 A CommandPool can only be used to create a CommandBuffer that has the same _CommandBufferType_.
 
 **Note:** The *CommandPool* object may store a reference to a CommandBuffer object and this object may not be properly released untill the CommandPool object is released. However it is completely safe to delete a CommandBuffer object while its CommandPool is still in use.
+
 **Note:** A *CommandPool* object should not be deleted while a CommandBuffer is still recording or while executing a CommandBuffer object using this CommandPool.
 
 **Creation:**
