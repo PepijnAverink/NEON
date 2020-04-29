@@ -106,12 +106,12 @@ CommandBuffer* m_CommandBuffer;
 ```cpp
 // Setup CommandBuffer descriptor
 CommandBufferDescriptor commandBufferDesc = {};
-commandBufferDesc.Name		  = "Main-CommandBuffer";
-commandBufferDesc.Type		  = CommandBufferType::NEON_COMMAND_BUFFER_TYPE_DIRECT;
-commandBufferDesc.CommandPool = m_CommandPool;
+commandBufferDesc.Name			= "Main-CommandBuffer";
+commandBufferDesc.Type			= CommandBufferType::NEON_COMMAND_BUFFER_TYPE_DIRECT;
+commandBufferDesc.CommandPool 	= m_CommandPool;
 
 // Create CommandBuffer
-m_CommandBuffer		 		  = CommandBuffer::Create(&commandBufferDesc);
+m_CommandBuffer		 		  	= CommandBuffer::Create(&commandBufferDesc);
 ```
 
 Before the CommandBuffer can be executed using a CommandQueue object, the user needs to put it to a non-recording state. The state handling of the CommandBuffer object is all handled by the user.
