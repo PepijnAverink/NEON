@@ -151,6 +151,7 @@
     <ClInclude Include="source\core\core_defines.h" />
     <ClInclude Include="source\core\engine.h" />
     <ClInclude Include="source\core\game.h" />
+    <ClInclude Include="source\core\system\file_system.h" />
     <ClInclude Include="source\core\window\window.h" />
     <ClInclude Include="source\core\window\window_descriptor.h" />
     <ClInclude Include="source\gameplay\neon_game.h" />
@@ -246,6 +247,7 @@
     <ClInclude Include="source\graphics\resources\texture\texture_format.h" />
     <ClInclude Include="source\platform\windows\core\window\windows_window.h" />
     <ClInclude Include="source\utilities\casting\casting_helper.h" />
+    <ClInclude Include="source\utilities\hashing\hashing_helper.h" />
     <ClInclude Include="source\utilities\string_utils.h" />
     <ClInclude Include="source\utilities\version_ID.h" />
   </ItemGroup>
@@ -292,6 +294,7 @@
     <ClCompile Include="source\graphics\resources\memory\memory_pool.cpp" />
     <ClCompile Include="source\graphics\resources\shader\shader.cpp" />
     <ClCompile Include="source\graphics\resources\texture\render_texture2D.cpp" />
+    <ClCompile Include="source\platform\windows\core\system\windows_file_system.cpp" />
     <ClCompile Include="source\platform\windows\core\window\windows_window.cpp" />
     <ClCompile Include="source\platform\windows\main.cpp" />
   </ItemGroup>
