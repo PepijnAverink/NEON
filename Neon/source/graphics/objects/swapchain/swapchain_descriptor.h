@@ -1,5 +1,5 @@
 #pragma once
-#include "./graphics/resources/texture/texture_format.h"
+#include "./graphics/objects/swapchain/back_buffer_format.h"
 
 namespace Neon
 {
@@ -15,8 +15,8 @@ namespace Neon
 			int Height;
 			int BackBufferCount;
 
-			TextureFormat BackBufferFormat;
-			Core::Window* Window;
+			BackBufferFormat Format;
+			Core::Window*    Window;
 
 		};
 	}

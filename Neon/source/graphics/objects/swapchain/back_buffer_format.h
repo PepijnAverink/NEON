@@ -4,9 +4,9 @@ namespace Neon
 {
 	namespace Graphics
 	{
-		class ResourceBarrier
+		enum BackBufferFormat
 		{
-		public:
+			NEON_BACK_BUFFER_FORMAT_NONE = 0x00,
 
 		};
 	}

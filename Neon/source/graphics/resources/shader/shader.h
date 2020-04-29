@@ -1,5 +1,7 @@
 #pragma once
 #include "./graphics/resources/shader/shader_descriptor.h"
+#include "./graphics/resources/shader/shader_reflection.h"
+#include "./graphics/resources/shader/shader_flags.h"
 
 namespace Neon
 {
@@ -8,9 +10,10 @@ namespace Neon
 		class Shader
 		{
 		public:
-			Shader* Create(const ShaderDescriptor* _shaderDescriptor);
+			static Shader* Create(ShaderReflection& _shaderReflection, const ShaderDescriptor* _shaderDescriptor);
+			virtual ~Shader() {}
 
-		private:
+		protected:
 			Shader(const ShaderDescriptor* _shaderDescriptor);
 
 			std::string m_VertexShaderPath;
@@ -18,6 +21,8 @@ namespace Neon
 
 			std::string m_FragmentShaderPath;
 			std::string m_FragmentFunctionName;
+
+			bool		m_HotReload;
 		};
 	}
 }

@@ -4,6 +4,9 @@
 #include <DX12/d3dx12.h>
 #include "./graphics/api/directx12/dx12_error.h"
 
+#include "./graphics/api/directx12/resources/shader/dx12_shader.h"
+#include "./graphics/api/directx12/pipeline/inputLayout/dx12_input_layout.h"
+
 namespace Neon
 {
 	namespace Graphics
@@ -161,36 +164,28 @@ namespace Neon
 			DX12_ThrowIfFailed(m_Device->CreateRootSignature(0, signature->GetBufferPointer(), signature->GetBufferSize(), IID_PPV_ARGS(&rootSignature)));
 
 
-			// create vertex and pixel shaders
 
-			// compile vertex shader
-			ID3DBlob* vertexShader;
-			ID3DBlob* errorBuff;
-			hr = D3DCompileFromFile(L"./assets/shaders/vertex_shader.hlsl", nullptr, nullptr, "main", "vs_5_0", D3DCOMPILE_DEBUG | D3DCOMPILE_SKIP_OPTIMIZATION, 0,
-				&vertexShader, &errorBuff);
-			if (FAILED(hr))
-			{
-				OutputDebugStringA((char*)errorBuff->GetBufferPointer());
-			}
+			// Setup ShaderDescriptor
+			ShaderDescriptor shaderDesc				= {};
+			shaderDesc.VertexShaderPath				= "./assets/shaders/vertex_shader.hlsl";
+			shaderDesc.VertexShaderFunctionName		= "main";
+			shaderDesc.FragmentShaderPath			= "./assets/shaders/fragment_shader.hlsl";
+			shaderDesc.FragmentShaderFunctionName	= "main";
+			shaderDesc.HotReload					= false;
+
+			// Create shader object
+			ShaderReflection reflection;
+			Shader* shader = Shader::Create(reflection, &shaderDesc);
 
 			// fill out a shader bytecode structure
 			D3D12_SHADER_BYTECODE vertexShaderBytecode = {};
-			vertexShaderBytecode.BytecodeLength		   = vertexShader->GetBufferSize();
-			vertexShaderBytecode.pShaderBytecode	   = vertexShader->GetBufferPointer();
-
-			// compile pixel shader
-			ID3DBlob* pixelShader;
-			hr = D3DCompileFromFile(L"./assets/shaders/fragment_shader.hlsl", nullptr, nullptr, "main", "ps_5_0", D3DCOMPILE_DEBUG | D3DCOMPILE_SKIP_OPTIMIZATION, 0,
-				&pixelShader, &errorBuff);
-			if (FAILED(hr))
-			{
-				OutputDebugStringA((char*)errorBuff->GetBufferPointer());
-			}
+			vertexShaderBytecode.BytecodeLength		   = NEON_CAST(DX12Shader*, shader)->m_VertexShaderBytes->GetBufferSize();
+			vertexShaderBytecode.pShaderBytecode	   = NEON_CAST(DX12Shader*, shader)->m_VertexShaderBytes->GetBufferPointer();
 
 			// fill out shader bytecode structure for pixel shader
 			D3D12_SHADER_BYTECODE pixelShaderBytecode = {};
-			pixelShaderBytecode.BytecodeLength		  = pixelShader->GetBufferSize();
-			pixelShaderBytecode.pShaderBytecode		  = pixelShader->GetBufferPointer();
+			pixelShaderBytecode.BytecodeLength		  = NEON_CAST(DX12Shader*, shader)->m_FragmentShaderBytes->GetBufferSize();
+			pixelShaderBytecode.pShaderBytecode		  = NEON_CAST(DX12Shader*, shader)->m_FragmentShaderBytes->GetBufferPointer();
 
 			// create input layout
 			D3D12_INPUT_ELEMENT_DESC inputLayout[] =
@@ -199,10 +194,13 @@ namespace Neon
 				{ "COLOR", 0, DXGI_FORMAT_R32G32B32A32_FLOAT, 0, 12, D3D12_INPUT_CLASSIFICATION_PER_VERTEX_DATA, 0 }
 			};
 
+			std::vector<D3D12_INPUT_ELEMENT_DESC> ip;
+			GetDX12InputLayout(ip, &reflection.Layout);
+
 			// fill out an input layout description structure
 			D3D12_INPUT_LAYOUT_DESC inputLayoutDesc = {};
-			inputLayoutDesc.NumElements				= sizeof(inputLayout) / sizeof(D3D12_INPUT_ELEMENT_DESC);
-			inputLayoutDesc.pInputElementDescs		= inputLayout;
+			inputLayoutDesc.NumElements				= reflection.Layout.GetElementCount();
+			inputLayoutDesc.pInputElementDescs		= ip.data();
 
 			// create a pipeline state object (PSO)
 			D3D12_GRAPHICS_PIPELINE_STATE_DESC psoDesc = {}; 

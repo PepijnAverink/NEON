@@ -45,6 +45,8 @@ Graphics::GraphicsDriver::Create(Graphics::GraphicsAPI);
 // Destroying GraphicsDriver object
 Graphics::GraphicsDriver::Destroy();
 ```
+
+
 ### CommandPool
 A **CommandPoolDescriptor** Serves as a descriptor for the *CommandPool* object and is used on its creation.
 The purpose of the _Name_ is purely for debugging, it will store a user friendly name in the obejct itself (Only stored in _Debug_) and this _Name_ will also show up in a graphics debugger. 

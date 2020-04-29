@@ -76,14 +76,15 @@
       <Optimization>Disabled</Optimization>
       <SDLCheck>true</SDLCheck>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>$(VULKAN_SDK)Include;$(ProjectDir)dependencies/includes/;$(ProjectDir)source/;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(VULKAN_SDK)/Include/;$(ProjectDir)dependencies/includes/;$(ProjectDir)source/;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>__DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <LanguageStandard>stdcpp17</LanguageStandard>
+      <MultiProcessorCompilation>true</MultiProcessorCompilation>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
       <AdditionalDependencies>d3d12.lib;dxgi.lib;d3dcompiler.lib;dxguid.lib;vulkan-1.lib;%(AdditionalDependencies)</AdditionalDependencies>
-      <AdditionalLibraryDirectories>$(VULKAN_SDK)Lib32;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>$(VULKAN_SDK)\Lib32\;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
@@ -92,14 +93,15 @@
       <Optimization>Disabled</Optimization>
       <SDLCheck>true</SDLCheck>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>$(VULKAN_SDK)Include;$(ProjectDir)dependencies/includes/;$(ProjectDir)source/;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(VULKAN_SDK)/Include/;$(ProjectDir)dependencies/includes/;$(ProjectDir)source/;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>__DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <LanguageStandard>stdcpp17</LanguageStandard>
+      <MultiProcessorCompilation>true</MultiProcessorCompilation>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
       <AdditionalDependencies>d3d12.lib;dxgi.lib;d3dcompiler.lib;dxguid.lib;vulkan-1.lib;%(AdditionalDependencies)</AdditionalDependencies>
-      <AdditionalLibraryDirectories>$(VULKAN_SDK)Lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>$(VULKAN_SDK)\Lib\;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -110,16 +112,17 @@
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <SDLCheck>true</SDLCheck>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>$(VULKAN_SDK)Include;$(ProjectDir)dependencies/includes/;$(ProjectDir)source/;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(VULKAN_SDK)/Include/;$(ProjectDir)dependencies/includes/;$(ProjectDir)source/;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>__RELEASE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <LanguageStandard>stdcpp17</LanguageStandard>
+      <MultiProcessorCompilation>true</MultiProcessorCompilation>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
       <AdditionalDependencies>d3d12.lib;dxgi.lib;d3dcompiler.lib;dxguid.lib;vulkan-1.lib;%(AdditionalDependencies)</AdditionalDependencies>
-      <AdditionalLibraryDirectories>$(VULKAN_SDK)Lib32;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>$(VULKAN_SDK)\Lib32\;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -130,16 +133,17 @@
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <SDLCheck>true</SDLCheck>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>$(VULKAN_SDK)Include;$(ProjectDir)dependencies/includes/;$(ProjectDir)source/;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(VULKAN_SDK)/Include/;$(ProjectDir)dependencies/includes/;$(ProjectDir)source/;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>__RELEASE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <LanguageStandard>stdcpp17</LanguageStandard>
+      <MultiProcessorCompilation>true</MultiProcessorCompilation>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
       <AdditionalDependencies>d3d12.lib;dxgi.lib;d3dcompiler.lib;dxguid.lib;vulkan-1.lib;%(AdditionalDependencies)</AdditionalDependencies>
-      <AdditionalLibraryDirectories>$(VULKAN_SDK)Lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>$(VULKAN_SDK)\Lib\;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
@@ -159,9 +163,13 @@
     <ClInclude Include="source\graphics\api\directx12\objects\command\dx12_command_queue_type.h" />
     <ClInclude Include="source\graphics\api\directx12\objects\swapchain\dx12_swapchain.h" />
     <ClInclude Include="source\graphics\api\directx12\objects\sync\dx12_fence.h" />
+    <ClInclude Include="source\graphics\api\directx12\pipeline\dx12_graphics_pipeline.h" />
+    <ClInclude Include="source\graphics\api\directx12\pipeline\inputLayout\dx12_input_layout.h" />
+    <ClInclude Include="source\graphics\api\directx12\pipeline\inputLayout\dx12_input_layout_element_format.h" />
     <ClInclude Include="source\graphics\api\directx12\resources\buffer\dx12_index_buffer.h" />
     <ClInclude Include="source\graphics\api\directx12\resources\buffer\dx12_vertex_buffer.h" />
     <ClInclude Include="source\graphics\api\directx12\resources\memory\dx12_memory_pool.h" />
+    <ClInclude Include="source\graphics\api\directx12\resources\shader\dx12_shader.h" />
     <ClInclude Include="source\graphics\api\vulkan\objects\command\vk_command_buffer_type.h" />
     <ClInclude Include="source\graphics\api\vulkan\objects\command\vk_command_pool.h" />
     <ClInclude Include="source\graphics\api\vulkan\objects\command\vk_command_buffer.h" />
@@ -196,6 +204,7 @@
     <ClInclude Include="source\graphics\objects\command\command_queue_type.h" />
     <ClInclude Include="source\graphics\objects\command_generic\scissor.h" />
     <ClInclude Include="source\graphics\objects\command_generic\viewport.h" />
+    <ClInclude Include="source\graphics\objects\swapchain\back_buffer_format.h" />
     <ClInclude Include="source\graphics\objects\swapchain\swapchain.h" />
     <ClInclude Include="source\graphics\objects\swapchain\swapchain_descriptor.h" />
     <ClInclude Include="source\graphics\objects\sync\fence.h" />
@@ -203,6 +212,7 @@
     <ClInclude Include="source\graphics\objects\sync\fence_return.h" />
     <ClInclude Include="source\graphics\objects\sync\fence_status.h" />
     <ClInclude Include="source\graphics\objects\sync\resource_barrier.h" />
+    <ClInclude Include="source\graphics\objects\sync\resource_barrier_descriptor.h" />
     <ClInclude Include="source\graphics\pipeline\graphics_pipeline_descriptor.h" />
     <ClInclude Include="source\graphics\pipeline\inputLayout\input_layout_element.h" />
     <ClInclude Include="source\graphics\pipeline\inputLayout\input_layout_element_format.h" />
@@ -229,11 +239,14 @@
     <ClInclude Include="source\graphics\resources\memory\memory_access.h" />
     <ClInclude Include="source\graphics\resources\shader\shader.h" />
     <ClInclude Include="source\graphics\resources\shader\shader_descriptor.h" />
+    <ClInclude Include="source\graphics\resources\shader\shader_flags.h" />
+    <ClInclude Include="source\graphics\resources\shader\shader_reflection.h" />
     <ClInclude Include="source\graphics\resources\texture\render_texture2D.h" />
     <ClInclude Include="source\graphics\resources\texture\render_texture2D_descriptor.h" />
     <ClInclude Include="source\graphics\resources\texture\texture_format.h" />
     <ClInclude Include="source\platform\windows\core\window\windows_window.h" />
     <ClInclude Include="source\utilities\casting\casting_helper.h" />
+    <ClInclude Include="source\utilities\string_utils.h" />
     <ClInclude Include="source\utilities\version_ID.h" />
   </ItemGroup>
   <ItemGroup>
@@ -246,9 +259,11 @@
     <ClCompile Include="source\graphics\api\directx12\objects\command\dx12_command_queue.cpp" />
     <ClCompile Include="source\graphics\api\directx12\objects\swapchain\dx12_swapchain.cpp" />
     <ClCompile Include="source\graphics\api\directx12\objects\sync\dx12_fence.cpp" />
+    <ClCompile Include="source\graphics\api\directx12\pipeline\dx12_graphics_pipeline.cpp" />
     <ClCompile Include="source\graphics\api\directx12\resources\buffer\dx12_index_buffer.cpp" />
     <ClCompile Include="source\graphics\api\directx12\resources\buffer\dx12_vertex_buffer.cpp" />
     <ClCompile Include="source\graphics\api\directx12\resources\memory\dx12_memory_pool.cpp" />
+    <ClCompile Include="source\graphics\api\directx12\resources\shader\dx12_shader.cpp" />
     <ClCompile Include="source\graphics\api\vulkan\objects\command\vk_command_pool.cpp" />
     <ClCompile Include="source\graphics\api\vulkan\objects\command\vk_command_buffer.cpp" />
     <ClCompile Include="source\graphics\api\vulkan\objects\command\vk_command_queue.cpp" />

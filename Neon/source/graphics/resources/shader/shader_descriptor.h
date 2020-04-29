@@ -16,6 +16,9 @@ namespace Neon
 
 			std::string FragmentShaderPath;
 			std::string FragmentShaderFunctionName;
+
+			uint32_t    ShaderFlags; // TODO:: implement
+			bool		HotReload;
 		};
 	}
 }

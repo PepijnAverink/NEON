@@ -291,6 +291,33 @@
     <ClInclude Include="source\graphics\api\directx12\resources\buffer\dx12_index_buffer.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="source\graphics\objects\swapchain\back_buffer_format.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="source\graphics\objects\sync\resource_barrier_descriptor.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="source\graphics\api\directx12\resources\shader\dx12_shader.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="source\graphics\resources\shader\shader_flags.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="source\graphics\resources\shader\shader_reflection.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="source\utilities\string_utils.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="source\graphics\api\directx12\pipeline\inputLayout\dx12_input_layout_element_format.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="source\graphics\api\directx12\pipeline\inputLayout\dx12_input_layout.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="source\graphics\api\directx12\pipeline\dx12_graphics_pipeline.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="source\core\engine.cpp">
@@ -417,6 +444,12 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="source\graphics\api\directx12\resources\buffer\dx12_index_buffer.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="source\graphics\api\directx12\resources\shader\dx12_shader.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="source\graphics\api\directx12\pipeline\dx12_graphics_pipeline.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

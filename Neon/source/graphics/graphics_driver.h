@@ -8,8 +8,6 @@ namespace Neon
 		enum GraphicsAPI
 		{
 			NONE,
-			OPENGL,
-			DIRECTX11,
 			DIRECTX12,
 			VULKAN,
 		};
