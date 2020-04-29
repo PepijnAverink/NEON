@@ -70,7 +70,7 @@ CommandPoolDescriptor poolDesc = {};
 poolDesc.Name		 = "Main-CommandPool";
 poolDesc.Type		 = CommandBufferType::NEON_COMMAND_BUFFER_TYPE_DIRECT;
 
-// Create command pool
+// Create CommandPool
 m_CommandPool		 = CommandPool::Create(&poolDesc);
 ```
 
@@ -89,6 +89,8 @@ When the CommandPool object has been created by the user, the user has ownership
 // Dealocate CommandPool
 delete m_CommandPool;
 ```
+
+
 ### CommandBuffer
 A **CommandBufferDescriptor** serves as a descriptor for the *CommandBuffer* object and is used on its creation.
 The purpose of the _Name_ is purely for debugging, it will store a user friendly name in the obejct itself (Only stored in _Debug_) and this _Name_ will also show up in a graphics debugger.
@@ -102,14 +104,14 @@ On createion, the CommandBuffer object is in a non-recording state and should be
 CommandBuffer* m_CommandBuffer;
 ```
 ```cpp
-// Setup commandBuffer descriptor
+// Setup CommandBuffer descriptor
 CommandBufferDescriptor commandBufferDesc = {};
-commandBufferDesc.Name		  = "Main-CommandPool";
-commandBufferDesc.Type		  = CommandBufferType::NEON_COMMAND_BUFFER_TYPE_DIRECT;
-commandBufferDesc.CommandPool = m_CommandPool;
+commandBufferDesc.Name		   = "Main-CommandBuffer";
+commandBufferDesc.Type		   = CommandBufferType::NEON_COMMAND_BUFFER_TYPE_DIRECT;
+commandBufferDesc.CommandPool  = m_CommandPool;
 
-// Create command pool
-m_CommandBuffer		 		  = CommandBuffer::Create(&commandBufferDesc);
+// Create CommandBuffer
+m_CommandBuffer		 		   = CommandBuffer::Create(&commandBufferDesc);
 ```
 
 Before the CommandBuffer can be executed using a CommandQueue object, the user needs to put it to a non-recording state. The state handling of the CommandBuffer object is all handled by the user.
@@ -139,5 +141,6 @@ When the CommandBuffer object has been created by the user, the user has ownersh
 // Dealocate CommandBuffer
 delete m_CommandBuffer;
 ```
+
 
 ### CommandQueue
