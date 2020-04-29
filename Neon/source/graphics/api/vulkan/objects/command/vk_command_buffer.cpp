@@ -57,5 +57,19 @@ namespace Neon
 			vkCmdSetViewport(m_CommandBufferObj, 0, 1, &vp);
 		}
 
+		void VKCommandBuffer::SetGraphicsPipeline(GraphicsPipeline* _graphicsPipeline) const
+		{
+
+		}
+
+		void VKCommandBuffer::SetVertexBuffer(VertexBuffer* _vertexBuffer) const
+		{
+
+		}
+
+		void VKCommandBuffer::SetIndexBuffer(IndexBuffer* _indexBuffer) const
+		{
+
+		}
 	}
 }

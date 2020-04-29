@@ -40,14 +40,31 @@ namespace Neon
 
 		void DX12CommandBuffer::Reset() const
 		{
-			auto commandPool = NEON_CAST(DX12CommandPool*, m_CommandPool);
-			m_CommandListObj->Reset(commandPool->m_CommandAllocator, NULL);
-			DX12_ThrowIfFailed(m_CommandListObj->Close());
+			m_CommandPool->Reset();
+
+		//	auto commandPool = NEON_CAST(DX12CommandPool*, m_CommandPool);
+		//	m_CommandListObj->Reset(commandPool->m_CommandAllocator, NULL);
+		//	DX12_ThrowIfFailed(m_CommandListObj->Close());
 		}
 
 		void DX12CommandBuffer::SetViewport(const Viewport _viewport) const
 		{
 
+		}
+
+		void DX12CommandBuffer::SetGraphicsPipeline(GraphicsPipeline* _graphicsPipeline) const
+		{
+			m_CommandListObj->SetPipelineState(NEON_CAST(DX12GraphicsPipeline*, _graphicsPipeline)->m_PipelineStateObject);
+		}
+
+		void DX12CommandBuffer::SetVertexBuffer(VertexBuffer* _vertexBuffer) const
+		{
+			m_CommandListObj->IASetVertexBuffers(0, 1, &NEON_CAST(DX12VertexBuffer*, _vertexBuffer)->m_VertexBufferView);
+		}
+
+		void DX12CommandBuffer::SetIndexBuffer(IndexBuffer* _indexBuffer) const
+		{
+			m_CommandListObj->IASetIndexBuffer(&NEON_CAST(DX12IndexBuffer*, _indexBuffer)->m_IndexBufferView);
 		}
 	}
 }

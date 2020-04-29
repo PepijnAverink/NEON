@@ -21,6 +21,11 @@ namespace Neon
 			// Commands
 			virtual void SetViewport(const Viewport _viewport) const override;
 
+			virtual void SetGraphicsPipeline(GraphicsPipeline* _graphicsPipeline) const override;
+
+			virtual void SetVertexBuffer(VertexBuffer* _vertexBuffer) const override;
+			virtual void SetIndexBuffer(IndexBuffer* _indexBuffer) const override;
+
 		private:
 			friend class DX12CommandQueue;
 			friend class DX12VertexBuffer;

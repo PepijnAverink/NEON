@@ -14,7 +14,13 @@ namespace Neon
 			virtual ~DX12GraphicsPipeline();
 
 		private:
+			D3D12_VIEWPORT m_Viewport;
+			D3D12_RECT     m_ScissorRect;
+
+			friend class DX12CommandBuffer;
+			friend class DX12GraphicsContext; // TODO:: Remove me
 			ID3D12PipelineState* m_PipelineStateObject;
+			ID3D12RootSignature* m_RootSignature;
 		};
 	}
 }

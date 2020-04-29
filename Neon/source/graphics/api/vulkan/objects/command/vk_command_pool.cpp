@@ -16,6 +16,7 @@ namespace Neon
 			VkCommandPoolCreateInfo poolCreateInfo = {};
 			poolCreateInfo.sType			= VK_STRUCTURE_TYPE_COMMAND_POOL_CREATE_INFO;
 			poolCreateInfo.queueFamilyIndex = GetFamilyQueueIndexFromType(m_Type);
+			poolCreateInfo.flags			= VK_COMMAND_POOL_CREATE_RESET_COMMAND_BUFFER_BIT;
 
 			// Create the commandPool object
 			VK_ThrowIfFailed(vkCreateCommandPool(VKGraphicsContext::GetInstance()->GetGraphicsDevice(), &poolCreateInfo, nullptr, &m_CommandPoolObj));

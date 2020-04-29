@@ -18,6 +18,7 @@ namespace Neon
 			virtual void  Unmap() const override;
 
 		private:
+			friend class DX12CommandBuffer;
 			friend class DX12GraphicsContext; // TODO:: remove me
 			ID3D12Resource*						   m_VertexBuffer;
 			D3D12_VERTEX_BUFFER_VIEW			   m_VertexBufferView;

@@ -11,10 +11,13 @@ namespace Neon
 		// ------------------------------------------
 		// CommandBuffer class
 		// Serves as an abstraction of a commandBuffer or commandList in respective API's
-		// Object is itilized using CommandBufferDescriptor object, which is specified by the user.
+		// Object is initialized using CommandBufferDescriptor object, which is specified by the user.
 		// The name is stored for debugging reasons and is not compiled in release mode, the getter will return an empty string in release mode.
 		// ------------------------------------------
 		class Viewport;
+		class GraphicsPipeline;
+		class VertexBuffer;
+		class IndexBuffer;
 		class CommandBuffer
 		{
 		public:
@@ -28,6 +31,11 @@ namespace Neon
 
 			// Commands
 			virtual void SetViewport(const Viewport _viewport) const = 0;;
+
+			virtual void SetGraphicsPipeline(GraphicsPipeline* _graphicsPipeline) const = 0;
+
+			virtual void SetVertexBuffer(VertexBuffer* _vertexBuffer) const = 0;
+			virtual void SetIndexBuffer(IndexBuffer* _indexBuffer) const = 0;
 
 			// Getters
 			inline const std::string        GetCommandBufferName()  const;

@@ -18,6 +18,8 @@
 #include "./graphics/api/directx12/resources/buffer/dx12_vertex_buffer.h"
 #include "./graphics/api/directx12/resources/buffer/dx12_index_buffer.h"
 
+#include "./graphics/api/directx12/pipeline/dx12_graphics_pipeline.h"
+
 namespace Neon
 {
 	namespace Graphics
@@ -50,8 +52,8 @@ namespace Neon
 			int frameIndex;
 			int rtvDescriptorSize;
 
-			ID3D12PipelineState* pipelineStateObject; 
-			ID3D12RootSignature* rootSignature; 
+		//	ID3D12PipelineState* pipelineStateObject; 
+		//	ID3D12RootSignature* rootSignature; 
 
 			D3D12_VIEWPORT viewport;
 			D3D12_RECT scissorRect;
@@ -60,16 +62,18 @@ namespace Neon
 			ID3D12DescriptorHeap* dsDescriptorHeap;
 
 			// Own abstraction
-			CommandQueue*  m_CommandQueue;
+			CommandQueue*     m_CommandQueue;
+						      
+			CommandPool*      m_CommandPool;
+			CommandBuffer*    m_CommandBuffers[frameBufferCount];
+						      
+			Fence*		      m_SubmitFence;
+			Fence*		      m_AcuireFence;
 
-			CommandPool*   m_CommandPool;
-			CommandBuffer* m_CommandBuffers[frameBufferCount];
+			GraphicsPipeline* m_GraphicsPipeline;
 
-			Fence*		   m_SubmitFence;
-			Fence*		   m_AcuireFence;
-
-			VertexBuffer*  m_VertexBuffer;
-			IndexBuffer*   m_IndexBuffer;
+			VertexBuffer*     m_VertexBuffer;
+			IndexBuffer*      m_IndexBuffer;
 		};
 	}
 }

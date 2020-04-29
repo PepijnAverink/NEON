@@ -17,6 +17,7 @@ namespace Neon
 		private:
 			void ReflectInputLayout(InputLayout* _inputLayout, ID3D12ShaderReflection* _reflection, int a_inputParameterCount);
 
+			friend class DX12GraphicsPipeline;
 			friend class DX12GraphicsContext; // Remove me
 			ID3DBlob* m_VertexShaderBytes;
 			ID3DBlob* m_FragmentShaderBytes;

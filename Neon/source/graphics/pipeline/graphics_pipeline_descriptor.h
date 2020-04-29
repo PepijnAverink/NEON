@@ -4,22 +4,31 @@
 #include "./graphics/pipeline/topology/topology.h"
 
 #include "./graphics/pipeline/rasterizer/rasterizer_state.h"
+#include "./graphics/pipeline/inputLayout/input_layout.h"
 
 namespace Neon
 {
 	namespace Graphics
 	{
+		class Shader;
 		class GraphicsPipelineDescriptor
 		{
 		public:
 			GraphicsPipelineDescriptor() = default;
 
-			int		 ImageWidth;
-			int		 ImageHeight;
-			Viewport ViewportRect;
-			Scissor  ScissorRect;
+			std::string	Name;
 
-			Topology DrawTopology;
+			int			ImageWidth;
+			int			ImageHeight;
+
+			Topology	DrawTopology;
+			InputLayout InputLayout;
+
+			Shader*		Shader;
+
+
+			Viewport	ViewportRect;
+			Scissor		ScissorRect;
 
 			RasterizerState RasterizerStateDescriptor;
 		};

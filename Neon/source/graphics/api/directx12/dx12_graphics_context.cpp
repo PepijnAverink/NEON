@@ -155,14 +155,14 @@ namespace Neon
 				rtvHandle.Offset(1, rtvDescriptorSize);
 			}
 
-			// create root signature
-			CD3DX12_ROOT_SIGNATURE_DESC rootSignatureDesc;
-			rootSignatureDesc.Init(0, nullptr, 0, nullptr, D3D12_ROOT_SIGNATURE_FLAG_ALLOW_INPUT_ASSEMBLER_INPUT_LAYOUT);
-
-			ID3DBlob* signature;
-			DX12_ThrowIfFailed(D3D12SerializeRootSignature(&rootSignatureDesc, D3D_ROOT_SIGNATURE_VERSION_1, &signature, nullptr));
-			DX12_ThrowIfFailed(m_Device->CreateRootSignature(0, signature->GetBufferPointer(), signature->GetBufferSize(), IID_PPV_ARGS(&rootSignature)));
-
+		//	// create root signature
+		//	CD3DX12_ROOT_SIGNATURE_DESC rootSignatureDesc;
+		//	rootSignatureDesc.Init(0, nullptr, 0, nullptr, D3D12_ROOT_SIGNATURE_FLAG_ALLOW_INPUT_ASSEMBLER_INPUT_LAYOUT);
+		//
+		//	ID3DBlob* signature;
+		//	DX12_ThrowIfFailed(D3D12SerializeRootSignature(&rootSignatureDesc, D3D_ROOT_SIGNATURE_VERSION_1, &signature, nullptr));
+		//	DX12_ThrowIfFailed(m_Device->CreateRootSignature(0, signature->GetBufferPointer(), signature->GetBufferSize(), IID_PPV_ARGS(&rootSignature)));
+		//
 
 
 			// Setup ShaderDescriptor
@@ -177,48 +177,17 @@ namespace Neon
 			ShaderReflection reflection;
 			Shader* shader = Shader::Create(reflection, &shaderDesc);
 
-			// fill out a shader bytecode structure
-			D3D12_SHADER_BYTECODE vertexShaderBytecode = {};
-			vertexShaderBytecode.BytecodeLength		   = NEON_CAST(DX12Shader*, shader)->m_VertexShaderBytes->GetBufferSize();
-			vertexShaderBytecode.pShaderBytecode	   = NEON_CAST(DX12Shader*, shader)->m_VertexShaderBytes->GetBufferPointer();
+			// Setup GraphicsPipeline Descriptor
+			GraphicsPipelineDescriptor pipelineDesc = {};
+			pipelineDesc.Name		  = "Main-GraphicsPipeline";
+			pipelineDesc.ImageWidth   = _window->GetWindowWidth();
+			pipelineDesc.ImageHeight  = _window->GetWindowHeight();
+			pipelineDesc.DrawTopology = Topology::NEON_TOPOLOGY_TRIANGLE_LIST;
+			pipelineDesc.InputLayout  = reflection.Layout;
+			pipelineDesc.Shader		  = shader;
 
-			// fill out shader bytecode structure for pixel shader
-			D3D12_SHADER_BYTECODE pixelShaderBytecode = {};
-			pixelShaderBytecode.BytecodeLength		  = NEON_CAST(DX12Shader*, shader)->m_FragmentShaderBytes->GetBufferSize();
-			pixelShaderBytecode.pShaderBytecode		  = NEON_CAST(DX12Shader*, shader)->m_FragmentShaderBytes->GetBufferPointer();
-
-			// create input layout
-			D3D12_INPUT_ELEMENT_DESC inputLayout[] =
-			{
-				{ "POSITION", 0, DXGI_FORMAT_R32G32B32_FLOAT, 0, 0, D3D12_INPUT_CLASSIFICATION_PER_VERTEX_DATA, 0 },
-				{ "COLOR", 0, DXGI_FORMAT_R32G32B32A32_FLOAT, 0, 12, D3D12_INPUT_CLASSIFICATION_PER_VERTEX_DATA, 0 }
-			};
-
-			std::vector<D3D12_INPUT_ELEMENT_DESC> ip;
-			GetDX12InputLayout(ip, &reflection.Layout);
-
-			// fill out an input layout description structure
-			D3D12_INPUT_LAYOUT_DESC inputLayoutDesc = {};
-			inputLayoutDesc.NumElements				= reflection.Layout.GetElementCount();
-			inputLayoutDesc.pInputElementDescs		= ip.data();
-
-			// create a pipeline state object (PSO)
-			D3D12_GRAPHICS_PIPELINE_STATE_DESC psoDesc = {}; 
-			psoDesc.InputLayout						   = inputLayoutDesc;
-			psoDesc.pRootSignature					   = rootSignature;
-			psoDesc.VS								   = vertexShaderBytecode;
-			psoDesc.PS								   = pixelShaderBytecode; 
-			psoDesc.PrimitiveTopologyType			   = D3D12_PRIMITIVE_TOPOLOGY_TYPE_TRIANGLE;
-			psoDesc.RTVFormats[0]					   = DXGI_FORMAT_R8G8B8A8_UNORM; 
-			psoDesc.SampleDesc						   = sampleDesc;
-			psoDesc.SampleMask						   = 0xffffffff;
-			psoDesc.RasterizerState					   = CD3DX12_RASTERIZER_DESC(D3D12_DEFAULT);
-			psoDesc.BlendState						   = CD3DX12_BLEND_DESC(D3D12_DEFAULT);
-			psoDesc.NumRenderTargets				   = 1;
-			psoDesc.DepthStencilState				   = CD3DX12_DEPTH_STENCIL_DESC(D3D12_DEFAULT);
-
-			// create the pso
-			DX12_ThrowIfFailed(m_Device->CreateGraphicsPipelineState(&psoDesc, IID_PPV_ARGS(&pipelineStateObject)));
+			// Create the Graphics Pipeline
+			m_GraphicsPipeline = GraphicsPipeline::Create(&pipelineDesc);
 
 			// create a depth stencil descriptor heap 
 			D3D12_DESCRIPTOR_HEAP_DESC dsvHeapDesc = {};
@@ -297,10 +266,6 @@ namespace Neon
 
 			m_IndexBuffer = IndexBuffer::Create(m_CommandBuffers[0], &indexBufferDesc);
 
-			// Execute commandBuffer 
-			m_CommandBuffers[0]->EndRecording();
-			m_CommandQueue->ExecuteCommandBuffer(m_CommandBuffers[0], m_AcuireFence);
-
 			// Fill out the Viewport
 			viewport.TopLeftX = 0;
 			viewport.TopLeftY = 0;
@@ -314,6 +279,10 @@ namespace Neon
 			scissorRect.top = 0;
 			scissorRect.right = _window->GetWindowWidth();
 			scissorRect.bottom = _window->GetWindowHeight();
+
+			// Execute commandBuffer 
+			m_CommandBuffers[0]->EndRecording();
+			m_CommandQueue->ExecuteCommandBuffer(m_CommandBuffers[0], m_AcuireFence);
 		}
 
 		DX12GraphicsContext::~DX12GraphicsContext()
@@ -350,7 +319,7 @@ namespace Neon
 
 
 				// Set pipeline state
-				NEON_CAST(DX12CommandBuffer*, m_CommandBuffers[frameIndex])->m_CommandListObj->SetPipelineState(pipelineStateObject);
+				m_CommandBuffers[frameIndex]->SetGraphicsPipeline(m_GraphicsPipeline);
 
 				// Transition the backbuffer
 				NEON_CAST(DX12CommandBuffer*, m_CommandBuffers[frameIndex])->m_CommandListObj->ResourceBarrier(1, &CD3DX12_RESOURCE_BARRIER::Transition(renderTargets[frameIndex], D3D12_RESOURCE_STATE_PRESENT, D3D12_RESOURCE_STATE_RENDER_TARGET));
@@ -368,12 +337,14 @@ namespace Neon
 				NEON_CAST(DX12CommandBuffer*, m_CommandBuffers[frameIndex])->m_CommandListObj->ClearDepthStencilView(dsDescriptorHeap->GetCPUDescriptorHandleForHeapStart(), D3D12_CLEAR_FLAG_DEPTH, 1.0f, 0, 0, nullptr);
 
 				// draw triangle
-				NEON_CAST(DX12CommandBuffer*, m_CommandBuffers[frameIndex])->m_CommandListObj->SetGraphicsRootSignature(rootSignature);
+				NEON_CAST(DX12CommandBuffer*, m_CommandBuffers[frameIndex])->m_CommandListObj->SetGraphicsRootSignature(NEON_CAST(DX12GraphicsPipeline*, m_GraphicsPipeline)->m_RootSignature);
 				NEON_CAST(DX12CommandBuffer*, m_CommandBuffers[frameIndex])->m_CommandListObj->RSSetViewports(1, &viewport); 
 				NEON_CAST(DX12CommandBuffer*, m_CommandBuffers[frameIndex])->m_CommandListObj->RSSetScissorRects(1, &scissorRect); 
 				NEON_CAST(DX12CommandBuffer*, m_CommandBuffers[frameIndex])->m_CommandListObj->IASetPrimitiveTopology(D3D_PRIMITIVE_TOPOLOGY_TRIANGLELIST); 
-				NEON_CAST(DX12CommandBuffer*, m_CommandBuffers[frameIndex])->m_CommandListObj->IASetVertexBuffers(0, 1, &NEON_CAST(DX12VertexBuffer*, m_VertexBuffer)->m_VertexBufferView);
-				NEON_CAST(DX12CommandBuffer*, m_CommandBuffers[frameIndex])->m_CommandListObj->IASetIndexBuffer(&NEON_CAST(DX12IndexBuffer*, m_IndexBuffer)->m_IndexBufferView);
+
+				m_CommandBuffers[frameIndex]->SetVertexBuffer(m_VertexBuffer);
+				m_CommandBuffers[frameIndex]->SetIndexBuffer(m_IndexBuffer);
+
 				NEON_CAST(DX12CommandBuffer*, m_CommandBuffers[frameIndex])->m_CommandListObj->DrawIndexedInstanced(6, 1, 0, 0, 0);
 				NEON_CAST(DX12CommandBuffer*, m_CommandBuffers[frameIndex])->m_CommandListObj->DrawIndexedInstanced(6, 1, 0, 4, 0); // draw second quad
 
