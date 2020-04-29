@@ -1,11 +1,31 @@
 # NEON
+NEON is a learning project to learn low-level rendering API's and their internals. It's purpose is to abstract API's in common rule set so the API backend can be interchanged. 
+
+### Supported platforms:
+* Windows 32bit & 64bit
+
+### Supported API's:
+* DirectX12
+* Vulkan
 
 ## Build Notes
+
+1. Clone the repository
+```cpp
+git clone git@github.com:PepijnAverink/NEON.git
+```
+2. Check compiler versions
+
+3. Installing Vulkan SDK
+
+## Getting started
 
 
 ## Documentation
 
 **Note:** This project is still a work in progress and the documentation listed below may get out of date or change as the project progresses.
+
+### API Selection
 
 ### CommandPool
 A **CommandPoolDescriptor** Serves as a descriptor for the *CommandPool* object and is used on it's creation.
@@ -29,6 +49,12 @@ poolDesc.Type		 = CommandBufferType::NEON_COMMAND_BUFFER_TYPE_DIRECT;
 m_CommandPool		 = CommandPool::Create(&poolDesc);
 ```
 
+A __CommandPool__ object can safely be reset after executing all the __CommandBuffer__ objects using the __CommandPool__ and synching using a **Fence** object. __CommandPool__ memory is often dynamically allocated so not resseting it will cause significant increase in memory usage.
+**Reset:**
+```cpp
+// Reset CommandPool
+m_CommandPool->Reset();
+```
 
 ### CommandBuffer
 
