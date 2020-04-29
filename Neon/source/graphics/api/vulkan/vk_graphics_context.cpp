@@ -11,6 +11,8 @@
 
 #include <fstream>
 
+#include "./graphics/api/vulkan/resources/shader/vk_shader.h"
+
 namespace Neon
 {
 	namespace Graphics
@@ -692,25 +694,20 @@ namespace Neon
 			vertexInputInfo.pVertexBindingDescriptions = &bindingDescription;
 			vertexInputInfo.pVertexAttributeDescriptions = attributeDescriptions;
 
-			auto vertShaderCode = readFile("./assets/shaders/vert.spv");
-			auto fragShaderCode = readFile("./assets/shaders/frag.spv");
+			// Setup ShaderDescriptor
+			ShaderDescriptor shaderDesc				= {};
+			shaderDesc.VertexShaderPath				= "./assets/shaders/vert.spv";
+			shaderDesc.VertexShaderFunctionName		= "main";
+			shaderDesc.FragmentShaderPath			= "./assets/shaders/frag.spv";
+			shaderDesc.FragmentShaderFunctionName	= "main";
+			shaderDesc.HotReload					= false;
 
-			VkShaderModule vertShaderModule = createShaderModule(vertShaderCode);
-			VkShaderModule fragShaderModule = createShaderModule(fragShaderCode);
+			// Create shader object
+			ShaderReflection reflection;
+			Shader* shader = Shader::Create(reflection, &shaderDesc);
 
-			VkPipelineShaderStageCreateInfo vertShaderStageInfo{};
-			vertShaderStageInfo.sType = VK_STRUCTURE_TYPE_PIPELINE_SHADER_STAGE_CREATE_INFO;
-			vertShaderStageInfo.stage = VK_SHADER_STAGE_VERTEX_BIT;
-			vertShaderStageInfo.module = vertShaderModule;
-			vertShaderStageInfo.pName = "main";
-
-			VkPipelineShaderStageCreateInfo fragShaderStageInfo{};
-			fragShaderStageInfo.sType = VK_STRUCTURE_TYPE_PIPELINE_SHADER_STAGE_CREATE_INFO;
-			fragShaderStageInfo.stage = VK_SHADER_STAGE_FRAGMENT_BIT;
-			fragShaderStageInfo.module = fragShaderModule;
-			fragShaderStageInfo.pName = "main";
-
-			VkPipelineShaderStageCreateInfo shaderStages[] = { vertShaderStageInfo, fragShaderStageInfo };
+			// Setup shader modules
+			VkPipelineShaderStageCreateInfo shaderStages[] = { NEON_CAST(VKShader*, shader)->m_VertexStageInfo, NEON_CAST(VKShader*, shader)->m_FragmentStageInfo };
 
 			VkPipelineInputAssemblyStateCreateInfo inputAssembly{};
 			inputAssembly.sType = VK_STRUCTURE_TYPE_PIPELINE_INPUT_ASSEMBLY_STATE_CREATE_INFO;
@@ -794,8 +791,8 @@ namespace Neon
 				throw std::runtime_error("failed to create graphics pipeline!");
 			}
 
-			vkDestroyShaderModule(m_Device, fragShaderModule, nullptr);
-			vkDestroyShaderModule(m_Device, vertShaderModule, nullptr);
+		//	vkDestroyShaderModule(m_Device, fragShaderModule, nullptr);
+		//	vkDestroyShaderModule(m_Device, vertShaderModule, nullptr);
 		}
 
 		VkShaderModule VKGraphicsContext::createShaderModule(const std::vector<char>& code) {

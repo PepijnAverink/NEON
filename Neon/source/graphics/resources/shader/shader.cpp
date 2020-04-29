@@ -6,9 +6,9 @@
 #include "./graphics/api/directx12/resources/shader/dx12_shader.h"
 #endif
 
-//#if defined(NEON_SUPPORT_VULKAN)
-//#include "./graphics/api/vulkan/resources/buffer/vk_vertex_buffer.h"
-//#endif
+#if defined(NEON_SUPPORT_VULKAN)
+#include "./graphics/api/vulkan/resources/shader/vk_shader.h"
+#endif
 
 namespace Neon
 {
@@ -18,9 +18,9 @@ namespace Neon
 		{
 			GraphicsAPI api = GraphicsDriver::GetGraphicsAPI();
 
-		//	// Vulkan
-		//	if (api == GraphicsAPI::VULKAN)
-		//		return new VKVertexBuffer(_commandBuffer, _vertexBufferDescriptor);
+			// Vulkan
+			if (api == GraphicsAPI::VULKAN)
+				return new VKShader(_shaderReflection, _shaderDescriptor);
 
 			// DirectX12
 			if (api == GraphicsAPI::DIRECTX12)

@@ -185,6 +185,7 @@
     <ClInclude Include="source\graphics\api\vulkan\resources\buffer\vk_index_buffer.h" />
     <ClInclude Include="source\graphics\api\vulkan\resources\buffer\vk_vertex_buffer.h" />
     <ClInclude Include="source\graphics\api\vulkan\resources\memory\vk_memory_pool.h" />
+    <ClInclude Include="source\graphics\api\vulkan\resources\shader\vk_shader.h" />
     <ClInclude Include="source\graphics\api\vulkan\vk_error.h" />
     <ClInclude Include="source\graphics\api\vulkan\vk_graphics_context.h" />
     <ClInclude Include="source\graphics\graphics_context.h" />
@@ -274,6 +275,7 @@
     <ClCompile Include="source\graphics\api\vulkan\resources\buffer\vk_index_buffer.cpp" />
     <ClCompile Include="source\graphics\api\vulkan\resources\buffer\vk_vertex_buffer.cpp" />
     <ClCompile Include="source\graphics\api\vulkan\resources\memory\vk_memory_pool.cpp" />
+    <ClCompile Include="source\graphics\api\vulkan\resources\shader\vk_shader.cpp" />
     <ClCompile Include="source\graphics\api\vulkan\vk_graphics_context.cpp" />
     <ClCompile Include="source\graphics\graphics_context.cpp" />
     <ClCompile Include="source\graphics\graphics_driver.cpp" />

@@ -9,8 +9,10 @@ namespace Neon
 		{
 
 		}
+
 		DX12GraphicsPipeline::~DX12GraphicsPipeline()
 		{
+
 		}
 	}
 }
