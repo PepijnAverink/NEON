@@ -33,9 +33,6 @@ namespace Neon
 		GraphicsPipeline::GraphicsPipeline(const GraphicsPipelineDescriptor* _graphicsPipelineDescriptor)
 			: m_ImageWidth(_graphicsPipelineDescriptor->ImageWidth)
 			, m_ImageHeight(_graphicsPipelineDescriptor->ImageHeight)
-			, m_Viewport(_graphicsPipelineDescriptor->ViewportRect)
-			, m_Scissor(_graphicsPipelineDescriptor->ScissorRect)
-			, m_Topology(_graphicsPipelineDescriptor->DrawTopology)
 			, m_RasterizerState(_graphicsPipelineDescriptor->RasterizerStateDescriptor)
 		{ }
 	}

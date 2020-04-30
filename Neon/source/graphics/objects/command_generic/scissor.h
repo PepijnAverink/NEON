@@ -7,18 +7,18 @@ namespace Neon
 		class Scissor
 		{
 		public:
-			Scissor() = default;
-			Scissor(const float _bottomX, const float _bottomY, const float _width, const float _height)
-				: BottomX(_bottomX)
-				, BottomY(_bottomY)
-				, Width(_width)
-				, Height(_height)
-			{ }
+			static Scissor* Create(const float _bottomX, const float _bottomY, const float _width, const float _height);
+			virtual ~Scissor() {}
 
-			float BottomX;
-			float BottomY;
-			float Width;
-			float Height;
+			virtual void SetScissor(const float _bottomX, const float _bottomY, const float _width, const float _height) = 0;
+
+		protected:
+			Scissor(const float _bottomX, const float _bottomY, const float _width, const float _height);
+
+			float m_BottomX;
+			float m_BottomY;
+			float m_Width;
+			float m_Height;
 		};
 	}
 }

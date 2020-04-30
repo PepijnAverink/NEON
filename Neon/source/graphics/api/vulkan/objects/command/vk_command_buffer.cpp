@@ -3,6 +3,8 @@
 #include "./graphics/api/vulkan/objects/command/vk_command_buffer_type.h"
 #include "./graphics/api/vulkan/vk_error.h"
 
+#include "./graphics/api/directx12/resources/buffer/dx12_vertex_buffer.h"
+
 #include "./graphics/objects/command_generic/viewport.h"
 
 #include "./utilities/casting/casting_helper.h"
@@ -51,12 +53,6 @@ namespace Neon
 		}
 		
 		// Include the minDepth and maxDepth values
-		void VKCommandBuffer::SetViewport(const Viewport _viewport) const
-		{
-			VkViewport vp = VkViewport({ _viewport.BottomX, _viewport.BottomY, _viewport.Width, _viewport.Height, 0, 1 });
-			vkCmdSetViewport(m_CommandBufferObj, 0, 1, &vp);
-		}
-
 		void VKCommandBuffer::SetGraphicsPipeline(GraphicsPipeline* _graphicsPipeline) const
 		{
 
@@ -64,10 +60,30 @@ namespace Neon
 
 		void VKCommandBuffer::SetVertexBuffer(VertexBuffer* _vertexBuffer) const
 		{
-
+			VkDeviceSize offsets[] = { 0 };
+			vkCmdBindVertexBuffers(m_CommandBufferObj, 0, 1, &NEON_CAST(VKVertexBuffer*, _vertexBuffer)->m_VertexBufferObj, offsets);
 		}
 
 		void VKCommandBuffer::SetIndexBuffer(IndexBuffer* _indexBuffer) const
+		{
+
+		}
+		void VKCommandBuffer::SetTopology(const Topology _topology) const
+		{
+
+		}
+
+		void VKCommandBuffer::SetTopology(TopologyState* _topologyState) const
+		{
+
+		}
+
+		void VKCommandBuffer::SetViewport(Viewport * _viewport) const
+		{
+
+		}
+
+		void VKCommandBuffer::SetScissor(Scissor * _scissor) const
 		{
 
 		}

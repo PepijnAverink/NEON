@@ -1,7 +1,6 @@
 #pragma once
 #include "./graphics/objects/command_generic/viewport.h"
 #include "./graphics/objects/command_generic/scissor.h"
-#include "./graphics/pipeline/topology/topology.h"
 
 #include "./graphics/pipeline/rasterizer/rasterizer_state.h"
 #include "./graphics/pipeline/inputLayout/input_layout.h"
@@ -21,14 +20,9 @@ namespace Neon
 			int			ImageWidth;
 			int			ImageHeight;
 
-			Topology	DrawTopology;
 			InputLayout InputLayout;
 
 			Shader*		Shader;
-
-
-			Viewport	ViewportRect;
-			Scissor		ScissorRect;
 
 			RasterizerState RasterizerStateDescriptor;
 		};

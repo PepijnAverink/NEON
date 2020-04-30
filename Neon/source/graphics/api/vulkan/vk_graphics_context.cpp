@@ -932,9 +932,11 @@ namespace Neon
 
 				vkCmdBindPipeline(NEON_CAST(VKCommandBuffer*, commandBuffers[i])->m_CommandBufferObj, VK_PIPELINE_BIND_POINT_GRAPHICS, m_GraphicsPipeline);
 
-				VkBuffer vertexBuffers[] = { NEON_CAST(VKVertexBuffer*, vertexBuffer)->m_VertexBufferObj };
-				VkDeviceSize offsets[] = { 0 };
-				vkCmdBindVertexBuffers(NEON_CAST(VKCommandBuffer*, commandBuffers[i])->m_CommandBufferObj, 0, 1, vertexBuffers, offsets);
+			//	VkBuffer vertexBuffers[] = { NEON_CAST(VKVertexBuffer*, vertexBuffer)->m_VertexBufferObj };
+			//	VkDeviceSize offsets[] = { 0 };
+			//	vkCmdBindVertexBuffers(NEON_CAST(VKCommandBuffer*, commandBuffers[i])->m_CommandBufferObj, 0, 1, &NEON_CAST(VKVertexBuffer*, vertexBuffer)->m_VertexBufferObj, offsets);
+
+				commandBuffers[i]->SetVertexBuffer(vertexBuffer);
 
 			//	vkCmdDraw(commandBuffers[i], static_cast<uint32_t>(vertices.size()), 1, 0, 0);
 

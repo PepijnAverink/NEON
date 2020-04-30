@@ -17,6 +17,7 @@ namespace Neon
 			virtual void  Unmap() const override;
 
 		private:
+			friend class VKCommandBuffer;
 			friend class VKGraphicsContext; // TODO:: remove me
 			VkBuffer m_VertexBufferObj;
 		};

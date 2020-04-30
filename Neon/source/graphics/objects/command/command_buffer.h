@@ -18,6 +18,13 @@ namespace Neon
 		class GraphicsPipeline;
 		class VertexBuffer;
 		class IndexBuffer;
+		
+		enum  Topology;
+		class TopologyState;
+
+		class Viewport;
+		class Scissor;
+
 		class CommandBuffer
 		{
 		public:
@@ -30,12 +37,16 @@ namespace Neon
 			virtual void Reset() const = 0;
 
 			// Commands
-			virtual void SetViewport(const Viewport _viewport) const = 0;;
-
 			virtual void SetGraphicsPipeline(GraphicsPipeline* _graphicsPipeline) const = 0;
 
 			virtual void SetVertexBuffer(VertexBuffer* _vertexBuffer) const = 0;
 			virtual void SetIndexBuffer(IndexBuffer* _indexBuffer) const = 0;
+
+			virtual void SetTopology(const Topology _topology) const = 0;
+			virtual void SetTopology(TopologyState* _topologyState) const = 0;
+
+			virtual void SetViewport(Viewport* _viewport) const = 0;
+			virtual void SetScissor(Scissor* _scissor) const = 0;
 
 			// Getters
 			inline const std::string        GetCommandBufferName()  const;

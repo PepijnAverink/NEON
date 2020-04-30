@@ -116,6 +116,7 @@ m_CommandBuffer		 	= CommandBuffer::Create(&commandBufferDesc);
 
 Before the CommandBuffer can be executed using a CommandQueue object, the user needs to put it to a non-recording state. The state handling of the CommandBuffer object is all handled by the user.
 
+**CommandBuffer States:**
 ```cpp
 // Set CommandBuffer to recording state
 m_CommandBuffer->StartRecording();
@@ -129,6 +130,7 @@ m_CommandBuffer->EndRecording();
 Before a CommandBuffer object can be used to issue commands it is wise to reset the memory used by the CommandPool, this can either be done resetting the entire CommandPool or by resseting the CommandBuffer object itself.
 This user should only reset the memory of a CommandPool if no CommandBuffers connected to the CommandPool are in a recording state or currently executing, the user can use a fence to check for the latter.
 
+**Reset:**
 ```cpp
 // Reset CommandBuffer
 m_CommandBuffer->Reset();
@@ -144,3 +146,40 @@ delete m_CommandBuffer;
 
 
 ### CommandQueue
+A **CommandQueueDescriptor** serves as a descriptor for the *CommandQueue* object and is used on its creation.
+The purpose of the _Name_ is purely for debugging, it will store a user friendly name in the obejct itself (Only stored in _Debug_) and this _Name_ will also show up in a graphics debugger.
+The _QueueIndex_ is the index of the of the CommandQueue with this given type. The _Type_ has a default fallback so the user only has to give a QueueIndex for a default CommandQueue object. 
+
+A **CommandQueue** object is used to execute commands recorded in a CommandBuffer object. The CommandQueue object is created using a CommandQueueDescriptor.
+
+**Creation:**
+```cpp
+CommandQueue* m_CommandQueue;
+```
+```cpp
+// Setup CommandBuffer descriptor
+CommandBufferDescriptor commandQueueDesc = {};
+commandQueueDesc.Name		= "Main-CommandQueue";
+commandQueueDesc.QueueIndex = 0;
+commandQueueDesc.Type		= CommandQueueType::NEON_COMMAND_QUEUE_TYPE_DIRECT;
+
+// Create CommandQueue
+m_CommandQueue		 	= CommandQueue::Create(&commandQueueDesc);
+```
+
+Before a CommandBuffer object can be used to issue commands it is wise to reset the memory used by the CommandPool, this can either be done resetting the entire CommandPool or by resseting the CommandBuffer object itself.
+This user should only reset the memory of a CommandPool if no CommandBuffers connected to the CommandPool are in a recording state or currently executing, the user can use a fence to check for the latter.
+
+**Reset:**
+```cpp
+// Reset CommandBuffer
+m_CommandBuffer->Reset();
+```
+
+When the CommandBuffer object has been created by the user, the user has ownership over the object and needs to take care of its dealocation. The CommandBuffer object is internally created using a ___new___ call and should be dealocated with a ___delete___.
+
+**Dealocation:**
+```cpp
+// Dealocate CommandBuffer
+delete m_CommandBuffer;
+```

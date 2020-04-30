@@ -1,5 +1,5 @@
 #include "./graphics/api/vulkan/pipeline/vk_graphics_pipeline.h"
-#include "./graphics/api/vulkan/pipeline/topology/vk_topology.h"
+//#include "./graphics/api/vulkan/pipeline/topology/vk_topology.h"
 
 #include "./graphics/api/vulkan/pipeline/rasterizer/vk_cull_faces.h"
 #include "./graphics/api/vulkan/pipeline/rasterizer/vk_cull_modes.h"
@@ -79,12 +79,12 @@ namespace Neon
 
 			VkPipelineInputAssemblyStateCreateInfo inputAssembly = {};
 			inputAssembly.sType								= VK_STRUCTURE_TYPE_PIPELINE_INPUT_ASSEMBLY_STATE_CREATE_INFO;
-			inputAssembly.topology							= GetVKTopology(m_Topology);
+			inputAssembly.topology							= VK_PRIMITIVE_TOPOLOGY_LINE_LIST;
 			inputAssembly.primitiveRestartEnable			= VK_FALSE; // TODO:: Look at abstraction options
 
 			// TODO:: Include min/max depth
-			VkViewport viewport = { m_Viewport.BottomX, m_Viewport.BottomY, m_Viewport.Width, m_Viewport.Height, 0, 1 };
-			VkRect2D   scissor  = { m_Scissor.BottomX, m_Scissor.BottomY, m_Scissor.Width, m_Scissor.Height };
+			VkViewport viewport = { 0, 0, 1280, 720, 0, 1 };
+			VkRect2D   scissor  = { 0, 0, 1280, 720 };
 
 			VkPipelineViewportStateCreateInfo viewportState = {};
 			viewportState.sType								= VK_STRUCTURE_TYPE_PIPELINE_VIEWPORT_STATE_CREATE_INFO;

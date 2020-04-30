@@ -3,7 +3,6 @@
 
 #include "./graphics/objects/command_generic/viewport.h"
 #include "./graphics/pipeline/inputLayout/input_layout.h"
-#include "./graphics/pipeline/topology/topology.h"
 
 namespace Neon
 {
@@ -19,12 +18,9 @@ namespace Neon
 			GraphicsPipeline(const GraphicsPipelineDescriptor* _graphicsPipelineDescriptor);
 
 			InputLayout m_InputLayout;
-			Topology    m_Topology;
 
 			unsigned int m_ImageWidth;
 			unsigned int m_ImageHeight;
-			Viewport m_Viewport;
-			Scissor  m_Scissor;
 
 			RasterizerState m_RasterizerState;
 		};

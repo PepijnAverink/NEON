@@ -20,6 +20,9 @@
 
 #include "./graphics/api/directx12/pipeline/dx12_graphics_pipeline.h"
 
+#include "./graphics/objects/command_generic/viewport.h"
+#include "./graphics/objects/command_generic/scissor.h"
+
 namespace Neon
 {
 	namespace Graphics
@@ -55,13 +58,16 @@ namespace Neon
 		//	ID3D12PipelineState* pipelineStateObject; 
 		//	ID3D12RootSignature* rootSignature; 
 
-			D3D12_VIEWPORT viewport;
-			D3D12_RECT scissorRect;
+		//	D3D12_VIEWPORT viewport;
+		//	D3D12_RECT scissorRect;
 
 			ID3D12Resource* depthStencilBuffer;
 			ID3D12DescriptorHeap* dsDescriptorHeap;
 
 			// Own abstraction
+			Viewport*		  m_Viewport;
+			Scissor*		  m_Scissor;
+
 			CommandQueue*     m_CommandQueue;
 						      
 			CommandPool*      m_CommandPool;

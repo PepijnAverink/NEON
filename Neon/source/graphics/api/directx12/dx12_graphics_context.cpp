@@ -7,6 +7,8 @@
 #include "./graphics/api/directx12/resources/shader/dx12_shader.h"
 #include "./graphics/api/directx12/pipeline/inputLayout/dx12_input_layout.h"
 
+#include "./graphics/objects/command_generic/topology.h"
+
 namespace Neon
 {
 	namespace Graphics
@@ -21,7 +23,6 @@ namespace Neon
 			: GraphicsContext(_window)
 		{ 
 			HRESULT hr;
-
 
 			IDXGIFactory4* dxgiFactory;
 			DX12_ThrowIfFailed(CreateDXGIFactory1(IID_PPV_ARGS(&dxgiFactory)));
@@ -155,16 +156,6 @@ namespace Neon
 				rtvHandle.Offset(1, rtvDescriptorSize);
 			}
 
-		//	// create root signature
-		//	CD3DX12_ROOT_SIGNATURE_DESC rootSignatureDesc;
-		//	rootSignatureDesc.Init(0, nullptr, 0, nullptr, D3D12_ROOT_SIGNATURE_FLAG_ALLOW_INPUT_ASSEMBLER_INPUT_LAYOUT);
-		//
-		//	ID3DBlob* signature;
-		//	DX12_ThrowIfFailed(D3D12SerializeRootSignature(&rootSignatureDesc, D3D_ROOT_SIGNATURE_VERSION_1, &signature, nullptr));
-		//	DX12_ThrowIfFailed(m_Device->CreateRootSignature(0, signature->GetBufferPointer(), signature->GetBufferSize(), IID_PPV_ARGS(&rootSignature)));
-		//
-
-
 			// Setup ShaderDescriptor
 			ShaderDescriptor shaderDesc				= {};
 			shaderDesc.VertexShaderPath				= "./assets/shaders/vertex_shader.hlsl";
@@ -182,7 +173,6 @@ namespace Neon
 			pipelineDesc.Name		  = "Main-GraphicsPipeline";
 			pipelineDesc.ImageWidth   = _window->GetWindowWidth();
 			pipelineDesc.ImageHeight  = _window->GetWindowHeight();
-			pipelineDesc.DrawTopology = Topology::NEON_TOPOLOGY_TRIANGLE_LIST;
 			pipelineDesc.InputLayout  = reflection.Layout;
 			pipelineDesc.Shader		  = shader;
 
@@ -266,19 +256,9 @@ namespace Neon
 
 			m_IndexBuffer = IndexBuffer::Create(m_CommandBuffers[0], &indexBufferDesc);
 
-			// Fill out the Viewport
-			viewport.TopLeftX = 0;
-			viewport.TopLeftY = 0;
-			viewport.Width = _window->GetWindowWidth();
-			viewport.Height = _window->GetWindowHeight();
-			viewport.MinDepth = 0.0f;
-			viewport.MaxDepth = 1.0f;
-
-			// Fill out a scissor rect
-			scissorRect.left = 0;
-			scissorRect.top = 0;
-			scissorRect.right = _window->GetWindowWidth();
-			scissorRect.bottom = _window->GetWindowHeight();
+			// Set viewport and scissor
+			m_Viewport = Viewport::Create(0, 0, _window->GetWindowWidth(), _window->GetWindowHeight());
+			m_Scissor = Scissor::Create(0, 0, _window->GetWindowWidth(), _window->GetWindowHeight());
 
 			// Execute commandBuffer 
 			m_CommandBuffers[0]->EndRecording();
@@ -338,9 +318,10 @@ namespace Neon
 
 				// draw triangle
 				NEON_CAST(DX12CommandBuffer*, m_CommandBuffers[frameIndex])->m_CommandListObj->SetGraphicsRootSignature(NEON_CAST(DX12GraphicsPipeline*, m_GraphicsPipeline)->m_RootSignature);
-				NEON_CAST(DX12CommandBuffer*, m_CommandBuffers[frameIndex])->m_CommandListObj->RSSetViewports(1, &viewport); 
-				NEON_CAST(DX12CommandBuffer*, m_CommandBuffers[frameIndex])->m_CommandListObj->RSSetScissorRects(1, &scissorRect); 
-				NEON_CAST(DX12CommandBuffer*, m_CommandBuffers[frameIndex])->m_CommandListObj->IASetPrimitiveTopology(D3D_PRIMITIVE_TOPOLOGY_TRIANGLELIST); 
+
+				m_CommandBuffers[frameIndex]->SetViewport(m_Viewport);
+				m_CommandBuffers[frameIndex]->SetScissor(m_Scissor);
+				m_CommandBuffers[frameIndex]->SetTopology(Topology::NEON_TOPOLOGY_TRIANGLE_LIST);
 
 				m_CommandBuffers[frameIndex]->SetVertexBuffer(m_VertexBuffer);
 				m_CommandBuffers[frameIndex]->SetIndexBuffer(m_IndexBuffer);
