@@ -17,7 +17,8 @@ namespace Neon
 			virtual void ExecuteCommandBuffers(const unsigned int _commandBufferCount, CommandBuffer* _commandBuffers[]) const override;
 
 		private:
-			friend class DX12GraphicsContext;
+			friend class DX12Swapchain;
+			friend class DX12GraphicsContext; // Remove me
 			ID3D12CommandQueue* m_CommandQueueObj;
 		};
 	}

@@ -79,7 +79,7 @@ namespace Neon
 			m_Window->Intialize();
 
 			// Create graphics context
-			Graphics::GraphicsDriver::Create(Graphics::GraphicsAPI::DIRECTX12);
+			Graphics::GraphicsDriver::Create(Graphics::GraphicsAPI::VULKAN);
 			m_GraphicsContext = Graphics::GraphicsContext::Create(m_Window);
 			m_GraphicsContext->Initialize();
 

@@ -61,20 +61,6 @@ namespace Neon
 
 			// create the pso
 			DX12_ThrowIfFailed(DX12GraphicsContext::GetInstance()->GetGraphicsDevice()->CreateGraphicsPipelineState(&psoDesc, IID_PPV_ARGS(&m_PipelineStateObject)));
-
-			// Fill out the Viewport
-			m_Viewport.TopLeftX = 0;
-			m_Viewport.TopLeftY = 0;
-			m_Viewport.Width    = _graphicsPipelineDescriptor->ImageWidth;
-			m_Viewport.Height   = _graphicsPipelineDescriptor->ImageHeight;
-			m_Viewport.MinDepth = 0.0f;
-			m_Viewport.MaxDepth = 1.0f;
-
-			// Fill out a scissor rect
-			m_ScissorRect.left   = 0;
-			m_ScissorRect.top    = 0;
-			m_ScissorRect.right  = _graphicsPipelineDescriptor->ImageWidth;
-			m_ScissorRect.bottom = _graphicsPipelineDescriptor->ImageHeight;
 		}
 
 		DX12GraphicsPipeline::~DX12GraphicsPipeline()

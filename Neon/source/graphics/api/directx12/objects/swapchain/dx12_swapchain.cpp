@@ -1,4 +1,9 @@
 #include "./graphics/api/directx12/objects/swapchain/dx12_swapchain.h"
+#include "./graphics/api/directx12/objects/command/dx12_command_queue.h"
+#include "./graphics/api/directx12/dx12_error.h"
+
+
+#include "./utilities/casting/casting_helper.h"
 #include "./core/window/window.h"
 
 namespace Neon
@@ -27,11 +32,15 @@ namespace Neon
 			swapChainDesc.SampleDesc	= sampleDesc;
 			swapChainDesc.Windowed		= true;
 
-		//	IDXGISwapChain* tempSwapChain;
-		//	dxgiFactory->CreateSwapChain(NEON_CAST(DX12CommandQueue*, m_CommandQueue)->m_CommandQueueObj, &swapChainDesc, &tempSwapChain);
-		//
-		//	m_SwapChain = static_cast<IDXGISwapChain3*>(tempSwapChain);
-		//	frameIndex = m_SwapChain->GetCurrentBackBufferIndex();
+			IDXGIFactory4* dxgiFactory;
+			DX12_ThrowIfFailed(CreateDXGIFactory1(IID_PPV_ARGS(&dxgiFactory)));
+
+			IDXGISwapChain* tempSwapChain;
+			dxgiFactory->CreateSwapChain(NEON_CAST(DX12CommandQueue*, _commandQueue)->m_CommandQueueObj, &swapChainDesc, &tempSwapChain);
+		
+			// Get
+			m_SwapChainObj      = static_cast<IDXGISwapChain3*>(tempSwapChain);
+			m_CurrentFrameIndex = m_SwapChainObj->GetCurrentBackBufferIndex();
 		}
 
 		DX12Swapchain::~DX12Swapchain()
@@ -43,7 +52,7 @@ namespace Neon
 
 		}
 
-		int DX12Swapchain::AquireNewImage(Fence * _signalFence)
+		int DX12Swapchain::AquireNewImage(Fence* _signalFence)
 		{
 			return 0;
 		}

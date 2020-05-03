@@ -23,6 +23,8 @@
 #include "./graphics/objects/command_generic/viewport.h"
 #include "./graphics/objects/command_generic/scissor.h"
 
+#include "./graphics/objects/swapchain/swapchain.h"
+
 namespace Neon
 {
 	namespace Graphics
@@ -48,10 +50,10 @@ namespace Neon
 
 			ID3D12Device* m_Device;
 			IDXGISwapChain3* m_SwapChain; 
-
+		
 			ID3D12DescriptorHeap* rtvDescriptorHeap; 
 			ID3D12Resource* renderTargets[frameBufferCount];
-
+		
 			int frameIndex;
 			int rtvDescriptorSize;
 
@@ -80,6 +82,8 @@ namespace Neon
 
 			VertexBuffer*     m_VertexBuffer;
 			IndexBuffer*      m_IndexBuffer;
+
+			Swapchain* m_Swapchain;
 		};
 	}
 }

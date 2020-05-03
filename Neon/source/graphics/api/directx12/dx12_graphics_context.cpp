@@ -21,7 +21,7 @@ namespace Neon
 
 		DX12GraphicsContext::DX12GraphicsContext(Core::Window* _window)
 			: GraphicsContext(_window)
-		{ 
+		{
 			HRESULT hr;
 
 			IDXGIFactory4* dxgiFactory;
@@ -30,7 +30,7 @@ namespace Neon
 
 			IDXGIAdapter1* adapter;
 
-			int adapterIndex  = 0;
+			int adapterIndex = 0;
 			bool adapterFound = false;
 
 			while (dxgiFactory->EnumAdapters1(adapterIndex, &adapter) != DXGI_ERROR_NOT_FOUND)
@@ -57,7 +57,7 @@ namespace Neon
 
 			if (!adapterFound)
 			{
-			//	LOG
+				//	LOG
 			}
 
 			// Create the device
@@ -66,43 +66,54 @@ namespace Neon
 
 			// Setup queue descriptor
 			CommandQueueDescriptor queueDesc = {};
-			queueDesc.Name		 = "Main-CommandQueue";
+			queueDesc.Name = "Main-CommandQueue";
 			queueDesc.QueueIndex = 0;
-			queueDesc.Type		 = CommandQueueType::NEON_COMMAND_QUEUE_TYPE_DIRECT;
+			queueDesc.Type = CommandQueueType::NEON_COMMAND_QUEUE_TYPE_DIRECT;
 
 			// Create the queue itself
-			m_CommandQueue		 = CommandQueue::Create(&queueDesc);
-		
+			m_CommandQueue = CommandQueue::Create(&queueDesc);
+
 			// Setup pool descriptor
 			CommandPoolDescriptor poolDesc = {};
-			poolDesc.Name		 = "Main-CommandPool";
-			poolDesc.Type		 = CommandBufferType::NEON_COMMAND_BUFFER_TYPE_DIRECT;
-			
+			poolDesc.Name = "Main-CommandPool";
+			poolDesc.Type = CommandBufferType::NEON_COMMAND_BUFFER_TYPE_DIRECT;
+
 			// Create command pool
-			m_CommandPool		 = CommandPool::Create(&poolDesc);
-			
+			m_CommandPool = CommandPool::Create(&poolDesc);
+
 			// Setup command buffer
 			for (int i = 0; i < frameBufferCount; ++i)
 			{
 				// Setup commad buffer descriptor
 				CommandBufferDescriptor commandBufferDesc = {};
-				commandBufferDesc.Name		  = "Main-CommandBuffer: " + i;
-				commandBufferDesc.Type		  = CommandBufferType::NEON_COMMAND_BUFFER_TYPE_DIRECT;
+				commandBufferDesc.Name = "Main-CommandBuffer: " + i;
+				commandBufferDesc.Type = CommandBufferType::NEON_COMMAND_BUFFER_TYPE_DIRECT;
 				commandBufferDesc.CommandPool = m_CommandPool;
-		
-				m_CommandBuffers[i]			  = CommandBuffer::Create(&commandBufferDesc);
+
+				m_CommandBuffers[i] = CommandBuffer::Create(&commandBufferDesc);
 			}
-		
+
 			// Use this commandBuffer for setup
 			m_CommandBuffers[0]->StartRecording();
 
 			// Setup fences
 			FenceDescriptor fenceDesc = {};
 			fenceDesc.Name = "AquireFence";
-			m_AcuireFence  = Fence::Create(&fenceDesc);
+			m_AcuireFence = Fence::Create(&fenceDesc);
 
 			fenceDesc.Name = "SubmitFence";
-			m_SubmitFence  = Fence::Create(&fenceDesc);
+			m_SubmitFence = Fence::Create(&fenceDesc);
+
+
+			// Setup the swapchain desc
+			SwapchainDescriptor swapchainDesc = {};
+			swapchainDesc.Name			  = "Main-Swapchain";
+			swapchainDesc.Width			  = _window->GetWindowWidth();
+			swapchainDesc.Height		  = _window->GetWindowHeight();
+			swapchainDesc.BackBufferCount = 3;
+			swapchainDesc.Window		  = _window;
+
+			m_Swapchain = Swapchain::Create(m_CommandQueue, &swapchainDesc);
 
 			// Desc for backbuffer
 			DXGI_MODE_DESC backBufferDesc = {}; 

@@ -210,6 +210,12 @@
     <ClInclude Include="source\graphics\objects\command\command_queue_type.h" />
     <ClInclude Include="source\graphics\objects\command_generic\scissor.h" />
     <ClInclude Include="source\graphics\objects\command_generic\viewport.h" />
+    <ClInclude Include="source\graphics\objects\renderpass\framebuffer\framebuffer.h" />
+    <ClInclude Include="source\graphics\objects\renderpass\framebuffer\framebuffer_attachment.h" />
+    <ClInclude Include="source\graphics\objects\renderpass\framebuffer\framebuffer_attachment_type.h" />
+    <ClInclude Include="source\graphics\objects\renderpass\framebuffer\framebuffer_descriptor.h" />
+    <ClInclude Include="source\graphics\objects\renderpass\renderpass.h" />
+    <ClInclude Include="source\graphics\objects\renderpass\renderpass_descriptor.h" />
     <ClInclude Include="source\graphics\objects\swapchain\back_buffer_format.h" />
     <ClInclude Include="source\graphics\objects\swapchain\swapchain.h" />
     <ClInclude Include="source\graphics\objects\swapchain\swapchain_descriptor.h" />
@@ -294,6 +300,9 @@
     <ClCompile Include="source\graphics\objects\command_generic\scissor.cpp" />
     <ClCompile Include="source\graphics\objects\command_generic\topology_state.cpp" />
     <ClCompile Include="source\graphics\objects\command_generic\viewport.cpp" />
+    <ClCompile Include="source\graphics\objects\renderpass\framebuffer\framebuffer.cpp" />
+    <ClCompile Include="source\graphics\objects\renderpass\framebuffer\framebuffer_attachment.cpp" />
+    <ClCompile Include="source\graphics\objects\renderpass\renderpass.cpp" />
     <ClCompile Include="source\graphics\objects\swapchain\swapchain.cpp" />
     <ClCompile Include="source\graphics\objects\sync\fence.cpp" />
     <ClCompile Include="source\graphics\objects\sync\resource_barrier.cpp" />
