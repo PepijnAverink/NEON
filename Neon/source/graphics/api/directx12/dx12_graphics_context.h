@@ -20,10 +20,13 @@
 
 #include "./graphics/api/directx12/pipeline/dx12_graphics_pipeline.h"
 
+#include "./graphics/api/directx12/objects/renderpass/dx12_renderpass.h"
+
 #include "./graphics/objects/command_generic/viewport.h"
 #include "./graphics/objects/command_generic/scissor.h"
 
 #include "./graphics/objects/swapchain/swapchain.h"
+
 
 namespace Neon
 {
@@ -83,7 +86,9 @@ namespace Neon
 			VertexBuffer*     m_VertexBuffer;
 			IndexBuffer*      m_IndexBuffer;
 
-			Swapchain* m_Swapchain;
+			Swapchain*		  m_Swapchain;
+
+			Renderpass*		  m_Renderpass;
 		};
 	}
 }

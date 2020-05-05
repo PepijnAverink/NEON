@@ -925,7 +925,7 @@ namespace Neon
 				// Record command buffer
 				commandBuffers[i]->StartRecording();
 
-			//	vkCmdClearColorImage(NEON_CAST(VKCommandBuffer*, commandBuffers[i])->m_CommandBufferObj, swapChainImages[i], VK_IMAGE_LAYOUT_TRANSFER_DST_OPTIMAL, &clearColor, 1, &subResourceRange);
+				vkCmdClearColorImage(NEON_CAST(VKCommandBuffer*, commandBuffers[i])->m_CommandBufferObj, swapChainImages[i], VK_IMAGE_LAYOUT_TRANSFER_DST_OPTIMAL, &clearColor, 1, &subResourceRange);
 
 
 				vkCmdBeginRenderPass(NEON_CAST(VKCommandBuffer*, commandBuffers[i])->m_CommandBufferObj, &renderPassInfo, VK_SUBPASS_CONTENTS_INLINE);
@@ -965,6 +965,7 @@ namespace Neon
 			for (int i = 0; i < layerCount; ++i) {
 				for (int j = 0; j < _VKLayers.size(); ++j)
 				{
+					printf("[LAYER] -%s\n", layersAvailable[i].layerName);
 					if (strcmp(layersAvailable[i].layerName, _VKLayers[j]) == 0) {
 						layersFound++;
 					}

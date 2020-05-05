@@ -166,6 +166,8 @@
     <ClInclude Include="source\graphics\api\directx12\objects\command_generic\dx12_topology.h" />
     <ClInclude Include="source\graphics\api\directx12\objects\command_generic\dx12_topology_state.h" />
     <ClInclude Include="source\graphics\api\directx12\objects\command_generic\dx12_viewport.h" />
+    <ClInclude Include="source\graphics\api\directx12\objects\framebuffer\dx12_framebuffer_attachment.h" />
+    <ClInclude Include="source\graphics\api\directx12\objects\renderpass\dx12_renderpass.h" />
     <ClInclude Include="source\graphics\api\directx12\objects\swapchain\dx12_swapchain.h" />
     <ClInclude Include="source\graphics\api\directx12\objects\sync\dx12_fence.h" />
     <ClInclude Include="source\graphics\api\directx12\pipeline\dx12_graphics_pipeline.h" />
@@ -210,10 +212,13 @@
     <ClInclude Include="source\graphics\objects\command\command_queue_type.h" />
     <ClInclude Include="source\graphics\objects\command_generic\scissor.h" />
     <ClInclude Include="source\graphics\objects\command_generic\viewport.h" />
-    <ClInclude Include="source\graphics\objects\renderpass\framebuffer\framebuffer.h" />
-    <ClInclude Include="source\graphics\objects\renderpass\framebuffer\framebuffer_attachment.h" />
-    <ClInclude Include="source\graphics\objects\renderpass\framebuffer\framebuffer_attachment_type.h" />
-    <ClInclude Include="source\graphics\objects\renderpass\framebuffer\framebuffer_descriptor.h" />
+    <ClInclude Include="source\graphics\objects\framebuffer\framebuffer.h" />
+    <ClInclude Include="source\graphics\objects\framebuffer\framebuffer_attachment.h" />
+    <ClInclude Include="source\graphics\objects\framebuffer\framebuffer_attachment_descriptor.h" />
+    <ClInclude Include="source\graphics\objects\framebuffer\framebuffer_attachment_type.h" />
+    <ClInclude Include="source\graphics\objects\framebuffer\framebuffer_descriptor.h" />
+    <ClInclude Include="source\graphics\objects\framebuffer\framebuffer_attachment_format.h" />
+    <ClInclude Include="source\graphics\objects\framebuffer\framebuffer_layout.h" />
     <ClInclude Include="source\graphics\objects\renderpass\renderpass.h" />
     <ClInclude Include="source\graphics\objects\renderpass\renderpass_descriptor.h" />
     <ClInclude Include="source\graphics\objects\swapchain\back_buffer_format.h" />
@@ -274,6 +279,8 @@
     <ClCompile Include="source\graphics\api\directx12\objects\command_generic\dx12_scissor.cpp" />
     <ClCompile Include="source\graphics\api\directx12\objects\command_generic\dx12_topology_state.cpp" />
     <ClCompile Include="source\graphics\api\directx12\objects\command_generic\dx12_viewport.cpp" />
+    <ClCompile Include="source\graphics\api\directx12\objects\framebuffer\dx12_framebuffer_attachment.cpp" />
+    <ClCompile Include="source\graphics\api\directx12\objects\renderpass\dx12_renderpass.cpp" />
     <ClCompile Include="source\graphics\api\directx12\objects\swapchain\dx12_swapchain.cpp" />
     <ClCompile Include="source\graphics\api\directx12\objects\sync\dx12_fence.cpp" />
     <ClCompile Include="source\graphics\api\directx12\pipeline\dx12_graphics_pipeline.cpp" />
@@ -300,8 +307,9 @@
     <ClCompile Include="source\graphics\objects\command_generic\scissor.cpp" />
     <ClCompile Include="source\graphics\objects\command_generic\topology_state.cpp" />
     <ClCompile Include="source\graphics\objects\command_generic\viewport.cpp" />
-    <ClCompile Include="source\graphics\objects\renderpass\framebuffer\framebuffer.cpp" />
-    <ClCompile Include="source\graphics\objects\renderpass\framebuffer\framebuffer_attachment.cpp" />
+    <ClCompile Include="source\graphics\objects\framebuffer\framebuffer.cpp" />
+    <ClCompile Include="source\graphics\objects\framebuffer\framebuffer_attachment.cpp" />
+    <ClCompile Include="source\graphics\objects\framebuffer\framebuffer_layout.cpp" />
     <ClCompile Include="source\graphics\objects\renderpass\renderpass.cpp" />
     <ClCompile Include="source\graphics\objects\swapchain\swapchain.cpp" />
     <ClCompile Include="source\graphics\objects\sync\fence.cpp" />

@@ -9,6 +9,8 @@
 
 #include "./graphics/objects/command_generic/topology.h"
 
+#include "./graphics/objects/framebuffer/framebuffer_layout.h"
+
 namespace Neon
 {
 	namespace Graphics
@@ -190,6 +192,18 @@ namespace Neon
 			// Create the Graphics Pipeline
 			m_GraphicsPipeline = GraphicsPipeline::Create(&pipelineDesc);
 
+
+			// Framebuffer
+			FramebufferLayout framebufferLayout = { FramebufferAttachmentType::NEON_FRAMEBUFFER_ATTACHMENT_TYPE_COLOR_OUTPUT, };
+
+			// RenderpassDescriptor
+			RenderpassDescriptor renderpassDesc = {};
+			renderpassDesc.Name   = "Main-Renderpass";
+			renderpassDesc.Layout = FramebufferLayout({ NEON_FRAMEBUFFER_ATTACHMENT_TYPE_COLOR_OUTPUT, });
+
+			m_Renderpass = Renderpass::Create(&renderpassDesc);
+
+
 			// create a depth stencil descriptor heap 
 			D3D12_DESCRIPTOR_HEAP_DESC dsvHeapDesc = {};
 			dsvHeapDesc.NumDescriptors = 1;
@@ -269,7 +283,7 @@ namespace Neon
 
 			// Set viewport and scissor
 			m_Viewport = Viewport::Create(0, 0, _window->GetWindowWidth(), _window->GetWindowHeight());
-			m_Scissor = Scissor::Create(0, 0, _window->GetWindowWidth(), _window->GetWindowHeight());
+			m_Scissor  = Scissor::Create(0, 0, _window->GetWindowWidth(), _window->GetWindowHeight());
 
 			// Execute commandBuffer 
 			m_CommandBuffers[0]->EndRecording();
@@ -308,6 +322,7 @@ namespace Neon
 				m_CommandPool->Reset();
 				m_CommandBuffers[frameIndex]->StartRecording();
 
+				m_Renderpass->BeginPass(nullptr);
 
 				// Set pipeline state
 				m_CommandBuffers[frameIndex]->SetGraphicsPipeline(m_GraphicsPipeline);
@@ -342,6 +357,8 @@ namespace Neon
 
 				// Transition state back
 				NEON_CAST(DX12CommandBuffer*, m_CommandBuffers[frameIndex])->m_CommandListObj->ResourceBarrier(1, &CD3DX12_RESOURCE_BARRIER::Transition(renderTargets[frameIndex], D3D12_RESOURCE_STATE_RENDER_TARGET, D3D12_RESOURCE_STATE_PRESENT));
+
+				m_Renderpass->EndPass();
 
 				m_CommandBuffers[frameIndex]->EndRecording();
 			}

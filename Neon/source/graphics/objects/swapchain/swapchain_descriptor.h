@@ -1,6 +1,8 @@
 #pragma once
 #include "./graphics/objects/swapchain/back_buffer_format.h"
 
+#include <string>
+
 namespace Neon
 {
 	namespace Core { class Window; }
@@ -10,6 +12,8 @@ namespace Neon
 		{
 		public:
 			SwapchainDescriptor() = default;
+
+			std::string Name;
 
 			int Width;
 			int Height;

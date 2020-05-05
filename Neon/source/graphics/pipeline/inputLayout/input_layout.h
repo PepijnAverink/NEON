@@ -22,7 +22,7 @@ namespace Neon
 			std::vector<InputLayoutElement>::const_iterator end()   const { return m_Elements.end();   }
 
 			// Getters
-			inline uint32_t							GetElementCount()	const { return m_Elements.size(); }
+			inline uint32_t							GetElementCount()	const { return (uint32_t)m_Elements.size(); }
 			inline uint32_t									GetStride() const { return m_Stride; }
 			inline const std::vector<InputLayoutElement>& GetElements() const { return m_Elements; }
 
