@@ -365,8 +365,6 @@ namespace Neon
 				m_CommandBuffers[frameIndex]->BeginRenderpass(m_Renderpass, m_Framebuffer[frameIndex]);
 
 				// draw triangle
-				NEON_CAST(DX12CommandBuffer*, m_CommandBuffers[frameIndex])->m_CommandListObj->SetGraphicsRootSignature(NEON_CAST(DX12GraphicsPipeline*, m_GraphicsPipeline)->m_RootSignature);
-
 				m_CommandBuffers[frameIndex]->SetViewport(m_Viewport);
 				m_CommandBuffers[frameIndex]->SetScissor(m_Scissor);
 				m_CommandBuffers[frameIndex]->SetTopology(Topology::NEON_TOPOLOGY_TRIANGLE_LIST);
@@ -374,8 +372,8 @@ namespace Neon
 				m_CommandBuffers[frameIndex]->SetVertexBuffer(m_VertexBuffer);
 				m_CommandBuffers[frameIndex]->SetIndexBuffer(m_IndexBuffer);
 
-				NEON_CAST(DX12CommandBuffer*, m_CommandBuffers[frameIndex])->m_CommandListObj->DrawIndexedInstanced(6, 1, 0, 0, 0);
-				NEON_CAST(DX12CommandBuffer*, m_CommandBuffers[frameIndex])->m_CommandListObj->DrawIndexedInstanced(6, 1, 0, 4, 0); // draw second quad
+				m_CommandBuffers[frameIndex]->DrawIndexed(6, 0, 0);
+				m_CommandBuffers[frameIndex]->DrawIndexed(6, 0, 4);
 
 				// Transition state back
 				m_CommandBuffers[frameIndex]->TransitionFramebufferAttachment(m_Framebuffer[frameIndex]->GetAttachment(0), NEON_FRAMEBUFFER_TRANSITION_STATE_RENDER, NEON_FRAMEBUFFER_TRANSITION_STATE_PRESENT);

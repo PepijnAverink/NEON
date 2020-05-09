@@ -37,6 +37,9 @@ namespace Neon
 
 			virtual void TransitionFramebufferAttachment(FramebufferAttachment* _framebufferAttachment, const FramebufferAttachmentTransitionState _fromState, const FramebufferAttachmentTransitionState _toState) const override;
 
+			virtual void DrawIndexed(const uint32_t _indexCount, const uint32_t _indexOffset, uint32_t _vertexOffset) const override;
+		//	virtual void Draw();
+
 		private:
 			friend class DX12CommandQueue;
 			friend class DX12VertexBuffer;

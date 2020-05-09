@@ -61,6 +61,8 @@ namespace Neon
 
 			virtual void TransitionFramebufferAttachment(FramebufferAttachment* _framebufferAttachment, const FramebufferAttachmentTransitionState _fromState, const FramebufferAttachmentTransitionState _toState) const = 0;
 
+			virtual void DrawIndexed(const uint32_t _indexCount, const uint32_t _indexOffset, uint32_t _vertexOffset) const = 0;
+
 			// Getters
 			inline const std::string        GetCommandBufferName()  const;
 			inline const CommandBufferType  GetCommandBufferType()  const { return m_Type;  }

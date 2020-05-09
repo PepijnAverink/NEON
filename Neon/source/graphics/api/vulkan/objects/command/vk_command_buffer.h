@@ -37,6 +37,7 @@ namespace Neon
 
 			virtual void TransitionFramebufferAttachment(FramebufferAttachment* _framebufferAttachment, const FramebufferAttachmentTransitionState _fromState, const FramebufferAttachmentTransitionState _toState) const override;
 
+			virtual void DrawIndexed(const uint32_t _indexCount, const uint32_t _indexOffset, uint32_t _vertexOffset) const override;
 
 		private:
 			friend class VKGraphicsContext; // TODO:: Remove me

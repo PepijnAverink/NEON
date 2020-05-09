@@ -56,6 +56,9 @@ namespace Neon
 		void DX12CommandBuffer::SetGraphicsPipeline(GraphicsPipeline* _graphicsPipeline) const
 		{
 			m_CommandListObj->SetPipelineState(NEON_CAST(DX12GraphicsPipeline*, _graphicsPipeline)->m_PipelineStateObject);
+
+			// Dont set the root signature here
+			m_CommandListObj->SetGraphicsRootSignature(NEON_CAST(DX12GraphicsPipeline*, _graphicsPipeline)->m_RootSignature);
 		}
 
 		void DX12CommandBuffer::SetVertexBuffer(VertexBuffer* _vertexBuffer) const
@@ -109,6 +112,12 @@ namespace Neon
 		{
 			m_CommandListObj->ResourceBarrier(1, &CD3DX12_RESOURCE_BARRIER::Transition(NEON_CAST(DX12FramebufferAttachment*, _framebufferAttachment)->m_Image, 
 				GetDX12FramebufferTransitionState(_fromState), GetDX12FramebufferTransitionState(_toState)));
+		}
+
+		void DX12CommandBuffer::DrawIndexed(const uint32_t _indexCount, const uint32_t _indexOffset, uint32_t _vertexOffset) const
+		{
+			m_CommandListObj->DrawIndexedInstanced(_indexCount, 1, _indexOffset, _vertexOffset, 0);
+
 		}
 	}
 }
