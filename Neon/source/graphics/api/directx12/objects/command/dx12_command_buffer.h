@@ -30,6 +30,9 @@ namespace Neon
 			virtual void SetViewport(Viewport* _viewport) const override;
 			virtual void SetScissor(Scissor* _scissor) const override;
 
+			virtual void BeginRenderpass(Renderpass* _renderpass, Framebuffer* _framebuffer) const override;
+			virtual void EndRenderpass(Renderpass* _renderpass) const override;
+
 		private:
 			friend class DX12CommandQueue;
 			friend class DX12VertexBuffer;

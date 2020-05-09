@@ -10,6 +10,8 @@ namespace Neon
 		public:
 			static FramebufferAttachment* Create(const FramebufferAttachmentDescriptor* _framebufferAttachmentDescriptor);
 
+			inline FramebufferAttachmentType GetType() const { return m_Type; }
+
 		protected:
 			FramebufferAttachment(const FramebufferAttachmentDescriptor* _framebufferAttachmentDescriptor);
 

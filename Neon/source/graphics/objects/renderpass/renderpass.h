@@ -12,11 +12,10 @@ namespace Neon
 			static Renderpass* Create(const RenderpassDescriptor* _renderpassDescriptor);
 			virtual ~Renderpass() {}
 
-			virtual void BeginPass(Framebuffer* _framebuffer) const = 0;
-			virtual void EndPass() const = 0;
-
 		protected:
 			Renderpass(const RenderpassDescriptor* _renderpassDescriptor);
+
+			friend class CommandBuffer;
 		};
 	}
 }

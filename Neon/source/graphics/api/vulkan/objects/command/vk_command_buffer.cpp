@@ -87,5 +87,11 @@ namespace Neon
 		{
 
 		}
+		void VKCommandBuffer::BeginRenderpass(Renderpass * _renderpass, Framebuffer * _framebuffer) const
+		{
+		}
+		void VKCommandBuffer::EndRenderpass(Renderpass * _renderpass) const
+		{
+		}
 	}
 }

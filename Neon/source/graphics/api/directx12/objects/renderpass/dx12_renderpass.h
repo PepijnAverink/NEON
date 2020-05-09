@@ -11,9 +11,6 @@ namespace Neon
 			DX12Renderpass(const RenderpassDescriptor* _renderpassDescriptor);
 			virtual ~DX12Renderpass();
 
-			virtual void BeginPass(Framebuffer* _framebuffer) const override;
-			virtual void EndPass() const override;
-
 		private:
 
 		};

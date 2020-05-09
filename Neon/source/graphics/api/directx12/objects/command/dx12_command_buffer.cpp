@@ -1,5 +1,6 @@
 #include "./graphics/api/directx12/objects/command/dx12_command_buffer.h"
 #include "./graphics/api/directx12/objects/command/dx12_command_pool.h"
+#include "./graphics/api/directx12/objects/framebuffer/dx12_framebuffer.h"
 #include "./graphics/api/directx12/dx12_graphics_context.h"
 #include "./graphics/api/directx12/dx12_error.h"
 
@@ -82,6 +83,16 @@ namespace Neon
 		void DX12CommandBuffer::SetScissor(Scissor* _scissor) const
 		{
 			m_CommandListObj->RSSetScissorRects(1, &NEON_CAST(DX12Scissor*, _scissor)->m_InternalScissor);
+		}
+
+		void DX12CommandBuffer::BeginRenderpass(Renderpass* _renderpass, Framebuffer* _framebuffer) const
+		{
+			m_CommandListObj->OMSetRenderTargets(_framebuffer->GetAttachmentCount(), &NEON_CAST(DX12Framebuffer*, _framebuffer)->GetAttachmentHandle(), FALSE, nullptr);
+		}
+
+		void DX12CommandBuffer::EndRenderpass(Renderpass* _renderpass) const
+		{
+
 		}
 	}
 }

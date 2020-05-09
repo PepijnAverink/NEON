@@ -10,7 +10,7 @@
 #include "./graphics/objects/command_generic/topology.h"
 
 #include "./graphics/objects/framebuffer/framebuffer_layout.h"
-
+#include "./graphics/api/directx12/objects/framebuffer/dx12_framebuffer_attachment.h"
 namespace Neon
 {
 	namespace Graphics
@@ -114,60 +114,60 @@ namespace Neon
 			swapchainDesc.Height		  = _window->GetWindowHeight();
 			swapchainDesc.BackBufferCount = 3;
 			swapchainDesc.Window		  = _window;
-
+		
 			m_Swapchain = Swapchain::Create(m_CommandQueue, &swapchainDesc);
 
-			// Desc for backbuffer
-			DXGI_MODE_DESC backBufferDesc = {}; 
-			backBufferDesc.Width		  = _window->GetWindowWidth(); 
-			backBufferDesc.Height		  = _window->GetWindowHeight();
-			backBufferDesc.Format		  = DXGI_FORMAT_R8G8B8A8_UNORM; 
+		//	// Desc for backbuffer
+		//	DXGI_MODE_DESC backBufferDesc = {}; 
+		//	backBufferDesc.Width		  = _window->GetWindowWidth(); 
+		//	backBufferDesc.Height		  = _window->GetWindowHeight();
+		//	backBufferDesc.Format		  = DXGI_FORMAT_R8G8B8A8_UNORM; 
+		//
+		//	DXGI_SAMPLE_DESC sampleDesc = {};
+		//	sampleDesc.Count			= 1;
+		//
+		//	// Describe and create the swap chain.
+		//	DXGI_SWAP_CHAIN_DESC swapChainDesc = {};
+		//	swapChainDesc.BufferCount		   = frameBufferCount; 
+		//	swapChainDesc.BufferDesc		   = backBufferDesc;
+		//	swapChainDesc.BufferUsage		   = DXGI_USAGE_RENDER_TARGET_OUTPUT; 
+		//	swapChainDesc.SwapEffect		   = DXGI_SWAP_EFFECT_FLIP_DISCARD;
+		//	swapChainDesc.OutputWindow		   = (HWND)_window->GetNativeWindowHandle(); 
+		//	swapChainDesc.SampleDesc		   = sampleDesc; 
+		//	swapChainDesc.Windowed			   = true; 
+		//
+		//	IDXGISwapChain* tempSwapChain;
+		//	dxgiFactory->CreateSwapChain(NEON_CAST(DX12CommandQueue*, m_CommandQueue)->m_CommandQueueObj, &swapChainDesc, &tempSwapChain);
+		//
+		//	m_SwapChain = static_cast<IDXGISwapChain3*>(tempSwapChain);
+		//	frameIndex = m_SwapChain->GetCurrentBackBufferIndex();
 
-			DXGI_SAMPLE_DESC sampleDesc = {};
-			sampleDesc.Count			= 1;
 
-			// Describe and create the swap chain.
-			DXGI_SWAP_CHAIN_DESC swapChainDesc = {};
-			swapChainDesc.BufferCount		   = frameBufferCount; 
-			swapChainDesc.BufferDesc		   = backBufferDesc;
-			swapChainDesc.BufferUsage		   = DXGI_USAGE_RENDER_TARGET_OUTPUT; 
-			swapChainDesc.SwapEffect		   = DXGI_SWAP_EFFECT_FLIP_DISCARD;
-			swapChainDesc.OutputWindow		   = (HWND)_window->GetNativeWindowHandle(); 
-			swapChainDesc.SampleDesc		   = sampleDesc; 
-			swapChainDesc.Windowed			   = true; 
-
-			IDXGISwapChain* tempSwapChain;
-			dxgiFactory->CreateSwapChain(NEON_CAST(DX12CommandQueue*, m_CommandQueue)->m_CommandQueueObj, &swapChainDesc, &tempSwapChain);
-
-			m_SwapChain = static_cast<IDXGISwapChain3*>(tempSwapChain);
-			frameIndex = m_SwapChain->GetCurrentBackBufferIndex();
-
-
-			// describe an rtv descriptor heap and create
-			D3D12_DESCRIPTOR_HEAP_DESC rtvHeapDesc = {};
-			rtvHeapDesc.NumDescriptors			   = frameBufferCount; 
-			rtvHeapDesc.Type					   = D3D12_DESCRIPTOR_HEAP_TYPE_RTV; 
-			rtvHeapDesc.Flags					   = D3D12_DESCRIPTOR_HEAP_FLAG_NONE;
-
-			DX12_ThrowIfFailed(m_Device->CreateDescriptorHeap(&rtvHeapDesc, IID_PPV_ARGS(&rtvDescriptorHeap)));
+		//	// describe an rtv descriptor heap and create
+		//	D3D12_DESCRIPTOR_HEAP_DESC rtvHeapDesc = {};
+		//	rtvHeapDesc.NumDescriptors			   = frameBufferCount; 
+		//	rtvHeapDesc.Type					   = D3D12_DESCRIPTOR_HEAP_TYPE_RTV; 
+		//	rtvHeapDesc.Flags					   = D3D12_DESCRIPTOR_HEAP_FLAG_NONE;
+		//
+		//	DX12_ThrowIfFailed(m_Device->CreateDescriptorHeap(&rtvHeapDesc, IID_PPV_ARGS(&rtvDescriptorHeap)));
 
 
 			// get the size of a descriptor in this heap 
-			rtvDescriptorSize = m_Device->GetDescriptorHandleIncrementSize(D3D12_DESCRIPTOR_HEAP_TYPE_RTV);
-
-			// get a handle to the first descriptor in the descriptor heap
-			CD3DX12_CPU_DESCRIPTOR_HANDLE rtvHandle(rtvDescriptorHeap->GetCPUDescriptorHandleForHeapStart());
-
-			// Create a RTV for each buffer
-			for (int i = 0; i < frameBufferCount; i++)
-			{
-				DX12_ThrowIfFailed(m_SwapChain->GetBuffer(i, IID_PPV_ARGS(&renderTargets[i])));
-
-				// Create rendertarget and bind swapcahin[i] to rtv
-				m_Device->CreateRenderTargetView(renderTargets[i], nullptr, rtvHandle);
-
-				rtvHandle.Offset(1, rtvDescriptorSize);
-			}
+		//	rtvDescriptorSize = m_Device->GetDescriptorHandleIncrementSize(D3D12_DESCRIPTOR_HEAP_TYPE_RTV);
+		//
+		//	// get a handle to the first descriptor in the descriptor heap
+		//	CD3DX12_CPU_DESCRIPTOR_HANDLE rtvHandle(rtvDescriptorHeap->GetCPUDescriptorHandleForHeapStart());
+		//
+		//	// Create a RTV for each buffer
+		//	for (int i = 0; i < frameBufferCount; i++)
+		//	{
+		//		DX12_ThrowIfFailed(NEON_CAST(DX12Swapchain*, m_Swapchain)->m_SwapChainObj->GetBuffer(i, IID_PPV_ARGS(&renderTargets[i])));
+		//
+		//		// Create rendertarget and bind swapcahin[i] to rtv
+		//		m_Device->CreateRenderTargetView(renderTargets[i], nullptr, rtvHandle);
+		//
+		//		rtvHandle.Offset(1, rtvDescriptorSize);
+		//	}
 
 			// Setup ShaderDescriptor
 			ShaderDescriptor shaderDesc				= {};
@@ -203,6 +203,24 @@ namespace Neon
 
 			m_Renderpass = Renderpass::Create(&renderpassDesc);
 
+			// Setup FramebufferDescriptor
+			FramebufferDescriptor framebufferDesc = {};
+			framebufferDesc.Name			= "Main-Framebuffer";
+			framebufferDesc.Width			= 1280;
+			framebufferDesc.Height			= 720;
+			framebufferDesc.AttachmentCount = 1;
+			framebufferDesc.DepthAttachment = true;
+			framebufferDesc.Layout			= framebufferLayout;
+
+			// Add swapchain images
+			for (int i = 0; i < m_Swapchain->GetBackBufferCount(); i++)
+			{
+				// Create Framebuffer
+				m_Framebuffer[i] = Framebuffer::Create(&framebufferDesc, m_Renderpass);
+
+				// Get swapchain image and add to framebuffer
+				m_Framebuffer[i]->AddAttachment(m_Swapchain->GetFramebufferAttachment(i));
+			}
 
 			// create a depth stencil descriptor heap 
 			D3D12_DESCRIPTOR_HEAP_DESC dsvHeapDesc = {};
@@ -313,8 +331,7 @@ namespace Neon
 				HRESULT hr;
 
 				// Ask swapchain for new image and signal fence
-				frameIndex = m_SwapChain->GetCurrentBackBufferIndex();
-				hr = NEON_CAST(DX12CommandQueue*, m_CommandQueue)->m_CommandQueueObj->Signal(NEON_CAST(DX12Fence*, m_AcuireFence)->m_FenceObj, NEON_CAST(DX12Fence*, m_AcuireFence)->m_FenceValue);
+				frameIndex = m_Swapchain->AquireNewImage(m_CommandQueue, m_AcuireFence);
 				m_AcuireFence->WaitForFence();
 				m_AcuireFence->Reset();
 
@@ -322,20 +339,21 @@ namespace Neon
 				m_CommandPool->Reset();
 				m_CommandBuffers[frameIndex]->StartRecording();
 
-				m_Renderpass->BeginPass(nullptr);
 
 				// Set pipeline state
 				m_CommandBuffers[frameIndex]->SetGraphicsPipeline(m_GraphicsPipeline);
 
 				// Transition the backbuffer
-				NEON_CAST(DX12CommandBuffer*, m_CommandBuffers[frameIndex])->m_CommandListObj->ResourceBarrier(1, &CD3DX12_RESOURCE_BARRIER::Transition(renderTargets[frameIndex], D3D12_RESOURCE_STATE_PRESENT, D3D12_RESOURCE_STATE_RENDER_TARGET));
+				NEON_CAST(DX12CommandBuffer*, m_CommandBuffers[frameIndex])->m_CommandListObj->ResourceBarrier(1, &CD3DX12_RESOURCE_BARRIER::Transition(NEON_CAST(DX12FramebufferAttachment*, m_Framebuffer[frameIndex]->GetAttachment(0))->m_Image, D3D12_RESOURCE_STATE_PRESENT, D3D12_RESOURCE_STATE_RENDER_TARGET));
+				m_CommandBuffers[frameIndex]->BeginRenderpass(m_Renderpass, m_Framebuffer[frameIndex]);
 
 				// Get handles
-				CD3DX12_CPU_DESCRIPTOR_HANDLE rtvHandle(rtvDescriptorHeap->GetCPUDescriptorHandleForHeapStart(), frameIndex, rtvDescriptorSize);
+				CD3DX12_CPU_DESCRIPTOR_HANDLE rtvHandle = NEON_CAST(DX12Framebuffer*, m_Framebuffer[frameIndex])->GetAttachmentHandle();
 				CD3DX12_CPU_DESCRIPTOR_HANDLE dsvHandle(dsDescriptorHeap->GetCPUDescriptorHandleForHeapStart());
 
 				// Set render targets
-				NEON_CAST(DX12CommandBuffer*, m_CommandBuffers[frameIndex])->m_CommandListObj->OMSetRenderTargets(1, &rtvHandle, FALSE, &dsvHandle);
+			//	NEON_CAST(DX12CommandBuffer*, m_CommandBuffers[frameIndex])->m_CommandListObj->OMSetRenderTargets(1, &rtvHandle, FALSE, &dsvHandle);
+				
 
 				// Clear
 				const float clearColor[] = { 0.0f, 0.2f, 0.4f, 1.0f };
@@ -356,9 +374,9 @@ namespace Neon
 				NEON_CAST(DX12CommandBuffer*, m_CommandBuffers[frameIndex])->m_CommandListObj->DrawIndexedInstanced(6, 1, 0, 4, 0); // draw second quad
 
 				// Transition state back
-				NEON_CAST(DX12CommandBuffer*, m_CommandBuffers[frameIndex])->m_CommandListObj->ResourceBarrier(1, &CD3DX12_RESOURCE_BARRIER::Transition(renderTargets[frameIndex], D3D12_RESOURCE_STATE_RENDER_TARGET, D3D12_RESOURCE_STATE_PRESENT));
+				NEON_CAST(DX12CommandBuffer*, m_CommandBuffers[frameIndex])->m_CommandListObj->ResourceBarrier(1, &CD3DX12_RESOURCE_BARRIER::Transition(NEON_CAST(DX12FramebufferAttachment*, m_Framebuffer[frameIndex]->GetAttachment(0))->m_Image, D3D12_RESOURCE_STATE_RENDER_TARGET, D3D12_RESOURCE_STATE_PRESENT));
 
-				m_Renderpass->EndPass();
+				m_CommandBuffers[frameIndex]->EndRenderpass(m_Renderpass);
 
 				m_CommandBuffers[frameIndex]->EndRecording();
 			}
@@ -371,7 +389,7 @@ namespace Neon
 				m_SubmitFence->Reset();
 
 				// present the current backbuffer
-				DX12_ThrowIfFailed(m_SwapChain->Present(0, 0));
+				m_Swapchain->Present(m_CommandQueue, false);
 			}
 		}
 	}

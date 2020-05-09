@@ -21,11 +21,12 @@
 #include "./graphics/api/directx12/pipeline/dx12_graphics_pipeline.h"
 
 #include "./graphics/api/directx12/objects/renderpass/dx12_renderpass.h"
+#include "./graphics/api/directx12/objects/framebuffer/dx12_framebuffer.h"
 
 #include "./graphics/objects/command_generic/viewport.h"
 #include "./graphics/objects/command_generic/scissor.h"
 
-#include "./graphics/objects/swapchain/swapchain.h"
+#include "./graphics/api/directx12/objects/swapchain/dx12_swapchain.h"
 
 
 namespace Neon
@@ -52,10 +53,10 @@ namespace Neon
 		private:
 
 			ID3D12Device* m_Device;
-			IDXGISwapChain3* m_SwapChain; 
+		//	IDXGISwapChain3* m_SwapChain; 
 		
-			ID3D12DescriptorHeap* rtvDescriptorHeap; 
-			ID3D12Resource* renderTargets[frameBufferCount];
+		//	ID3D12DescriptorHeap* rtvDescriptorHeap; 
+		//	ID3D12Resource* renderTargets[frameBufferCount];
 		
 			int frameIndex;
 			int rtvDescriptorSize;
@@ -89,6 +90,7 @@ namespace Neon
 			Swapchain*		  m_Swapchain;
 
 			Renderpass*		  m_Renderpass;
+			Framebuffer*	  m_Framebuffer[frameBufferCount];
 		};
 	}
 }

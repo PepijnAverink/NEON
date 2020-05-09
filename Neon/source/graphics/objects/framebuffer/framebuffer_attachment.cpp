@@ -4,6 +4,10 @@ namespace Neon
 {
 	namespace Graphics
 	{
+		FramebufferAttachment::FramebufferAttachment(const FramebufferAttachmentDescriptor* _framebufferAttachmentDescriptor)
+			: m_Type(_framebufferAttachmentDescriptor->Type)
+		{
 
+		}
 	}
 }

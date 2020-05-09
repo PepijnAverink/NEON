@@ -1,4 +1,5 @@
 #pragma once
+#include "./graphics/objects/framebuffer/framebuffer_layout.h"
 
 #include <string>
 namespace Neon
@@ -7,11 +8,18 @@ namespace Neon
 	{
 		class FramebufferDescriptor
 		{
-			std::string Name;
+		public:
+			FramebufferDescriptor() = default;
 
-			int Width;
-			int Height;
-			uint32_t AttachmentCount;
+			std::string		  Name;
+
+			int				  Width;
+			int				  Height;
+
+			uint32_t		  AttachmentCount;
+			bool			  DepthAttachment;
+
+			FramebufferLayout Layout;
 		};
 	}
 }

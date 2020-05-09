@@ -14,15 +14,5 @@ namespace Neon
 		{
 
 		}
-
-		void DX12Renderpass::BeginPass(Framebuffer* _framebuffer) const
-		{
-
-		}
-
-		void DX12Renderpass::EndPass() const
-		{
-
-		}
 	}
 }

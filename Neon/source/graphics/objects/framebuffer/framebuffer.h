@@ -1,17 +1,30 @@
 #pragma once
 #include "./graphics/objects/framebuffer/framebuffer_descriptor.h"
+#include "./graphics/objects/framebuffer/framebuffer_attachment.h"
+
+#include <vector>
 
 namespace Neon
 {
 	namespace Graphics
 	{
+		class Renderpass;
 		class Framebuffer
 		{
 		public:
-			Framebuffer* Create(const Framebuffer* _framebufferDescriptor);
+			static Framebuffer* Create(const FramebufferDescriptor* _framebufferDescriptor, Renderpass* _renderpass);
 
-		private:
-			Framebuffer(const Framebuffer* _framebufferDescriptor);
+			virtual void AddAttachment(FramebufferAttachment* _framebufferAttachment) = 0;
+
+			inline uint32_t GetAttachmentCount() const { return m_AttachmentCount; }
+
+			FramebufferAttachment* GetAttachment(const int _attachmentIndex) const { return m_FramebufferAttachments[_attachmentIndex]; }
+
+		protected:
+			Framebuffer(const FramebufferDescriptor* _framebufferDescriptor);
+
+			uint32_t							m_AttachmentCount;
+			std::vector<FramebufferAttachment*> m_FramebufferAttachments;
 		};
 	}
 }

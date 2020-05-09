@@ -25,6 +25,9 @@ namespace Neon
 		class Viewport;
 		class Scissor;
 
+		class Renderpass;
+		class Framebuffer;
+
 		class CommandBuffer
 		{
 		public:
@@ -47,6 +50,9 @@ namespace Neon
 
 			virtual void SetViewport(Viewport* _viewport) const = 0;
 			virtual void SetScissor(Scissor* _scissor) const = 0;
+
+			virtual void BeginRenderpass(Renderpass* _renderpass, Framebuffer* _framebuffer) const = 0;
+			virtual void EndRenderpass(Renderpass* _renderpass) const = 0;
 
 			// Getters
 			inline const std::string        GetCommandBufferName()  const;
