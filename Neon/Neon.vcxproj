@@ -166,6 +166,7 @@
     <ClInclude Include="source\graphics\api\directx12\objects\command_generic\dx12_topology.h" />
     <ClInclude Include="source\graphics\api\directx12\objects\command_generic\dx12_topology_state.h" />
     <ClInclude Include="source\graphics\api\directx12\objects\command_generic\dx12_viewport.h" />
+    <ClInclude Include="source\graphics\api\directx12\objects\framebuffer\dx12_framebuffer.h" />
     <ClInclude Include="source\graphics\api\directx12\objects\framebuffer\dx12_framebuffer_attachment.h" />
     <ClInclude Include="source\graphics\api\directx12\objects\renderpass\dx12_renderpass.h" />
     <ClInclude Include="source\graphics\api\directx12\objects\swapchain\dx12_swapchain.h" />
@@ -279,6 +280,7 @@
     <ClCompile Include="source\graphics\api\directx12\objects\command_generic\dx12_scissor.cpp" />
     <ClCompile Include="source\graphics\api\directx12\objects\command_generic\dx12_topology_state.cpp" />
     <ClCompile Include="source\graphics\api\directx12\objects\command_generic\dx12_viewport.cpp" />
+    <ClCompile Include="source\graphics\api\directx12\objects\framebuffer\dx12_framebuffer.cpp" />
     <ClCompile Include="source\graphics\api\directx12\objects\framebuffer\dx12_framebuffer_attachment.cpp" />
     <ClCompile Include="source\graphics\api\directx12\objects\renderpass\dx12_renderpass.cpp" />
     <ClCompile Include="source\graphics\api\directx12\objects\swapchain\dx12_swapchain.cpp" />
