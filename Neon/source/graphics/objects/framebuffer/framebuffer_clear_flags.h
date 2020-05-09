@@ -1,0 +1,4 @@
+#pragma once
+
+#define NEON_CLEAR_COLOR_BIT			 0x01
+#define NEON_CLEAR_DEPTH_STENCIL_BIT	 0x02

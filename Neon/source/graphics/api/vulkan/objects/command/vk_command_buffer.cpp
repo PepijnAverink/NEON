@@ -87,10 +87,16 @@ namespace Neon
 		{
 
 		}
+		void VKCommandBuffer::ClearFrameBuffer(Framebuffer * _framebuffer, const float* _color, const uint32_t _offset, const uint32_t _count, uint32_t _flags) const
+		{
+		}
 		void VKCommandBuffer::BeginRenderpass(Renderpass * _renderpass, Framebuffer * _framebuffer) const
 		{
 		}
 		void VKCommandBuffer::EndRenderpass(Renderpass * _renderpass) const
+		{
+		}
+		void VKCommandBuffer::TransitionFramebufferAttachment(FramebufferAttachment * _framebufferAttachment, const FramebufferAttachmentTransitionState _fromState, const FramebufferAttachmentTransitionState _toState) const
 		{
 		}
 	}

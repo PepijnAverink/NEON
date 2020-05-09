@@ -53,22 +53,13 @@ namespace Neon
 		private:
 
 			ID3D12Device* m_Device;
-		//	IDXGISwapChain3* m_SwapChain; 
-		
-		//	ID3D12DescriptorHeap* rtvDescriptorHeap; 
-		//	ID3D12Resource* renderTargets[frameBufferCount];
 		
 			int frameIndex;
-			int rtvDescriptorSize;
 
-		//	ID3D12PipelineState* pipelineStateObject; 
-		//	ID3D12RootSignature* rootSignature; 
+		//	ID3D12Resource* depthStencilBuffer;
+		//	ID3D12DescriptorHeap* dsDescriptorHeap;
 
-		//	D3D12_VIEWPORT viewport;
-		//	D3D12_RECT scissorRect;
-
-			ID3D12Resource* depthStencilBuffer;
-			ID3D12DescriptorHeap* dsDescriptorHeap;
+			FramebufferAttachment* m_DepthAttachment;
 
 			// Own abstraction
 			Viewport*		  m_Viewport;

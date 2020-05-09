@@ -43,7 +43,14 @@ namespace Neon
 			}
 			else
 			{
+				// TODO:: Abtract depth format
+				D3D12_DEPTH_STENCIL_VIEW_DESC depthStencilDesc = {};
+				depthStencilDesc.Format			= DXGI_FORMAT_D32_FLOAT;
+				depthStencilDesc.ViewDimension	= D3D12_DSV_DIMENSION_TEXTURE2D;
+				depthStencilDesc.Flags			= D3D12_DSV_FLAG_NONE;
 
+				auto image = NEON_CAST(DX12FramebufferAttachment*, _framebufferAttachment)->m_Image;
+				DX12GraphicsContext::GetInstance()->GetGraphicsDevice()->CreateDepthStencilView(image, &depthStencilDesc, m_DepthDescriptorHeap->GetCPUDescriptorHandleForHeapStart());
 			}
 
 			// Add attachment

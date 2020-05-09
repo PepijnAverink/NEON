@@ -32,6 +32,7 @@ namespace Neon
 
 		Framebuffer::Framebuffer(const FramebufferDescriptor* _framebufferDescriptor)
 			: m_AttachmentCount(_framebufferDescriptor->AttachmentCount)
+			, m_DepthStencilActive(_framebufferDescriptor->DepthAttachment)
 		{
 
 		}

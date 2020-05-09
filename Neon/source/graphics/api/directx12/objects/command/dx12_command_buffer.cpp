@@ -1,6 +1,9 @@
 #include "./graphics/api/directx12/objects/command/dx12_command_buffer.h"
 #include "./graphics/api/directx12/objects/command/dx12_command_pool.h"
 #include "./graphics/api/directx12/objects/framebuffer/dx12_framebuffer.h"
+#include "./graphics/api/directx12/objects/framebuffer/dx12_framebuffer_attachment.h"
+#include "./graphics/api/directx12/objects/framebuffer/dx12_framebuffer_attachment_transition_state.h"
+#include "./graphics/objects/framebuffer/framebuffer_clear_flags.h"
 #include "./graphics/api/directx12/dx12_graphics_context.h"
 #include "./graphics/api/directx12/dx12_error.h"
 
@@ -85,14 +88,27 @@ namespace Neon
 			m_CommandListObj->RSSetScissorRects(1, &NEON_CAST(DX12Scissor*, _scissor)->m_InternalScissor);
 		}
 
+		void DX12CommandBuffer::ClearFrameBuffer(Framebuffer* _framebuffer, const float* _color, const uint32_t _offset, const uint32_t _count, uint32_t _flags) const
+		{
+			// Support clearning of whole framebuffer
+			m_CommandListObj->ClearRenderTargetView(NEON_CAST(DX12Framebuffer*, _framebuffer)->GetAttachmentHandle(), _color, 0, nullptr);
+			m_CommandListObj->ClearDepthStencilView(NEON_CAST(DX12Framebuffer*, _framebuffer)->GetDepthStencilHandle(), D3D12_CLEAR_FLAG_DEPTH, 1.0f, 0, 0, nullptr);
+		}
+
 		void DX12CommandBuffer::BeginRenderpass(Renderpass* _renderpass, Framebuffer* _framebuffer) const
 		{
-			m_CommandListObj->OMSetRenderTargets(_framebuffer->GetAttachmentCount(), &NEON_CAST(DX12Framebuffer*, _framebuffer)->GetAttachmentHandle(), FALSE, nullptr);
+			m_CommandListObj->OMSetRenderTargets(_framebuffer->GetAttachmentCount(), &NEON_CAST(DX12Framebuffer*, _framebuffer)->GetAttachmentHandle(), FALSE, _framebuffer->IsDepthStencilActive() ? &NEON_CAST(DX12Framebuffer*, _framebuffer)->GetDepthStencilHandle() : nullptr);
 		}
 
 		void DX12CommandBuffer::EndRenderpass(Renderpass* _renderpass) const
 		{
 
+		}
+
+		void DX12CommandBuffer::TransitionFramebufferAttachment(FramebufferAttachment* _framebufferAttachment, const FramebufferAttachmentTransitionState _fromState, const FramebufferAttachmentTransitionState _toState) const
+		{
+			m_CommandListObj->ResourceBarrier(1, &CD3DX12_RESOURCE_BARRIER::Transition(NEON_CAST(DX12FramebufferAttachment*, _framebufferAttachment)->m_Image, 
+				GetDX12FramebufferTransitionState(_fromState), GetDX12FramebufferTransitionState(_toState)));
 		}
 	}
 }

@@ -11,6 +11,7 @@
 
 #include "./graphics/objects/framebuffer/framebuffer_layout.h"
 #include "./graphics/api/directx12/objects/framebuffer/dx12_framebuffer_attachment.h"
+#include "./graphics/objects/framebuffer/framebuffer_attachment_transition_state.h"
 namespace Neon
 {
 	namespace Graphics
@@ -203,6 +204,16 @@ namespace Neon
 
 			m_Renderpass = Renderpass::Create(&renderpassDesc);
 
+			// Setup depthBufferDescriptor
+			FramebufferAttachmentDescriptor framebufferAttachmentDesc = {};
+			framebufferAttachmentDesc.Name = "Main-DepthBuffer";
+			framebufferAttachmentDesc.Type = FramebufferAttachmentType::NEON_FRAMEBUFFER_ATTACHMENT_TYPE_DEPTH_STENCIL;
+			framebufferAttachmentDesc.Width = 1280;
+			framebufferAttachmentDesc.Height = 720;
+
+			// Create Depth attachment
+			m_DepthAttachment = FramebufferAttachment::Create(&framebufferAttachmentDesc);
+
 			// Setup FramebufferDescriptor
 			FramebufferDescriptor framebufferDesc = {};
 			framebufferDesc.Name			= "Main-Framebuffer";
@@ -220,37 +231,38 @@ namespace Neon
 
 				// Get swapchain image and add to framebuffer
 				m_Framebuffer[i]->AddAttachment(m_Swapchain->GetFramebufferAttachment(i));
+				m_Framebuffer[i]->AddAttachment(m_DepthAttachment);
 			}
 
-			// create a depth stencil descriptor heap 
-			D3D12_DESCRIPTOR_HEAP_DESC dsvHeapDesc = {};
-			dsvHeapDesc.NumDescriptors = 1;
-			dsvHeapDesc.Type = D3D12_DESCRIPTOR_HEAP_TYPE_DSV;
-			dsvHeapDesc.Flags = D3D12_DESCRIPTOR_HEAP_FLAG_NONE;
-			DX12_ThrowIfFailed(m_Device->CreateDescriptorHeap(&dsvHeapDesc, IID_PPV_ARGS(&dsDescriptorHeap)));
-
-
-			D3D12_DEPTH_STENCIL_VIEW_DESC depthStencilDesc = {};
-			depthStencilDesc.Format = DXGI_FORMAT_D32_FLOAT;
-			depthStencilDesc.ViewDimension = D3D12_DSV_DIMENSION_TEXTURE2D;
-			depthStencilDesc.Flags = D3D12_DSV_FLAG_NONE;
-
-			D3D12_CLEAR_VALUE depthOptimizedClearValue = {};
-			depthOptimizedClearValue.Format = DXGI_FORMAT_D32_FLOAT;
-			depthOptimizedClearValue.DepthStencil.Depth = 1.0f;
-			depthOptimizedClearValue.DepthStencil.Stencil = 0;
-
-			m_Device->CreateCommittedResource(
-				&CD3DX12_HEAP_PROPERTIES(D3D12_HEAP_TYPE_DEFAULT),
-				D3D12_HEAP_FLAG_NONE,
-				&CD3DX12_RESOURCE_DESC::Tex2D(DXGI_FORMAT_D32_FLOAT, _window->GetWindowWidth(), _window->GetWindowHeight(), 1, 0, 1, 0, D3D12_RESOURCE_FLAG_ALLOW_DEPTH_STENCIL),
-				D3D12_RESOURCE_STATE_DEPTH_WRITE,
-				&depthOptimizedClearValue,
-				IID_PPV_ARGS(&depthStencilBuffer)
-			);
-			dsDescriptorHeap->SetName(L"Depth/Stencil Resource Heap");
-
-			m_Device->CreateDepthStencilView(depthStencilBuffer, &depthStencilDesc, dsDescriptorHeap->GetCPUDescriptorHandleForHeapStart());
+		//	// create a depth stencil descriptor heap 
+		//	D3D12_DESCRIPTOR_HEAP_DESC dsvHeapDesc = {};
+		//	dsvHeapDesc.NumDescriptors = 1;
+		//	dsvHeapDesc.Type = D3D12_DESCRIPTOR_HEAP_TYPE_DSV;
+		//	dsvHeapDesc.Flags = D3D12_DESCRIPTOR_HEAP_FLAG_NONE;
+		//	DX12_ThrowIfFailed(m_Device->CreateDescriptorHeap(&dsvHeapDesc, IID_PPV_ARGS(&dsDescriptorHeap)));
+		//
+		//
+		//	D3D12_DEPTH_STENCIL_VIEW_DESC depthStencilDesc = {};
+		//	depthStencilDesc.Format = DXGI_FORMAT_D32_FLOAT;
+		//	depthStencilDesc.ViewDimension = D3D12_DSV_DIMENSION_TEXTURE2D;
+		//	depthStencilDesc.Flags = D3D12_DSV_FLAG_NONE;
+		//
+		//	D3D12_CLEAR_VALUE depthOptimizedClearValue = {};
+		//	depthOptimizedClearValue.Format = DXGI_FORMAT_D32_FLOAT;
+		//	depthOptimizedClearValue.DepthStencil.Depth = 1.0f;
+		//	depthOptimizedClearValue.DepthStencil.Stencil = 0;
+		//
+		//	m_Device->CreateCommittedResource(
+		//		&CD3DX12_HEAP_PROPERTIES(D3D12_HEAP_TYPE_DEFAULT),
+		//		D3D12_HEAP_FLAG_NONE,
+		//		&CD3DX12_RESOURCE_DESC::Tex2D(DXGI_FORMAT_D32_FLOAT, _window->GetWindowWidth(), _window->GetWindowHeight(), 1, 0, 1, 0, D3D12_RESOURCE_FLAG_ALLOW_DEPTH_STENCIL),
+		//		D3D12_RESOURCE_STATE_DEPTH_WRITE,
+		//		&depthOptimizedClearValue,
+		//		IID_PPV_ARGS(&depthStencilBuffer)
+		//	);
+		//	dsDescriptorHeap->SetName(L"Depth/Stencil Resource Heap");
+		//
+		//	m_Device->CreateDepthStencilView(depthStencilBuffer, &depthStencilDesc, dsDescriptorHeap->GetCPUDescriptorHandleForHeapStart());
 
 			// Create vertex buffer
 
@@ -344,21 +356,13 @@ namespace Neon
 				m_CommandBuffers[frameIndex]->SetGraphicsPipeline(m_GraphicsPipeline);
 
 				// Transition the backbuffer
-				NEON_CAST(DX12CommandBuffer*, m_CommandBuffers[frameIndex])->m_CommandListObj->ResourceBarrier(1, &CD3DX12_RESOURCE_BARRIER::Transition(NEON_CAST(DX12FramebufferAttachment*, m_Framebuffer[frameIndex]->GetAttachment(0))->m_Image, D3D12_RESOURCE_STATE_PRESENT, D3D12_RESOURCE_STATE_RENDER_TARGET));
-				m_CommandBuffers[frameIndex]->BeginRenderpass(m_Renderpass, m_Framebuffer[frameIndex]);
-
-				// Get handles
-				CD3DX12_CPU_DESCRIPTOR_HANDLE rtvHandle = NEON_CAST(DX12Framebuffer*, m_Framebuffer[frameIndex])->GetAttachmentHandle();
-				CD3DX12_CPU_DESCRIPTOR_HANDLE dsvHandle(dsDescriptorHeap->GetCPUDescriptorHandleForHeapStart());
-
-				// Set render targets
-			//	NEON_CAST(DX12CommandBuffer*, m_CommandBuffers[frameIndex])->m_CommandListObj->OMSetRenderTargets(1, &rtvHandle, FALSE, &dsvHandle);
-				
-
+				m_CommandBuffers[frameIndex]->TransitionFramebufferAttachment(m_Framebuffer[frameIndex]->GetAttachment(0), NEON_FRAMEBUFFER_TRANSITION_STATE_PRESENT, NEON_FRAMEBUFFER_TRANSITION_STATE_RENDER);
+		
 				// Clear
 				const float clearColor[] = { 0.0f, 0.2f, 0.4f, 1.0f };
-				NEON_CAST(DX12CommandBuffer*, m_CommandBuffers[frameIndex])->m_CommandListObj->ClearRenderTargetView(rtvHandle, clearColor, 0, nullptr);
-				NEON_CAST(DX12CommandBuffer*, m_CommandBuffers[frameIndex])->m_CommandListObj->ClearDepthStencilView(dsDescriptorHeap->GetCPUDescriptorHandleForHeapStart(), D3D12_CLEAR_FLAG_DEPTH, 1.0f, 0, 0, nullptr);
+				m_CommandBuffers[frameIndex]->ClearFrameBuffer(m_Framebuffer[frameIndex], clearColor, 0, 0, 0);
+
+				m_CommandBuffers[frameIndex]->BeginRenderpass(m_Renderpass, m_Framebuffer[frameIndex]);
 
 				// draw triangle
 				NEON_CAST(DX12CommandBuffer*, m_CommandBuffers[frameIndex])->m_CommandListObj->SetGraphicsRootSignature(NEON_CAST(DX12GraphicsPipeline*, m_GraphicsPipeline)->m_RootSignature);
@@ -374,7 +378,7 @@ namespace Neon
 				NEON_CAST(DX12CommandBuffer*, m_CommandBuffers[frameIndex])->m_CommandListObj->DrawIndexedInstanced(6, 1, 0, 4, 0); // draw second quad
 
 				// Transition state back
-				NEON_CAST(DX12CommandBuffer*, m_CommandBuffers[frameIndex])->m_CommandListObj->ResourceBarrier(1, &CD3DX12_RESOURCE_BARRIER::Transition(NEON_CAST(DX12FramebufferAttachment*, m_Framebuffer[frameIndex]->GetAttachment(0))->m_Image, D3D12_RESOURCE_STATE_RENDER_TARGET, D3D12_RESOURCE_STATE_PRESENT));
+				m_CommandBuffers[frameIndex]->TransitionFramebufferAttachment(m_Framebuffer[frameIndex]->GetAttachment(0), NEON_FRAMEBUFFER_TRANSITION_STATE_RENDER, NEON_FRAMEBUFFER_TRANSITION_STATE_PRESENT);
 
 				m_CommandBuffers[frameIndex]->EndRenderpass(m_Renderpass);
 

@@ -14,6 +14,9 @@ namespace Neon
 
 			std::string				  Name;
 			FramebufferAttachmentType Type;
+
+			int						  Width;
+			int						  Height;
 		};
 	}
 }

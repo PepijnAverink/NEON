@@ -28,6 +28,9 @@ namespace Neon
 		class Renderpass;
 		class Framebuffer;
 
+		class FramebufferAttachment;
+		enum  FramebufferAttachmentTransitionState;
+
 		class CommandBuffer
 		{
 		public:
@@ -51,8 +54,12 @@ namespace Neon
 			virtual void SetViewport(Viewport* _viewport) const = 0;
 			virtual void SetScissor(Scissor* _scissor) const = 0;
 
+			virtual void ClearFrameBuffer(Framebuffer* _framebuffer, const float* _color, const uint32_t _offset, const uint32_t _count, uint32_t _flags) const = 0;
+
 			virtual void BeginRenderpass(Renderpass* _renderpass, Framebuffer* _framebuffer) const = 0;
 			virtual void EndRenderpass(Renderpass* _renderpass) const = 0;
+
+			virtual void TransitionFramebufferAttachment(FramebufferAttachment* _framebufferAttachment, const FramebufferAttachmentTransitionState _fromState, const FramebufferAttachmentTransitionState _toState) const = 0;
 
 			// Getters
 			inline const std::string        GetCommandBufferName()  const;
@@ -71,5 +78,5 @@ namespace Neon
 
 			CommandPool*	   m_CommandPool = nullptr;
 		};
-	}
-}
+	};
+};

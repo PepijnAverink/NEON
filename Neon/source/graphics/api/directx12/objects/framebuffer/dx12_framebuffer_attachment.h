@@ -7,7 +7,7 @@ namespace Neon
 {
 	namespace Graphics
 	{
-		class DX12FramebufferAttachment : FramebufferAttachment
+		class DX12FramebufferAttachment : public FramebufferAttachment
 		{
 		public:
 			DX12FramebufferAttachment(const FramebufferAttachmentDescriptor* _framebufferAttachmentDescriptor);
@@ -17,6 +17,7 @@ namespace Neon
 			DX12FramebufferAttachment(const FramebufferAttachmentDescriptor* _framebufferAttachmentDescriptor, ID3D12Resource* _image);
 
 			friend class DX12Framebuffer;
+			friend class DX12CommandBuffer;
 			friend class DX12GraphicsContext; // Remove me
 			ID3D12Resource* m_Image;
 		};

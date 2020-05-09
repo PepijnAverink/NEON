@@ -378,6 +378,15 @@
     <ClInclude Include="source\graphics\api\directx12\objects\framebuffer\dx12_framebuffer.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="source\graphics\objects\framebuffer\framebuffer_attachment_transition_state.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="source\graphics\api\directx12\objects\framebuffer\dx12_framebuffer_attachment_transition_state.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="source\graphics\objects\framebuffer\framebuffer_clear_flags.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="source\core\engine.cpp">

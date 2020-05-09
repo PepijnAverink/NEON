@@ -168,6 +168,7 @@
     <ClInclude Include="source\graphics\api\directx12\objects\command_generic\dx12_viewport.h" />
     <ClInclude Include="source\graphics\api\directx12\objects\framebuffer\dx12_framebuffer.h" />
     <ClInclude Include="source\graphics\api\directx12\objects\framebuffer\dx12_framebuffer_attachment.h" />
+    <ClInclude Include="source\graphics\api\directx12\objects\framebuffer\dx12_framebuffer_attachment_transition_state.h" />
     <ClInclude Include="source\graphics\api\directx12\objects\renderpass\dx12_renderpass.h" />
     <ClInclude Include="source\graphics\api\directx12\objects\swapchain\dx12_swapchain.h" />
     <ClInclude Include="source\graphics\api\directx12\objects\sync\dx12_fence.h" />
@@ -216,7 +217,9 @@
     <ClInclude Include="source\graphics\objects\framebuffer\framebuffer.h" />
     <ClInclude Include="source\graphics\objects\framebuffer\framebuffer_attachment.h" />
     <ClInclude Include="source\graphics\objects\framebuffer\framebuffer_attachment_descriptor.h" />
+    <ClInclude Include="source\graphics\objects\framebuffer\framebuffer_attachment_transition_state.h" />
     <ClInclude Include="source\graphics\objects\framebuffer\framebuffer_attachment_type.h" />
+    <ClInclude Include="source\graphics\objects\framebuffer\framebuffer_clear_flags.h" />
     <ClInclude Include="source\graphics\objects\framebuffer\framebuffer_descriptor.h" />
     <ClInclude Include="source\graphics\objects\framebuffer\framebuffer_attachment_format.h" />
     <ClInclude Include="source\graphics\objects\framebuffer\framebuffer_layout.h" />
