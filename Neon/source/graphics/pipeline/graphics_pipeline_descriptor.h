@@ -24,7 +24,7 @@ namespace Neon
 
 			Shader*		Shader;
 
-			RasterizerState RasterizerStateDescriptor;
+			RasterizerStateDescriptor* RasterizerStateDescriptor;
 		};
 	}
 }

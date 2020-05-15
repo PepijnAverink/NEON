@@ -18,6 +18,9 @@
 #include "./graphics/resources/memory/memory_pool.h"
 #include "./graphics/api/vulkan/resources/buffer/vk_vertex_buffer.h"
 
+#include "./graphics/api/vulkan/objects/swapchain/vk_swapchain.h"
+#include "./graphics/api/vulkan/objects/swapchain/vk_graphics_surface.h"
+
 namespace Neon
 {
 	namespace Graphics
@@ -39,6 +42,8 @@ namespace Neon
 			inline VkDevice			GetGraphicsDevice() const { return m_Device; }
 			inline VkPhysicalDevice GetPhysicalDevice() const { return m_PhysicalDevice; }
 
+			inline VkInstance     GetGraphicsInstance() const { return m_Instance; }
+
 			inline PFN_vkSetDebugUtilsObjectNameEXT GetDebugNameUtils() const { return SetDebugUtilsObjectName; }
 
 			inline uint32_t GetQueueFamilyIDGraphics() const { return m_GraphicsQueueFamilyID; }
@@ -49,7 +54,6 @@ namespace Neon
 			void FindPhysicalDevice();
 			bool CheckSwapchainSupport();
 			void CreateLogicalDevice();
-			void CreateSemaphores();
 			void CreateSwapchain();
 			void CreateCommandQueues();
 			void createGraphicsPipeline();
@@ -59,6 +63,8 @@ namespace Neon
 
 			bool CheckLayersSupport(const std::vector<const char*> _VKLayers);
 			bool CheckExtensionsSupport(const std::vector<const char*> _VKExtensions);
+
+			VkInstance m_Instance;
 
 			VkDevice		 m_Device;
 			VkPhysicalDevice m_PhysicalDevice;
@@ -77,6 +83,9 @@ namespace Neon
 
 			VertexBuffer* vertexBuffer;
 			MemoryPool*   memoryPool;
+
+			Swapchain*		 m_Swapchain;
+			GraphicsSurface* m_Surface;
 		};
 	}
 }

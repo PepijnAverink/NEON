@@ -1,4 +1,5 @@
 #include "./graphics/api/directx12/objects/swapchain/dx12_swapchain.h"
+#include "./graphics/api/directx12/objects/swapchain/dx12_graphics_surface.h"
 #include "./graphics/api/directx12/objects/command/dx12_command_queue.h"
 #include "./graphics/api/directx12/objects/framebuffer/dx12_framebuffer_attachment.h"
 #include "./graphics/api/directx12/objects/sync/dx12_fence.h"
@@ -30,7 +31,7 @@ namespace Neon
 			swapChainDesc.BufferDesc	= backBufferDesc;
 			swapChainDesc.BufferUsage	= DXGI_USAGE_RENDER_TARGET_OUTPUT;
 			swapChainDesc.SwapEffect	= DXGI_SWAP_EFFECT_FLIP_DISCARD;
-			swapChainDesc.OutputWindow	= (HWND)_swapchainDescriptor->Window->GetNativeWindowHandle();
+			swapChainDesc.OutputWindow	= (HWND) NEON_CAST(DX12GraphicsSurface*, _swapchainDescriptor->Surface)->m_WindowHandle;
 			swapChainDesc.SampleDesc	= sampleDesc;
 			swapChainDesc.Windowed		= true;
 

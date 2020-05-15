@@ -46,18 +46,18 @@ namespace Neon
 
 			// create a pipeline state object (PSO)
 			D3D12_GRAPHICS_PIPELINE_STATE_DESC psoDesc = {};
-			psoDesc.InputLayout = inputLayoutDesc;
-			psoDesc.pRootSignature = m_RootSignature;
-			psoDesc.VS = vertexShaderBytecode;
-			psoDesc.PS = pixelShaderBytecode;
-			psoDesc.PrimitiveTopologyType = D3D12_PRIMITIVE_TOPOLOGY_TYPE_TRIANGLE;
-			psoDesc.RTVFormats[0] = DXGI_FORMAT_R8G8B8A8_UNORM;
-			psoDesc.SampleDesc = sampleDesc;
-			psoDesc.SampleMask = 0xffffffff;
-			psoDesc.RasterizerState = CD3DX12_RASTERIZER_DESC(D3D12_DEFAULT);
-			psoDesc.BlendState = CD3DX12_BLEND_DESC(D3D12_DEFAULT);
-			psoDesc.NumRenderTargets = 1;
-			psoDesc.DepthStencilState = CD3DX12_DEPTH_STENCIL_DESC(D3D12_DEFAULT);
+			psoDesc.InputLayout				= inputLayoutDesc;
+			psoDesc.pRootSignature			= m_RootSignature;
+			psoDesc.VS						= vertexShaderBytecode;
+			psoDesc.PS						= pixelShaderBytecode;
+			psoDesc.PrimitiveTopologyType	= D3D12_PRIMITIVE_TOPOLOGY_TYPE_TRIANGLE;
+			psoDesc.RTVFormats[0]			= DXGI_FORMAT_R8G8B8A8_UNORM;
+			psoDesc.SampleDesc				= sampleDesc;
+			psoDesc.SampleMask				= 0xffffffff;
+			psoDesc.RasterizerState			= CD3DX12_RASTERIZER_DESC(D3D12_DEFAULT);
+			psoDesc.BlendState				= CD3DX12_BLEND_DESC(D3D12_DEFAULT);
+			psoDesc.NumRenderTargets		= 1;
+			psoDesc.DepthStencilState		= CD3DX12_DEPTH_STENCIL_DESC(D3D12_DEFAULT);
 
 			// create the pso
 			DX12_ThrowIfFailed(DX12GraphicsContext::GetInstance()->GetGraphicsDevice()->CreateGraphicsPipelineState(&psoDesc, IID_PPV_ARGS(&m_PipelineStateObject)));

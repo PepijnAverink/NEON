@@ -12,6 +12,8 @@
 #include "./graphics/objects/framebuffer/framebuffer_layout.h"
 #include "./graphics/api/directx12/objects/framebuffer/dx12_framebuffer_attachment.h"
 #include "./graphics/objects/framebuffer/framebuffer_attachment_transition_state.h"
+
+#include "./graphics/objects/framebuffer/framebuffer_clear_flags.h"
 namespace Neon
 {
 	namespace Graphics
@@ -107,6 +109,11 @@ namespace Neon
 			fenceDesc.Name = "SubmitFence";
 			m_SubmitFence = Fence::Create(&fenceDesc);
 
+			GraphicsSurfaceDescriptor graphicsSurfaceDesc = {};
+			graphicsSurfaceDesc.Name = "Main-GraphicsSurface";
+			graphicsSurfaceDesc.Window = _window;
+
+			m_GraphicsSurface = GraphicsSurface::Create(&graphicsSurfaceDesc);
 
 			// Setup the swapchain desc
 			SwapchainDescriptor swapchainDesc = {};
@@ -114,61 +121,9 @@ namespace Neon
 			swapchainDesc.Width			  = _window->GetWindowWidth();
 			swapchainDesc.Height		  = _window->GetWindowHeight();
 			swapchainDesc.BackBufferCount = 3;
-			swapchainDesc.Window		  = _window;
+			swapchainDesc.Surface		  = m_GraphicsSurface;
 		
 			m_Swapchain = Swapchain::Create(m_CommandQueue, &swapchainDesc);
-
-		//	// Desc for backbuffer
-		//	DXGI_MODE_DESC backBufferDesc = {}; 
-		//	backBufferDesc.Width		  = _window->GetWindowWidth(); 
-		//	backBufferDesc.Height		  = _window->GetWindowHeight();
-		//	backBufferDesc.Format		  = DXGI_FORMAT_R8G8B8A8_UNORM; 
-		//
-		//	DXGI_SAMPLE_DESC sampleDesc = {};
-		//	sampleDesc.Count			= 1;
-		//
-		//	// Describe and create the swap chain.
-		//	DXGI_SWAP_CHAIN_DESC swapChainDesc = {};
-		//	swapChainDesc.BufferCount		   = frameBufferCount; 
-		//	swapChainDesc.BufferDesc		   = backBufferDesc;
-		//	swapChainDesc.BufferUsage		   = DXGI_USAGE_RENDER_TARGET_OUTPUT; 
-		//	swapChainDesc.SwapEffect		   = DXGI_SWAP_EFFECT_FLIP_DISCARD;
-		//	swapChainDesc.OutputWindow		   = (HWND)_window->GetNativeWindowHandle(); 
-		//	swapChainDesc.SampleDesc		   = sampleDesc; 
-		//	swapChainDesc.Windowed			   = true; 
-		//
-		//	IDXGISwapChain* tempSwapChain;
-		//	dxgiFactory->CreateSwapChain(NEON_CAST(DX12CommandQueue*, m_CommandQueue)->m_CommandQueueObj, &swapChainDesc, &tempSwapChain);
-		//
-		//	m_SwapChain = static_cast<IDXGISwapChain3*>(tempSwapChain);
-		//	frameIndex = m_SwapChain->GetCurrentBackBufferIndex();
-
-
-		//	// describe an rtv descriptor heap and create
-		//	D3D12_DESCRIPTOR_HEAP_DESC rtvHeapDesc = {};
-		//	rtvHeapDesc.NumDescriptors			   = frameBufferCount; 
-		//	rtvHeapDesc.Type					   = D3D12_DESCRIPTOR_HEAP_TYPE_RTV; 
-		//	rtvHeapDesc.Flags					   = D3D12_DESCRIPTOR_HEAP_FLAG_NONE;
-		//
-		//	DX12_ThrowIfFailed(m_Device->CreateDescriptorHeap(&rtvHeapDesc, IID_PPV_ARGS(&rtvDescriptorHeap)));
-
-
-			// get the size of a descriptor in this heap 
-		//	rtvDescriptorSize = m_Device->GetDescriptorHandleIncrementSize(D3D12_DESCRIPTOR_HEAP_TYPE_RTV);
-		//
-		//	// get a handle to the first descriptor in the descriptor heap
-		//	CD3DX12_CPU_DESCRIPTOR_HANDLE rtvHandle(rtvDescriptorHeap->GetCPUDescriptorHandleForHeapStart());
-		//
-		//	// Create a RTV for each buffer
-		//	for (int i = 0; i < frameBufferCount; i++)
-		//	{
-		//		DX12_ThrowIfFailed(NEON_CAST(DX12Swapchain*, m_Swapchain)->m_SwapChainObj->GetBuffer(i, IID_PPV_ARGS(&renderTargets[i])));
-		//
-		//		// Create rendertarget and bind swapcahin[i] to rtv
-		//		m_Device->CreateRenderTargetView(renderTargets[i], nullptr, rtvHandle);
-		//
-		//		rtvHandle.Offset(1, rtvDescriptorSize);
-		//	}
 
 			// Setup ShaderDescriptor
 			ShaderDescriptor shaderDesc				= {};
@@ -182,6 +137,8 @@ namespace Neon
 			ShaderReflection reflection;
 			Shader* shader = Shader::Create(reflection, &shaderDesc);
 
+			RasterizerStateDescriptor rasterizerStateDesc = {};
+
 			// Setup GraphicsPipeline Descriptor
 			GraphicsPipelineDescriptor pipelineDesc = {};
 			pipelineDesc.Name		  = "Main-GraphicsPipeline";
@@ -189,7 +146,7 @@ namespace Neon
 			pipelineDesc.ImageHeight  = _window->GetWindowHeight();
 			pipelineDesc.InputLayout  = reflection.Layout;
 			pipelineDesc.Shader		  = shader;
-
+			pipelineDesc.RasterizerStateDescriptor = &rasterizerStateDesc;
 			// Create the Graphics Pipeline
 			m_GraphicsPipeline = GraphicsPipeline::Create(&pipelineDesc);
 
@@ -233,36 +190,6 @@ namespace Neon
 				m_Framebuffer[i]->AddAttachment(m_Swapchain->GetFramebufferAttachment(i));
 				m_Framebuffer[i]->AddAttachment(m_DepthAttachment);
 			}
-
-		//	// create a depth stencil descriptor heap 
-		//	D3D12_DESCRIPTOR_HEAP_DESC dsvHeapDesc = {};
-		//	dsvHeapDesc.NumDescriptors = 1;
-		//	dsvHeapDesc.Type = D3D12_DESCRIPTOR_HEAP_TYPE_DSV;
-		//	dsvHeapDesc.Flags = D3D12_DESCRIPTOR_HEAP_FLAG_NONE;
-		//	DX12_ThrowIfFailed(m_Device->CreateDescriptorHeap(&dsvHeapDesc, IID_PPV_ARGS(&dsDescriptorHeap)));
-		//
-		//
-		//	D3D12_DEPTH_STENCIL_VIEW_DESC depthStencilDesc = {};
-		//	depthStencilDesc.Format = DXGI_FORMAT_D32_FLOAT;
-		//	depthStencilDesc.ViewDimension = D3D12_DSV_DIMENSION_TEXTURE2D;
-		//	depthStencilDesc.Flags = D3D12_DSV_FLAG_NONE;
-		//
-		//	D3D12_CLEAR_VALUE depthOptimizedClearValue = {};
-		//	depthOptimizedClearValue.Format = DXGI_FORMAT_D32_FLOAT;
-		//	depthOptimizedClearValue.DepthStencil.Depth = 1.0f;
-		//	depthOptimizedClearValue.DepthStencil.Stencil = 0;
-		//
-		//	m_Device->CreateCommittedResource(
-		//		&CD3DX12_HEAP_PROPERTIES(D3D12_HEAP_TYPE_DEFAULT),
-		//		D3D12_HEAP_FLAG_NONE,
-		//		&CD3DX12_RESOURCE_DESC::Tex2D(DXGI_FORMAT_D32_FLOAT, _window->GetWindowWidth(), _window->GetWindowHeight(), 1, 0, 1, 0, D3D12_RESOURCE_FLAG_ALLOW_DEPTH_STENCIL),
-		//		D3D12_RESOURCE_STATE_DEPTH_WRITE,
-		//		&depthOptimizedClearValue,
-		//		IID_PPV_ARGS(&depthStencilBuffer)
-		//	);
-		//	dsDescriptorHeap->SetName(L"Depth/Stencil Resource Heap");
-		//
-		//	m_Device->CreateDepthStencilView(depthStencilBuffer, &depthStencilDesc, dsDescriptorHeap->GetCPUDescriptorHandleForHeapStart());
 
 			// Create vertex buffer
 
@@ -339,60 +266,54 @@ namespace Neon
 
 		void DX12GraphicsContext::Present()
 		{
-			{
-				HRESULT hr;
+			// Ask swapchain for new image and signal fence
+			frameIndex = m_Swapchain->AquireNewImage(m_CommandQueue, m_AcuireFence);
+			m_AcuireFence->WaitForFence();
+			m_AcuireFence->Reset();
 
-				// Ask swapchain for new image and signal fence
-				frameIndex = m_Swapchain->AquireNewImage(m_CommandQueue, m_AcuireFence);
-				m_AcuireFence->WaitForFence();
-				m_AcuireFence->Reset();
-
-				// Reset Commandpool and start recording current commandBuffer
-				m_CommandPool->Reset();
-				m_CommandBuffers[frameIndex]->StartRecording();
+			// Reset Commandpool and start recording current commandBuffer
+			m_CommandPool->Reset();
+			m_CommandBuffers[frameIndex]->StartRecording();
 
 
-				// Set pipeline state
-				m_CommandBuffers[frameIndex]->SetGraphicsPipeline(m_GraphicsPipeline);
+			// Set pipeline state
+			m_CommandBuffers[frameIndex]->SetGraphicsPipeline(m_GraphicsPipeline);
 
-				// Transition the backbuffer
-				m_CommandBuffers[frameIndex]->TransitionFramebufferAttachment(m_Framebuffer[frameIndex]->GetAttachment(0), NEON_FRAMEBUFFER_TRANSITION_STATE_PRESENT, NEON_FRAMEBUFFER_TRANSITION_STATE_RENDER);
-		
-				// Clear
-				const float clearColor[] = { 0.0f, 0.2f, 0.4f, 1.0f };
-				m_CommandBuffers[frameIndex]->ClearFrameBuffer(m_Framebuffer[frameIndex], clearColor, 0, 0, 0);
+			// Transition the backbuffer
+			m_CommandBuffers[frameIndex]->TransitionFramebufferAttachment(m_Framebuffer[frameIndex]->GetAttachment(0), NEON_FRAMEBUFFER_TRANSITION_STATE_PRESENT, NEON_FRAMEBUFFER_TRANSITION_STATE_RENDER);
 
-				m_CommandBuffers[frameIndex]->BeginRenderpass(m_Renderpass, m_Framebuffer[frameIndex]);
+			// Clear
+			const float clearColor[] = { 0.8f, 0.2f, 0.4f, 1.0f };
+			m_CommandBuffers[frameIndex]->ClearFrameBuffer(m_Framebuffer[frameIndex], clearColor, 0, 0, NEON_CLEAR_COLOR_BIT | NEON_CLEAR_DEPTH_STENCIL_BIT);
 
-				// draw triangle
-				m_CommandBuffers[frameIndex]->SetViewport(m_Viewport);
-				m_CommandBuffers[frameIndex]->SetScissor(m_Scissor);
-				m_CommandBuffers[frameIndex]->SetTopology(Topology::NEON_TOPOLOGY_TRIANGLE_LIST);
+			m_CommandBuffers[frameIndex]->BeginRenderpass(m_Renderpass, m_Framebuffer[frameIndex]);
 
-				m_CommandBuffers[frameIndex]->SetVertexBuffer(m_VertexBuffer);
-				m_CommandBuffers[frameIndex]->SetIndexBuffer(m_IndexBuffer);
+			// draw triangle
+			m_CommandBuffers[frameIndex]->SetViewport(m_Viewport);
+			m_CommandBuffers[frameIndex]->SetScissor(m_Scissor);
+			m_CommandBuffers[frameIndex]->SetTopology(Topology::NEON_TOPOLOGY_TRIANGLE_LIST);
 
-				m_CommandBuffers[frameIndex]->DrawIndexed(6, 0, 0);
-				m_CommandBuffers[frameIndex]->DrawIndexed(6, 0, 4);
+			m_CommandBuffers[frameIndex]->SetVertexBuffer(m_VertexBuffer);
+			m_CommandBuffers[frameIndex]->SetIndexBuffer(m_IndexBuffer);
 
-				// Transition state back
-				m_CommandBuffers[frameIndex]->TransitionFramebufferAttachment(m_Framebuffer[frameIndex]->GetAttachment(0), NEON_FRAMEBUFFER_TRANSITION_STATE_RENDER, NEON_FRAMEBUFFER_TRANSITION_STATE_PRESENT);
+			m_CommandBuffers[frameIndex]->DrawIndexed(6, 0, 0);
+			m_CommandBuffers[frameIndex]->DrawIndexed(6, 0, 4);
 
-				m_CommandBuffers[frameIndex]->EndRenderpass(m_Renderpass);
+			// Transition state back
+			m_CommandBuffers[frameIndex]->TransitionFramebufferAttachment(m_Framebuffer[frameIndex]->GetAttachment(0), NEON_FRAMEBUFFER_TRANSITION_STATE_RENDER, NEON_FRAMEBUFFER_TRANSITION_STATE_PRESENT);
 
-				m_CommandBuffers[frameIndex]->EndRecording();
-			}
+			m_CommandBuffers[frameIndex]->EndRenderpass(m_Renderpass);
 
-			{
-				// Execure commandBuffer
-				m_CommandQueue->ExecuteCommandBuffer(m_CommandBuffers[frameIndex], m_SubmitFence);
+			m_CommandBuffers[frameIndex]->EndRecording();
 
-				m_SubmitFence->WaitForFence();
-				m_SubmitFence->Reset();
+			// Execure commandBuffer
+			m_CommandQueue->ExecuteCommandBuffer(m_CommandBuffers[frameIndex], m_SubmitFence);
 
-				// present the current backbuffer
-				m_Swapchain->Present(m_CommandQueue, false);
-			}
+			m_SubmitFence->WaitForFence();
+			m_SubmitFence->Reset();
+
+			// present the current backbuffer
+			m_Swapchain->Present(m_CommandQueue, false);
 		}
 	}
 }

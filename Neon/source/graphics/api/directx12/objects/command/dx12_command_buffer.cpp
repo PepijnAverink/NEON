@@ -93,9 +93,12 @@ namespace Neon
 
 		void DX12CommandBuffer::ClearFrameBuffer(Framebuffer* _framebuffer, const float* _color, const uint32_t _offset, const uint32_t _count, uint32_t _flags) const
 		{
-			// Support clearning of whole framebuffer
-			m_CommandListObj->ClearRenderTargetView(NEON_CAST(DX12Framebuffer*, _framebuffer)->GetAttachmentHandle(), _color, 0, nullptr);
-			m_CommandListObj->ClearDepthStencilView(NEON_CAST(DX12Framebuffer*, _framebuffer)->GetDepthStencilHandle(), D3D12_CLEAR_FLAG_DEPTH, 1.0f, 0, 0, nullptr);
+			// TODO:: Support clearning of whole framebuffer
+			if (_flags & NEON_CLEAR_COLOR_BIT)
+				m_CommandListObj->ClearRenderTargetView(NEON_CAST(DX12Framebuffer*, _framebuffer)->GetAttachmentHandle(), _color, 0, nullptr);
+
+			if (_flags & NEON_CLEAR_DEPTH_STENCIL_BIT) // No further checking, user specified depth clearing
+				m_CommandListObj->ClearDepthStencilView(NEON_CAST(DX12Framebuffer*, _framebuffer)->GetDepthStencilHandle(), D3D12_CLEAR_FLAG_DEPTH, 1.0f, 0, 0, nullptr);
 		}
 
 		void DX12CommandBuffer::BeginRenderpass(Renderpass* _renderpass, Framebuffer* _framebuffer) const

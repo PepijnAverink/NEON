@@ -22,16 +22,13 @@ namespace Neon
 		HWND hwnd;
 		VkDebugUtilsMessengerEXT debugMessenger;
 
-		VkInstance instance;
-		VkSurfaceKHR windowSurface;
+	//	VkSurfaceKHR windowSurface;
 	
 
-		VkFormat swapChainImageFormat;
+	//	VkFormat swapChainImageFormat; //
 		VkQueue graphicsQueue;
 	//	VkQueue presentQueue;
-		VkSemaphore imageAvailableSemaphore;
-		VkSemaphore renderingFinishedSemaphore;
-		VkSwapchainKHR swapChain;
+	//	VkSwapchainKHR swapChain; //
 		std::vector<VkImage> swapChainImages;
 
 		uint32_t graphicsQueueFamily;
@@ -108,7 +105,7 @@ namespace Neon
 
 			for (uint32_t i = 0; i < queueFamilyCount; i++) {
 				VkBool32 presentSupport = false;
-				vkGetPhysicalDeviceSurfaceSupportKHR(m_PhysicalDevice, i, windowSurface, &presentSupport);
+				vkGetPhysicalDeviceSurfaceSupportKHR(m_PhysicalDevice, i, NEON_CAST(VKGraphicsSurface*, m_Surface)->m_WindowSurfaceObj, &presentSupport);
 
 				if (queueFamilies[i].queueCount > 0 && queueFamilies[i].queueFlags & VK_QUEUE_GRAPHICS_BIT) {
 					graphicsQueueFamily = i;
@@ -152,18 +149,31 @@ namespace Neon
 
 			CreateInstance();
 
-
-			SetDebugUtilsObjectName = (PFN_vkSetDebugUtilsObjectNameEXT)vkGetInstanceProcAddr(instance, "vkSetDebugUtilsObjectNameEXT");
-
-			CreateSurface();
 			FindPhysicalDevice();
 			CheckSwapchainSupport();
+
+			SetDebugUtilsObjectName = (PFN_vkSetDebugUtilsObjectNameEXT)vkGetInstanceProcAddr(m_Instance, "vkSetDebugUtilsObjectNameEXT");
+
+			GraphicsSurfaceDescriptor graphicsSurfaceDesc = {};
+			graphicsSurfaceDesc.Name   = "Main-GraphicsSurface";
+			graphicsSurfaceDesc.Window = _window;
+
+			m_Surface = GraphicsSurface::Create(&graphicsSurfaceDesc);
+
 
 			findQueueFamilies();
 			m_GraphicsQueueFamilyID = graphicsQueueFamily;
 
 			CreateLogicalDevice();
-			CreateSemaphores();
+
+			SwapchainDescriptor swapchainDesc = {};
+			swapchainDesc.Name				= "Main-Swapchain";
+			swapchainDesc.Width				= 1280;
+			swapchainDesc.Height			= 720;
+			swapchainDesc.BackBufferCount	= 3;
+			swapchainDesc.Surface			= m_Surface;
+
+			m_Swapchain = Swapchain::Create(commandQueue, &swapchainDesc);
 
 			CreateSwapchain();
 
@@ -196,11 +206,11 @@ namespace Neon
 			delete acuireFence;
 
 #if defined(NEON_DEBUG)
-			auto func = (PFN_vkDestroyDebugUtilsMessengerEXT)vkGetInstanceProcAddr(instance, "vkDestroyDebugUtilsMessengerEXT");
-			func(instance, debugMessenger, nullptr);
+			auto func = (PFN_vkDestroyDebugUtilsMessengerEXT)vkGetInstanceProcAddr(m_Instance, "vkDestroyDebugUtilsMessengerEXT");
+			func(m_Instance, debugMessenger, nullptr);
 #endif
 
-			vkDestroyInstance(instance, nullptr);
+			vkDestroyInstance(m_Instance, nullptr);
 			return false;
 		}
 
@@ -208,7 +218,7 @@ namespace Neon
 		{
 			// Acquire image
 			uint32_t imageIndex;
-			VkResult res = vkAcquireNextImageKHR(m_Device, swapChain, UINT64_MAX,VK_NULL_HANDLE, NEON_CAST(VKFence*, acuireFence)->m_FenceObj, &imageIndex);
+			VkResult res = vkAcquireNextImageKHR(m_Device, NEON_CAST(VKSwapchain*, m_Swapchain)->m_SwapchainObj, UINT64_MAX,VK_NULL_HANDLE, NEON_CAST(VKFence*, acuireFence)->m_FenceObj, &imageIndex);
 		//	VkResult res = vkAcquireNextImageKHR(m_Device, swapChain, UINT64_MAX, imageAvailableSemaphore, VK_NULL_HANDLE, &imageIndex);
 
 			acuireFence->WaitForFence();
@@ -234,7 +244,7 @@ namespace Neon
 			
 
 			presentInfo.swapchainCount = 1;
-			presentInfo.pSwapchains = &swapChain;
+			presentInfo.pSwapchains = &NEON_CAST(VKSwapchain*, m_Swapchain)->m_SwapchainObj;
 			presentInfo.pImageIndices = &imageIndex;
 
 			res = vkQueuePresentKHR(NEON_CAST(VKCommandQueue*, commandQueue)->m_CommandQueueObj, &presentInfo);
@@ -269,7 +279,7 @@ namespace Neon
 			// Define layers
 			std::vector<const char*> layers;
 #if defined(NEON_DEBUG)
-			layers.push_back("VK_LAYER_KHRONOS_validation");
+			layers.push_back("VK_LAYER_LUNARG_standard_validation");
 #endif
 
 			// Check layer support
@@ -305,23 +315,23 @@ namespace Neon
 #endif
 
 			// Initialize Vulkan instance
-			VK_ThrowIfFailed(vkCreateInstance(&createInfo, nullptr, &instance));
+			VK_ThrowIfFailed(vkCreateInstance(&createInfo, nullptr, &m_Instance));
 
 #if defined(NEON_DEBUG)
-			auto func = (PFN_vkCreateDebugUtilsMessengerEXT)vkGetInstanceProcAddr(instance, "vkCreateDebugUtilsMessengerEXT");
-			func(instance, &debugCreateInfo, nullptr, &debugMessenger);
+			auto func = (PFN_vkCreateDebugUtilsMessengerEXT)vkGetInstanceProcAddr(m_Instance, "vkCreateDebugUtilsMessengerEXT");
+			func(m_Instance, &debugCreateInfo, nullptr, &debugMessenger);
 #endif
 		}
 
 		void VKGraphicsContext::CreateSurface()
 		{
-			// Setup the surface
-			VkWin32SurfaceCreateInfoKHR surfaceCreateInfo = {};
-			surfaceCreateInfo.sType = VK_STRUCTURE_TYPE_WIN32_SURFACE_CREATE_INFO_KHR;
-			surfaceCreateInfo.hinstance = GetModuleHandle(NULL);
-			surfaceCreateInfo.hwnd = (HWND)hwnd;
-
-			VK_ThrowIfFailed(vkCreateWin32SurfaceKHR(instance, &surfaceCreateInfo, NULL, &windowSurface));
+		//	// Setup the surface
+		//	VkWin32SurfaceCreateInfoKHR surfaceCreateInfo = {};
+		//	surfaceCreateInfo.sType = VK_STRUCTURE_TYPE_WIN32_SURFACE_CREATE_INFO_KHR;
+		//	surfaceCreateInfo.hinstance = GetModuleHandle(NULL);
+		//	surfaceCreateInfo.hwnd = (HWND)hwnd;
+		//
+		//	VK_ThrowIfFailed(vkCreateWin32SurfaceKHR(m_Instance, &surfaceCreateInfo, NULL, &windowSurface));
 		}
 
 		// TODO:: find best device
@@ -329,7 +339,7 @@ namespace Neon
 		{
 			// Try to find 1 Vulkan supported device
 			uint32_t deviceCount = 1;
-			VkResult res = vkEnumeratePhysicalDevices(instance, &deviceCount, &m_PhysicalDevice);
+			VkResult res = vkEnumeratePhysicalDevices(m_Instance, &deviceCount, &m_PhysicalDevice);
 			if (res != VK_SUCCESS && res != VK_INCOMPLETE) {
 				std::cerr << "enumerating physical devices failed!" << std::endl;
 				exit(1);
@@ -431,145 +441,132 @@ namespace Neon
 			std::cout << "acquired graphics and presentation queues" << std::endl;
 		}
 
-		void VKGraphicsContext::CreateSemaphores()
-		{
-			VkSemaphoreCreateInfo createInfo = {};
-			createInfo.sType = VK_STRUCTURE_TYPE_SEMAPHORE_CREATE_INFO;
-
-			if (vkCreateSemaphore(m_Device, &createInfo, nullptr, &imageAvailableSemaphore) != VK_SUCCESS ||
-				vkCreateSemaphore(m_Device, &createInfo, nullptr, &renderingFinishedSemaphore) != VK_SUCCESS) {
-				std::cerr << "failed to create semaphores" << std::endl;
-				exit(1);
-			}
-			else {
-				std::cout << "created semaphores" << std::endl;
-			}
-		}
-
 		void VKGraphicsContext::CreateSwapchain()
 		{
-			// Find surface capabilities
-			VkSurfaceCapabilitiesKHR surfaceCapabilities;
-			if (vkGetPhysicalDeviceSurfaceCapabilitiesKHR(m_PhysicalDevice, windowSurface, &surfaceCapabilities) != VK_SUCCESS) {
-				std::cerr << "failed to acquire presentation surface capabilities" << std::endl;
-				exit(1);
-			}
+		//	// Find surface capabilities
+		//	VkSurfaceCapabilitiesKHR surfaceCapabilities;
+		//	if (vkGetPhysicalDeviceSurfaceCapabilitiesKHR(m_PhysicalDevice, windowSurface, &surfaceCapabilities) != VK_SUCCESS) {
+		//		std::cerr << "failed to acquire presentation surface capabilities" << std::endl;
+		//		exit(1);
+		//	}
+		//
+		//	// Find supported surface formats
+		//	uint32_t formatCount;
+		//	if (vkGetPhysicalDeviceSurfaceFormatsKHR(m_PhysicalDevice, windowSurface, &formatCount, nullptr) != VK_SUCCESS || formatCount == 0) {
+		//		std::cerr << "failed to get number of supported surface formats" << std::endl;
+		//		exit(1);
+		//	}
+		//
+		//	std::vector<VkSurfaceFormatKHR> surfaceFormats(formatCount);
+		//	if (vkGetPhysicalDeviceSurfaceFormatsKHR(m_PhysicalDevice, windowSurface, &formatCount, surfaceFormats.data()) != VK_SUCCESS) {
+		//		std::cerr << "failed to get supported surface formats" << std::endl;
+		//		exit(1);
+		//	}
+		//
+		//	// Find supported present modes
+		//	uint32_t presentModeCount;
+		//	if (vkGetPhysicalDeviceSurfacePresentModesKHR(m_PhysicalDevice, windowSurface, &presentModeCount, nullptr) != VK_SUCCESS || presentModeCount == 0) {
+		//		std::cerr << "failed to get number of supported presentation modes" << std::endl;
+		//		exit(1);
+		//	}
+		//
+		//	std::vector<VkPresentModeKHR> presentModes(presentModeCount);
+		//	if (vkGetPhysicalDeviceSurfacePresentModesKHR(m_PhysicalDevice, windowSurface, &presentModeCount, presentModes.data()) != VK_SUCCESS) {
+		//		std::cerr << "failed to get supported presentation modes" << std::endl;
+		//		exit(1);
+		//	}
+		//
+		//	// Determine number of images for swap chain
+		//	uint32_t imageCount = surfaceCapabilities.minImageCount + 1;
+		//	if (surfaceCapabilities.maxImageCount != 0 && imageCount > surfaceCapabilities.maxImageCount) {
+		//		imageCount = surfaceCapabilities.maxImageCount;
+		//	}
+		//
+		//	std::cout << "using " << imageCount << " images for swap chain" << std::endl;
+		//
+		//	// Select a surface format
+		//	// Select a surface format
+		//	VkSurfaceFormatKHR surfaceFormat = chooseSurfaceFormat(surfaceFormats);
+		//	swapChainImageFormat = surfaceFormat.format;
+		//
+		//	// Select swap chain size
+		//	VkExtent2D swapChainExtent = chooseSwapExtent(surfaceCapabilities);
+		//
+		//	// Check if swap chain supports being the destination of an image transfer
+		//	// Note: AMD driver bug, though it would be nice to implement a workaround that doesn't use transfering
+		//	if (!(surfaceCapabilities.supportedUsageFlags & VK_IMAGE_USAGE_TRANSFER_DST_BIT)) {
+		//		std::cerr << "swap chain image does not support VK_IMAGE_TRANSFER_DST usage" << std::endl;
+		//		//exit(1);
+		//	}
+		//
+		//	// Determine transformation to use (preferring no transform)
+		//	VkSurfaceTransformFlagBitsKHR surfaceTransform;
+		//	if (surfaceCapabilities.supportedTransforms & VK_SURFACE_TRANSFORM_IDENTITY_BIT_KHR) {
+		//		surfaceTransform = VK_SURFACE_TRANSFORM_IDENTITY_BIT_KHR;
+		//	}
+		//	else {
+		//		surfaceTransform = surfaceCapabilities.currentTransform;
+		//	}
+		//
+		//
+		//
+		//	// Choose presentation mode (preferring MAILBOX ~= triple buffering)
+		//	VkPresentModeKHR presentMode = choosePresentMode(presentModes);
+		//
+		//	// Finally, create the swap chain
+		//	VkSwapchainCreateInfoKHR createInfo = {};
+		//	createInfo.sType = VK_STRUCTURE_TYPE_SWAPCHAIN_CREATE_INFO_KHR;
+		//	createInfo.surface = windowSurface;
+		//	createInfo.minImageCount = imageCount;
+		//	createInfo.imageFormat = surfaceFormat.format;;
+		//	createInfo.imageColorSpace = surfaceFormat.colorSpace;
+		//	createInfo.imageExtent = swapChainExtent;
+		//	createInfo.imageArrayLayers = 1;
+		//	createInfo.imageUsage = VK_IMAGE_USAGE_COLOR_ATTACHMENT_BIT | VK_IMAGE_USAGE_TRANSFER_DST_BIT;
+		//	createInfo.imageSharingMode = VK_SHARING_MODE_EXCLUSIVE;
+		//	createInfo.queueFamilyIndexCount = 0;
+		//	createInfo.pQueueFamilyIndices = nullptr;
+		//	createInfo.preTransform = surfaceTransform;
+		//	createInfo.compositeAlpha = VK_COMPOSITE_ALPHA_OPAQUE_BIT_KHR;
+		//	createInfo.presentMode = presentMode;
+		//	createInfo.clipped = VK_TRUE;
+		//	createInfo.oldSwapchain = VK_NULL_HANDLE;
+		//
+		//	if (vkCreateSwapchainKHR(m_Device, &createInfo, nullptr, &swapChain) != VK_SUCCESS) {
+		//		std::cerr << "failed to create swap chain" << std::endl;
+		//		exit(1);
+		//	}
+		//	else {
+		//		std::cout << "created swap chain" << std::endl;
+		//	}
+		//
+		//	// Store the images used by the swap chain
+		//	// Note: these are the images that swap chain image indices refer to
+		//	// Note: actual number of images may differ from requested number, since it's a lower bound
+		//	uint32_t actualImageCount = 0;
+		//	if (vkGetSwapchainImagesKHR(m_Device, swapChain, &actualImageCount, nullptr) != VK_SUCCESS || actualImageCount == 0) {
+		//		std::cerr << "failed to acquire number of swap chain images" << std::endl;
+		//		exit(1);
+		//	}
+		
+			uint32_t imageCount = 3;// Remove hardcoded
 
-			// Find supported surface formats
-			uint32_t formatCount;
-			if (vkGetPhysicalDeviceSurfaceFormatsKHR(m_PhysicalDevice, windowSurface, &formatCount, nullptr) != VK_SUCCESS || formatCount == 0) {
-				std::cerr << "failed to get number of supported surface formats" << std::endl;
-				exit(1);
-			}
-
-			std::vector<VkSurfaceFormatKHR> surfaceFormats(formatCount);
-			if (vkGetPhysicalDeviceSurfaceFormatsKHR(m_PhysicalDevice, windowSurface, &formatCount, surfaceFormats.data()) != VK_SUCCESS) {
-				std::cerr << "failed to get supported surface formats" << std::endl;
-				exit(1);
-			}
-
-			// Find supported present modes
-			uint32_t presentModeCount;
-			if (vkGetPhysicalDeviceSurfacePresentModesKHR(m_PhysicalDevice, windowSurface, &presentModeCount, nullptr) != VK_SUCCESS || presentModeCount == 0) {
-				std::cerr << "failed to get number of supported presentation modes" << std::endl;
-				exit(1);
-			}
-
-			std::vector<VkPresentModeKHR> presentModes(presentModeCount);
-			if (vkGetPhysicalDeviceSurfacePresentModesKHR(m_PhysicalDevice, windowSurface, &presentModeCount, presentModes.data()) != VK_SUCCESS) {
-				std::cerr << "failed to get supported presentation modes" << std::endl;
-				exit(1);
-			}
-
-			// Determine number of images for swap chain
-			uint32_t imageCount = surfaceCapabilities.minImageCount + 1;
-			if (surfaceCapabilities.maxImageCount != 0 && imageCount > surfaceCapabilities.maxImageCount) {
-				imageCount = surfaceCapabilities.maxImageCount;
-			}
-
-			std::cout << "using " << imageCount << " images for swap chain" << std::endl;
-
-			// Select a surface format
-			// Select a surface format
-			VkSurfaceFormatKHR surfaceFormat = chooseSurfaceFormat(surfaceFormats);
-			swapChainImageFormat = surfaceFormat.format;
-
-			// Select swap chain size
-			VkExtent2D swapChainExtent = chooseSwapExtent(surfaceCapabilities);
-
-			// Check if swap chain supports being the destination of an image transfer
-			// Note: AMD driver bug, though it would be nice to implement a workaround that doesn't use transfering
-			if (!(surfaceCapabilities.supportedUsageFlags & VK_IMAGE_USAGE_TRANSFER_DST_BIT)) {
-				std::cerr << "swap chain image does not support VK_IMAGE_TRANSFER_DST usage" << std::endl;
-				//exit(1);
-			}
-
-			// Determine transformation to use (preferring no transform)
-			VkSurfaceTransformFlagBitsKHR surfaceTransform;
-			if (surfaceCapabilities.supportedTransforms & VK_SURFACE_TRANSFORM_IDENTITY_BIT_KHR) {
-				surfaceTransform = VK_SURFACE_TRANSFORM_IDENTITY_BIT_KHR;
-			}
-			else {
-				surfaceTransform = surfaceCapabilities.currentTransform;
-			}
-
-
-
-			// Choose presentation mode (preferring MAILBOX ~= triple buffering)
-			VkPresentModeKHR presentMode = choosePresentMode(presentModes);
-
-			// Finally, create the swap chain
-			VkSwapchainCreateInfoKHR createInfo = {};
-			createInfo.sType = VK_STRUCTURE_TYPE_SWAPCHAIN_CREATE_INFO_KHR;
-			createInfo.surface = windowSurface;
-			createInfo.minImageCount = imageCount;
-			createInfo.imageFormat = surfaceFormat.format;;
-			createInfo.imageColorSpace = surfaceFormat.colorSpace;
-			createInfo.imageExtent = swapChainExtent;
-			createInfo.imageArrayLayers = 1;
-			createInfo.imageUsage = VK_IMAGE_USAGE_COLOR_ATTACHMENT_BIT | VK_IMAGE_USAGE_TRANSFER_DST_BIT;
-			createInfo.imageSharingMode = VK_SHARING_MODE_EXCLUSIVE;
-			createInfo.queueFamilyIndexCount = 0;
-			createInfo.pQueueFamilyIndices = nullptr;
-			createInfo.preTransform = surfaceTransform;
-			createInfo.compositeAlpha = VK_COMPOSITE_ALPHA_OPAQUE_BIT_KHR;
-			createInfo.presentMode = presentMode;
-			createInfo.clipped = VK_TRUE;
-			createInfo.oldSwapchain = VK_NULL_HANDLE;
-
-			if (vkCreateSwapchainKHR(m_Device, &createInfo, nullptr, &swapChain) != VK_SUCCESS) {
-				std::cerr << "failed to create swap chain" << std::endl;
-				exit(1);
-			}
-			else {
-				std::cout << "created swap chain" << std::endl;
-			}
-
-			// Store the images used by the swap chain
-			// Note: these are the images that swap chain image indices refer to
-			// Note: actual number of images may differ from requested number, since it's a lower bound
-			uint32_t actualImageCount = 0;
-			if (vkGetSwapchainImagesKHR(m_Device, swapChain, &actualImageCount, nullptr) != VK_SUCCESS || actualImageCount == 0) {
-				std::cerr << "failed to acquire number of swap chain images" << std::endl;
-				exit(1);
-			}
-
-			swapChainImages.resize(actualImageCount);
-			swapChainFramebuffers.resize(actualImageCount);
-
-			if (vkGetSwapchainImagesKHR(m_Device, swapChain, &actualImageCount, swapChainImages.data()) != VK_SUCCESS) {
+			swapChainImages.resize(imageCount);
+			swapChainFramebuffers.resize(imageCount);
+		
+			if (vkGetSwapchainImagesKHR(m_Device, NEON_CAST(VKSwapchain*, m_Swapchain)->m_SwapchainObj, &imageCount, swapChainImages.data()) != VK_SUCCESS) {
 				std::cerr << "failed to acquire swap chain images" << std::endl;
 				exit(1);
 			}
-
+		
 			swapChainImageViews.resize(swapChainImages.size());
-
+		
 			for (size_t i = 0; i < swapChainImages.size(); i++) {
 				VkImageViewCreateInfo createInfo{};
 				createInfo.sType = VK_STRUCTURE_TYPE_IMAGE_VIEW_CREATE_INFO;
 				createInfo.image = swapChainImages[i];
 				createInfo.viewType = VK_IMAGE_VIEW_TYPE_2D;
-				createInfo.format = swapChainImageFormat;
+				createInfo.format = VK_FORMAT_R8G8B8A8_UNORM;
 				createInfo.components.r = VK_COMPONENT_SWIZZLE_IDENTITY;
 				createInfo.components.g = VK_COMPONENT_SWIZZLE_IDENTITY;
 				createInfo.components.b = VK_COMPONENT_SWIZZLE_IDENTITY;
@@ -579,18 +576,19 @@ namespace Neon
 				createInfo.subresourceRange.levelCount = 1;
 				createInfo.subresourceRange.baseArrayLayer = 0;
 				createInfo.subresourceRange.layerCount = 1;
-
+		
 				if (vkCreateImageView(m_Device, &createInfo, nullptr, &swapChainImageViews[i]) != VK_SUCCESS) {
 					throw std::runtime_error("failed to create image views!");
 				}
 			}
-
+		
 			std::cout << "acquired swap chain images" << std::endl;
+
 		}
 
 		void VKGraphicsContext::createRenderPass() {
 			VkAttachmentDescription colorAttachment{};
-			colorAttachment.format = swapChainImageFormat;
+			colorAttachment.format = VK_FORMAT_R8G8B8A8_UNORM;
 			colorAttachment.samples = VK_SAMPLE_COUNT_1_BIT;
 			colorAttachment.loadOp = VK_ATTACHMENT_LOAD_OP_CLEAR;
 			colorAttachment.storeOp = VK_ATTACHMENT_STORE_OP_STORE;

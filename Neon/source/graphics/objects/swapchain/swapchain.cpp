@@ -6,9 +6,9 @@
 #include "./graphics/api/directx12/objects/swapchain/dx12_swapchain.h"
 #endif
 
-//#if defined(NEON_SUPPORT_VULKAN)
-//#include "./graphics/api/vulkan/objects/command/vk_command_buffer.h"
-//#endif
+#if defined(NEON_SUPPORT_VULKAN)
+#include "./graphics/api/vulkan/objects/swapchain/vk_swapchain.h"
+#endif
 
 namespace Neon
 {
@@ -19,8 +19,8 @@ namespace Neon
 			GraphicsAPI api = GraphicsDriver::GetGraphicsAPI();
 
 			// Vulkan
-			//if (api == GraphicsAPI::VULKAN)
-			//	return new VKCommandBuffer(_renderpassDescriptor);
+			if (api == GraphicsAPI::VULKAN)
+				return new VKSwapchain(_commandQueue, _swapchainDescriptor);
 
 			// DirectX12
 			if (api == GraphicsAPI::DIRECTX12)

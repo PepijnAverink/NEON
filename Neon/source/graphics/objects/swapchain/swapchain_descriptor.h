@@ -1,11 +1,11 @@
 #pragma once
 #include "./graphics/objects/swapchain/back_buffer_format.h"
+#include "./graphics/objects/swapchain/graphics_surface.h"
 
 #include <string>
 
 namespace Neon
 {
-	namespace Core { class Window; }
 	namespace Graphics
 	{
 		class SwapchainDescriptor
@@ -20,8 +20,7 @@ namespace Neon
 			int BackBufferCount;
 
 			BackBufferFormat Format;
-			Core::Window*    Window;
-
+			GraphicsSurface* Surface;
 		};
 	}
 }

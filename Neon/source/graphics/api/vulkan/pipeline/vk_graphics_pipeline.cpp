@@ -98,10 +98,10 @@ namespace Neon
 			rasterizer.sType								= VK_STRUCTURE_TYPE_PIPELINE_RASTERIZATION_STATE_CREATE_INFO;
 			rasterizer.depthClampEnable						= VK_FALSE;
 			rasterizer.rasterizerDiscardEnable				= VK_FALSE;
-			rasterizer.polygonMode							= GetVKFillMode(m_RasterizerState.RasterizerFillMode);
-			rasterizer.lineWidth							= m_RasterizerState.RasterizerLineWidth;
-			rasterizer.cullMode								= GetVKCullMode(m_RasterizerState.RasterizerCullMode);
-			rasterizer.frontFace							= GetVKCullFace(m_RasterizerState.RasterizerCullFace);
+			rasterizer.polygonMode = VK_POLYGON_MODE_FILL;// GetVKFillMode(m_RasterizerState.RasterizerFillMode);
+			rasterizer.lineWidth = 1.0f;// m_RasterizerState.RasterizerLineWidth;
+			rasterizer.cullMode = VK_CULL_MODE_FRONT_BIT;// GetVKCullMode(m_RasterizerState.RasterizerCullMode);
+			rasterizer.frontFace = VK_FRONT_FACE_CLOCKWISE;// GetVKCullFace(m_RasterizerState.RasterizerCullFace);
 			rasterizer.depthBiasEnable						= VK_FALSE;
 
 			VkPipelineMultisampleStateCreateInfo multisampling = {};

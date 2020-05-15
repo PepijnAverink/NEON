@@ -27,6 +27,7 @@
 #include "./graphics/objects/command_generic/scissor.h"
 
 #include "./graphics/api/directx12/objects/swapchain/dx12_swapchain.h"
+#include "./graphics/api/directx12/objects/swapchain/dx12_graphics_surface.h"
 
 
 namespace Neon
@@ -79,6 +80,7 @@ namespace Neon
 			IndexBuffer*      m_IndexBuffer;
 
 			Swapchain*		  m_Swapchain;
+			GraphicsSurface*  m_GraphicsSurface;
 
 			Renderpass*		  m_Renderpass;
 			Framebuffer*	  m_Framebuffer[frameBufferCount];
