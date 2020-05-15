@@ -17,6 +17,7 @@ namespace Neon
 			uint32_t FindMemoryType(VkMemoryPropertyFlags properties);
 
 			friend class VKVertexBuffer;
+			friend class VKIndexBuffer;
 			VkDeviceMemory m_memoryObj;
 		};
 	}

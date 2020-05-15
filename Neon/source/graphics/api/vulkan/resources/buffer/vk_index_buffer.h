@@ -10,7 +10,7 @@ namespace Neon
 		class VKIndexBuffer : public IndexBuffer
 		{
 		public:
-			VKIndexBuffer(const IndexBufferDescriptor* _indexBufferDescriptor);
+			VKIndexBuffer(CommandBuffer* _commandBuffer, const IndexBufferDescriptor* _indexBufferDescriptor);
 			virtual ~VKIndexBuffer();
 
 			virtual void* Map()   const override;
@@ -18,7 +18,7 @@ namespace Neon
 
 		private:
 			friend class VKGraphicsContext; // TODO:: remove me
-			VkBuffer m_VertexBufferObj;
+			VkBuffer m_IndexBufferObj;
 		};
 	}
 }

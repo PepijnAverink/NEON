@@ -849,9 +849,10 @@ namespace Neon
 				commandBuffers.push_back(CommandBuffer::Create(&commandBufferDesc));
 
 			float vertices[] = {
-				 0.0f, -0.5f, 1.0f, 0.0f, 0.0f,
-				 0.5f,  0.5f, 0.0f, 1.0f, 0.0f,
-				-0.5f,  0.5f, 0.0f, 0.0f, 1.0f,
+				-0.5f, -0.5f, 1.0f, 0.0f, 0.0f,
+				0.5f, -0.5f, 0.0f, 1.0f, 0.0f,
+				0.5f, 0.5f, 0.0f, 0.0f, 1.0f,
+				-0.5f, 0.5f, 1.0f, 1.0f, 1.0f
 			};
 
 			MemoryPoolDescriptor memoryPoolDesc = {};
@@ -870,6 +871,26 @@ namespace Neon
 			vertexBufferDesc.VertexCount = 3;
 
 			vertexBuffer = VertexBuffer::Create(commandBuffers[0], &vertexBufferDesc);
+			
+
+			uint16_t indices[] = { 0, 1, 2, 2, 3, 0 };
+
+			MemoryPoolDescriptor imemoryPoolDesc = {};
+			imemoryPoolDesc.Name = "VertexMemoryPool";
+			imemoryPoolDesc.Access = MemoryAccess::NEON_MEMORY_ACCESS_GPU_ONLY;
+			imemoryPoolDesc.Size = sizeof(indices);
+
+			imemoryPool = MemoryPool::Create(&imemoryPoolDesc);
+
+			IndexBufferDescriptor indexBufferDesc = {};
+			indexBufferDesc.Name = "IndexBuffer";
+			indexBufferDesc.Size = sizeof(indices);
+			indexBufferDesc.Usage = BufferUsage::NEON_BUFFER_USAGE_STATIC;
+			indexBufferDesc.Indices = indices;
+			indexBufferDesc.IMemoryPool = imemoryPool;
+			indexBufferDesc.IndexCount = 6;
+
+			indexBuffer = IndexBuffer::Create(commandBuffers[0], &indexBufferDesc);
 
 			// Note: contains value for each subresource range
 			VkClearColorValue clearColor = {
@@ -936,10 +957,14 @@ namespace Neon
 
 				commandBuffers[i]->SetVertexBuffer(vertexBuffer);
 
+				vkCmdBindIndexBuffer(NEON_CAST(VKCommandBuffer*, commandBuffers[i])->m_CommandBufferObj, NEON_CAST(VKIndexBuffer*, indexBuffer)->m_IndexBufferObj, 0, VK_INDEX_TYPE_UINT16);
+
 			//	vkCmdDraw(commandBuffers[i], static_cast<uint32_t>(vertices.size()), 1, 0, 0);
 
 
 				vkCmdDraw(NEON_CAST(VKCommandBuffer*, commandBuffers[i])->m_CommandBufferObj, vertexBuffer->GetVertexCount(), 1, 0, 0);
+
+				vkCmdDrawIndexed(NEON_CAST(VKCommandBuffer*, commandBuffers[i])->m_CommandBufferObj, 6, 1, 0, 0, 0);
 
 				vkCmdEndRenderPass(NEON_CAST(VKCommandBuffer*, commandBuffers[i])->m_CommandBufferObj);
 

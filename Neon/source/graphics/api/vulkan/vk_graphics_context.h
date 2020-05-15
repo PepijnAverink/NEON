@@ -17,6 +17,7 @@
 
 #include "./graphics/resources/memory/memory_pool.h"
 #include "./graphics/api/vulkan/resources/buffer/vk_vertex_buffer.h"
+#include "./graphics/api/vulkan/resources/buffer/vk_index_buffer.h"
 
 #include "./graphics/api/vulkan/objects/swapchain/vk_swapchain.h"
 #include "./graphics/api/vulkan/objects/swapchain/vk_graphics_surface.h"
@@ -59,6 +60,7 @@ namespace Neon
 			void createGraphicsPipeline();
 			void createRenderPass();
 			void findQueueFamilies();
+
 			VkShaderModule createShaderModule(const std::vector<char>& code);
 
 			bool CheckLayersSupport(const std::vector<const char*> _VKLayers);
@@ -83,6 +85,9 @@ namespace Neon
 
 			VertexBuffer* vertexBuffer;
 			MemoryPool*   memoryPool;
+
+			IndexBuffer* indexBuffer;
+			MemoryPool* imemoryPool;
 
 			Swapchain*		 m_Swapchain;
 			GraphicsSurface* m_Surface;

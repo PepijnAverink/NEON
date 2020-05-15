@@ -16,13 +16,14 @@ namespace Neon
 
 			std::string  Name;
 			void*		 Indices;
-			uint32_t	 Size;
 			uint32_t	 IndexCount;
 
 			BufferUsage	 Usage;
 			BufferFormat Format;
 
 			MemoryPool*  IMemoryPool;
+			uint32_t	 Size;
+			uint32_t     Offset;
 		};
 	}
 }

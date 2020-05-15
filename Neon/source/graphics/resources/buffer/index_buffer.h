@@ -24,6 +24,8 @@ namespace Neon
 #if defined(NEON_DEBUG)
 			std::string		   m_Name;
 #endif
+			MemoryPool*		   m_MemoryPool;
+
 			uint32_t		   m_Size;
 			uint32_t		   m_IndexCount;
 

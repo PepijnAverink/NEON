@@ -6,9 +6,9 @@
 #include "./graphics/api/directx12/resources/buffer/dx12_index_buffer.h"
 #endif
 
-//#if defined(NEON_SUPPORT_VULKAN)
-//#include "./graphics/api/vulkan/resources/buffer/vk_vertex_buffer.h"
-//#endif
+#if defined(NEON_SUPPORT_VULKAN)
+#include "./graphics/api/vulkan/resources/buffer/vk_index_buffer.h"
+#endif
 
 namespace Neon
 {
@@ -19,8 +19,8 @@ namespace Neon
 			GraphicsAPI api = GraphicsDriver::GetGraphicsAPI();
 
 			// Vulkan
-		//	if (api == GraphicsAPI::VULKAN)
-		//		return new VKVertexBuffer(_commandBuffer, _indexBufferDescriptor);
+			if (api == GraphicsAPI::VULKAN)
+				return new VKIndexBuffer(_commandBuffer, _indexBufferDescriptor);
 
 			// DirectX12
 			if (api == GraphicsAPI::DIRECTX12)
@@ -35,6 +35,7 @@ namespace Neon
 			, m_IndexCount(_indexBufferDescriptor->IndexCount)
 			, m_BufferUsage(_indexBufferDescriptor->Usage)
 			, m_BufferFormat(_indexBufferDescriptor->Format)
+			, m_MemoryPool(_indexBufferDescriptor->IMemoryPool)
 #if defined(NEON_DEBUG)
 			, m_Name(_indexBufferDescriptor->Name)
 #endif
