@@ -185,6 +185,10 @@
     <ClInclude Include="source\graphics\api\vulkan\objects\command\vk_command_buffer.h" />
     <ClInclude Include="source\graphics\api\vulkan\objects\command\vk_command_queue.h" />
     <ClInclude Include="source\graphics\api\vulkan\objects\command\vk_command_queue_type.h" />
+    <ClInclude Include="source\graphics\api\vulkan\objects\framebuffer\vk_framebuffer.h" />
+    <ClInclude Include="source\graphics\api\vulkan\objects\framebuffer\vk_framebuffer_attachment.h" />
+    <ClInclude Include="source\graphics\api\vulkan\objects\framebuffer\vk_framebuffer_attachment_transition_state.h" />
+    <ClInclude Include="source\graphics\api\vulkan\objects\renderpass\vk_renderpass.h" />
     <ClInclude Include="source\graphics\api\vulkan\objects\swapchain\vk_graphics_surface.h" />
     <ClInclude Include="source\graphics\api\vulkan\objects\swapchain\vk_swapchain.h" />
     <ClInclude Include="source\graphics\api\vulkan\objects\sync\vk_fence.h" />
@@ -303,6 +307,9 @@
     <ClCompile Include="source\graphics\api\vulkan\objects\command\vk_command_pool.cpp" />
     <ClCompile Include="source\graphics\api\vulkan\objects\command\vk_command_buffer.cpp" />
     <ClCompile Include="source\graphics\api\vulkan\objects\command\vk_command_queue.cpp" />
+    <ClCompile Include="source\graphics\api\vulkan\objects\framebuffer\vk_framebuffer.cpp" />
+    <ClCompile Include="source\graphics\api\vulkan\objects\framebuffer\vk_framebuffer_attachment.cpp" />
+    <ClCompile Include="source\graphics\api\vulkan\objects\renderpass\vk_renderpass.cpp" />
     <ClCompile Include="source\graphics\api\vulkan\objects\swapchain\vk_graphics_surface.cpp" />
     <ClCompile Include="source\graphics\api\vulkan\objects\swapchain\vk_swapchain.cpp" />
     <ClCompile Include="source\graphics\api\vulkan\objects\sync\vk_fence.cpp" />
