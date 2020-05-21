@@ -13,11 +13,11 @@ namespace Neon
 		public:
 			DX12Framebuffer(const FramebufferDescriptor* _framebufferDescriptor, Renderpass* _renderpass);
 
-			virtual void AddAttachment(FramebufferAttachment* _framebufferAttachment) override;
-
 			CD3DX12_CPU_DESCRIPTOR_HANDLE GetAttachmentHandle() const { return CD3DX12_CPU_DESCRIPTOR_HANDLE(m_DescriptorHeap->GetCPUDescriptorHandleForHeapStart()); }
 			CD3DX12_CPU_DESCRIPTOR_HANDLE GetDepthStencilHandle() const { return CD3DX12_CPU_DESCRIPTOR_HANDLE(m_DepthDescriptorHeap->GetCPUDescriptorHandleForHeapStart()); }
+
 		private:
+			virtual void AddAttachment(FramebufferAttachment* _framebufferAttachment) override;
 
 			ID3D12DescriptorHeap* m_DescriptorHeap;
 			int					  m_DescriptorSize;

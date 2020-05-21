@@ -6,6 +6,7 @@ namespace Neon
 {
 	namespace Graphics
 	{
+		class FramebufferAttachment;
 		class FramebufferDescriptor
 		{
 		public:
@@ -16,10 +17,11 @@ namespace Neon
 			int				  Width;
 			int				  Height;
 
-			uint32_t		  AttachmentCount;
-			bool			  DepthAttachment;
+			FramebufferAttachment** Attachments;
+			uint32_t		        AttachmentCount;
+			bool			        DepthAttachment;
 
-			FramebufferLayout Layout;
+			FramebufferLayout       Layout;
 		};
 	}
 }

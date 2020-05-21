@@ -184,11 +184,10 @@ namespace Neon
 			for (int i = 0; i < m_Swapchain->GetBackBufferCount(); i++)
 			{
 				// Create Framebuffer
-				m_Framebuffer[i] = Framebuffer::Create(&framebufferDesc, m_Renderpass);
+				FramebufferAttachment* attachments[] = { m_Swapchain->GetFramebufferAttachment(i), m_DepthAttachment };
+				framebufferDesc.Attachments = attachments;
 
-				// Get swapchain image and add to framebuffer
-				m_Framebuffer[i]->AddAttachment(m_Swapchain->GetFramebufferAttachment(i));
-				m_Framebuffer[i]->AddAttachment(m_DepthAttachment);
+				m_Framebuffer[i] = Framebuffer::Create(&framebufferDesc, m_Renderpass);
 			}
 
 			// Create vertex buffer

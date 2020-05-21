@@ -14,8 +14,6 @@ namespace Neon
 		public:
 			static Framebuffer* Create(const FramebufferDescriptor* _framebufferDescriptor, Renderpass* _renderpass);
 
-			virtual void AddAttachment(FramebufferAttachment* _framebufferAttachment) = 0;
-
 			inline uint32_t GetAttachmentCount() const { return m_AttachmentCount; }
 
 			FramebufferAttachment* GetAttachment(const int _attachmentIndex) const { return m_FramebufferAttachments[_attachmentIndex]; }
@@ -23,6 +21,7 @@ namespace Neon
 
 		protected:
 			Framebuffer(const FramebufferDescriptor* _framebufferDescriptor);
+			virtual void AddAttachment(FramebufferAttachment* _framebufferAttachment) = 0;
 
 			uint32_t							m_AttachmentCount;
 			std::vector<FramebufferAttachment*> m_FramebufferAttachments;

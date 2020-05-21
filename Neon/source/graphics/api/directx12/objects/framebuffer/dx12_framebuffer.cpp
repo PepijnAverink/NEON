@@ -29,6 +29,14 @@ namespace Neon
 			dsvHeapDesc.Type			= D3D12_DESCRIPTOR_HEAP_TYPE_DSV;
 			dsvHeapDesc.Flags			= D3D12_DESCRIPTOR_HEAP_FLAG_NONE;
 			DX12_ThrowIfFailed(DX12GraphicsContext::GetInstance()->GetGraphicsDevice()->CreateDescriptorHeap(&dsvHeapDesc, IID_PPV_ARGS(&m_DepthDescriptorHeap)));
+
+			// Add the attachments
+			for (int i = 0; i < m_AttachmentCount; ++i)
+				AddAttachment(_framebufferDescriptor->Attachments[i]);
+
+			// Add depthStencil attechment if it is active
+			if (m_DepthStencilActive)
+				AddAttachment(_framebufferDescriptor->Attachments[m_AttachmentCount]);
 		}
 
 		void DX12Framebuffer::AddAttachment(FramebufferAttachment* _framebufferAttachment)
