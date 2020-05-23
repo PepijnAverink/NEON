@@ -19,6 +19,8 @@
 #include "./graphics/api/vulkan/resources/buffer/vk_vertex_buffer.h"
 #include "./graphics/api/vulkan/resources/buffer/vk_index_buffer.h"
 
+#include "./graphics/api/vulkan/pipeline/vk_graphics_pipeline.h"
+
 #include "./graphics/api/vulkan/objects/swapchain/vk_swapchain.h"
 #include "./graphics/api/vulkan/objects/swapchain/vk_graphics_surface.h"
 
@@ -88,6 +90,8 @@ namespace Neon
 
 			IndexBuffer* indexBuffer;
 			MemoryPool* imemoryPool;
+
+			GraphicsPipeline* m_Pipeline;
 
 			Swapchain*		 m_Swapchain;
 			GraphicsSurface* m_Surface;

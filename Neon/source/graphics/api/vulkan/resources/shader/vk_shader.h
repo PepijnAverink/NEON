@@ -17,7 +17,8 @@ namespace Neon
 			VkShaderModule m_VertexShaderModule;
 			VkShaderModule m_FragmentShaderModule;
 
-			friend class VKGraphicsContext;
+			friend class VKGraphicsContext; // Remove me
+			friend class VKGraphicsPipeline;
 			VkPipelineShaderStageCreateInfo m_VertexStageInfo;
 			VkPipelineShaderStageCreateInfo m_FragmentStageInfo;
 		};

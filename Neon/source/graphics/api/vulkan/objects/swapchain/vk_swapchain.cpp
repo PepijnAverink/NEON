@@ -1,5 +1,6 @@
 #include "./graphics/api/vulkan/objects/swapchain/vk_swapchain.h"
 #include "./graphics/api/vulkan/objects/swapchain/vk_graphics_surface.h"
+#include "./graphics/api/vulkan/objects/framebuffer/vk_framebuffer_attachment.h"
 #include "./graphics/api/vulkan/vk_graphics_context.h"
 #include "./graphics/api/vulkan/vk_error.h"
 
@@ -92,6 +93,10 @@ namespace Neon
 			createInfo.oldSwapchain				= VK_NULL_HANDLE;
 
 			VK_ThrowIfFailed(vkCreateSwapchainKHR(VKGraphicsContext::GetInstance()->GetGraphicsDevice(), &createInfo, nullptr, &m_SwapchainObj));
+
+			// Get swapchainImages
+			m_SwapchainImages.resize(m_BackBufferCount);
+			VK_ThrowIfFailed(vkGetSwapchainImagesKHR(VKGraphicsContext::GetInstance()->GetGraphicsDevice(), m_SwapchainObj, &m_BackBufferCount, m_SwapchainImages.data()));
 		}
 
 		VKSwapchain::~VKSwapchain()
@@ -101,7 +106,13 @@ namespace Neon
 
 		FramebufferAttachment* VKSwapchain::GetFramebufferAttachment(const int _i) const
 		{
-			return nullptr;
+			// Setup framebuffer desc
+			FramebufferAttachmentDescriptor framebuffetAttachmentDesc = {};
+			framebuffetAttachmentDesc.Name = "BackbufferAttachment";
+			framebuffetAttachmentDesc.Type = FramebufferAttachmentType::NEON_FRAMEBUFFER_ATTACHMENT_TYPE_COLOR_OUTPUT;
+
+			// Return new attachment
+			return new VKFramebufferAttachment(&framebuffetAttachmentDesc, m_SwapchainImages[_i]);
 		}
 
 		void VKSwapchain::Resize(const int _width, const int _height)

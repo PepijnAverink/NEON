@@ -22,21 +22,12 @@ namespace Neon
 		HWND hwnd;
 		VkDebugUtilsMessengerEXT debugMessenger;
 
-	//	VkSurfaceKHR windowSurface;
-	
-
-	//	VkFormat swapChainImageFormat; //
 		VkQueue graphicsQueue;
-	//	VkQueue presentQueue;
-	//	VkSwapchainKHR swapChain; //
+
 		std::vector<VkImage> swapChainImages;
 
 		uint32_t graphicsQueueFamily;
 		uint32_t presentQueueFamily;
-
-		VkRenderPass	 m_RenderPass;
-		VkPipelineLayout m_PipelineLayout;
-		VkPipeline		 m_GraphicsPipeline;
 
 		std::vector<VkImageView> swapChainImageViews;
 		std::vector<VkFramebuffer> swapChainFramebuffers;
@@ -177,8 +168,8 @@ namespace Neon
 
 			CreateSwapchain();
 
-			createRenderPass();
 			createGraphicsPipeline();
+			createRenderPass();
 
 			CreateCommandQueues();
 		}
@@ -587,45 +578,6 @@ namespace Neon
 		}
 
 		void VKGraphicsContext::createRenderPass() {
-			VkAttachmentDescription colorAttachment{};
-			colorAttachment.format = VK_FORMAT_R8G8B8A8_UNORM;
-			colorAttachment.samples = VK_SAMPLE_COUNT_1_BIT;
-			colorAttachment.loadOp = VK_ATTACHMENT_LOAD_OP_CLEAR;
-			colorAttachment.storeOp = VK_ATTACHMENT_STORE_OP_STORE;
-			colorAttachment.stencilLoadOp = VK_ATTACHMENT_LOAD_OP_DONT_CARE;
-			colorAttachment.stencilStoreOp = VK_ATTACHMENT_STORE_OP_DONT_CARE;
-			colorAttachment.initialLayout = VK_IMAGE_LAYOUT_UNDEFINED;
-			colorAttachment.finalLayout = VK_IMAGE_LAYOUT_PRESENT_SRC_KHR;
-
-			VkAttachmentReference colorAttachmentRef{};
-			colorAttachmentRef.attachment = 0;
-			colorAttachmentRef.layout = VK_IMAGE_LAYOUT_COLOR_ATTACHMENT_OPTIMAL;
-
-			VkSubpassDescription subpass{};
-			subpass.pipelineBindPoint = VK_PIPELINE_BIND_POINT_GRAPHICS;
-			subpass.colorAttachmentCount = 1;
-			subpass.pColorAttachments = &colorAttachmentRef;
-
-			VkSubpassDependency dependency{};
-			dependency.srcSubpass = VK_SUBPASS_EXTERNAL;
-			dependency.dstSubpass = 0;
-			dependency.srcStageMask = VK_PIPELINE_STAGE_COLOR_ATTACHMENT_OUTPUT_BIT;
-			dependency.srcAccessMask = 0;
-			dependency.dstStageMask = VK_PIPELINE_STAGE_COLOR_ATTACHMENT_OUTPUT_BIT;
-			dependency.dstAccessMask = VK_ACCESS_COLOR_ATTACHMENT_WRITE_BIT;
-
-			VkRenderPassCreateInfo renderPassInfo{};
-			renderPassInfo.sType = VK_STRUCTURE_TYPE_RENDER_PASS_CREATE_INFO;
-			renderPassInfo.attachmentCount = 1;
-			renderPassInfo.pAttachments = &colorAttachment;
-			renderPassInfo.subpassCount = 1;
-			renderPassInfo.pSubpasses = &subpass;
-			renderPassInfo.dependencyCount = 1;
-			renderPassInfo.pDependencies = &dependency;
-
-			if (vkCreateRenderPass(m_Device, &renderPassInfo, nullptr, &m_RenderPass) != VK_SUCCESS) {
-				throw std::runtime_error("failed to create render pass!");
-			}
 
 			swapChainFramebuffers.resize(swapChainImageViews.size());
 
@@ -636,7 +588,7 @@ namespace Neon
 
 				VkFramebufferCreateInfo framebufferInfo{};
 				framebufferInfo.sType = VK_STRUCTURE_TYPE_FRAMEBUFFER_CREATE_INFO;
-				framebufferInfo.renderPass = m_RenderPass;
+				framebufferInfo.renderPass = NEON_CAST(VKGraphicsPipeline*, m_Pipeline)->m_RenderPass;
 				framebufferInfo.attachmentCount = 1;
 				framebufferInfo.pAttachments = attachments;
 				framebufferInfo.width = 1280;
@@ -668,29 +620,6 @@ namespace Neon
 		}
 
 		void VKGraphicsContext::createGraphicsPipeline() {
-			VkVertexInputBindingDescription bindingDescription{};
-			bindingDescription.binding = 0;
-			bindingDescription.stride = sizeof(float) * 5;
-			bindingDescription.inputRate = VK_VERTEX_INPUT_RATE_VERTEX;
-
-			VkVertexInputAttributeDescription attributeDescriptions[2] = {};
-			attributeDescriptions[0].binding = 0;
-			attributeDescriptions[0].location = 0;
-			attributeDescriptions[0].format = VK_FORMAT_R32G32_SFLOAT;
-			attributeDescriptions[0].offset = 0;
-
-			attributeDescriptions[1].binding = 0;
-			attributeDescriptions[1].location = 1;
-			attributeDescriptions[1].format = VK_FORMAT_R32G32B32_SFLOAT;
-			attributeDescriptions[1].offset = sizeof(float) * 2;
-
-			VkPipelineVertexInputStateCreateInfo vertexInputInfo{};
-			vertexInputInfo.sType = VK_STRUCTURE_TYPE_PIPELINE_VERTEX_INPUT_STATE_CREATE_INFO;
-
-			vertexInputInfo.vertexBindingDescriptionCount = 1;
-			vertexInputInfo.vertexAttributeDescriptionCount = static_cast<uint32_t>(2);
-			vertexInputInfo.pVertexBindingDescriptions = &bindingDescription;
-			vertexInputInfo.pVertexAttributeDescriptions = attributeDescriptions;
 
 			// Setup ShaderDescriptor
 			ShaderDescriptor shaderDesc				= {};
@@ -704,93 +633,20 @@ namespace Neon
 			ShaderReflection reflection;
 			Shader* shader = Shader::Create(reflection, &shaderDesc);
 
+			RasterizerStateDescriptor rasterizerStateDesc = {};
+
+			// Graphics Pipeline
+			GraphicsPipelineDescriptor pipelineDesc = {};
+			pipelineDesc.Name        = "Main-GraphicsPipeline";
+			pipelineDesc.ImageWidth  = 1280;
+			pipelineDesc.ImageHeight = 720;
+			pipelineDesc.Shader		 = shader;
+			pipelineDesc.RasterizerStateDescriptor = &rasterizerStateDesc;
+
+			m_Pipeline = GraphicsPipeline::Create(&pipelineDesc);
+
 			// Setup shader modules
 			VkPipelineShaderStageCreateInfo shaderStages[] = { NEON_CAST(VKShader*, shader)->m_VertexStageInfo, NEON_CAST(VKShader*, shader)->m_FragmentStageInfo };
-
-			VkPipelineInputAssemblyStateCreateInfo inputAssembly{};
-			inputAssembly.sType = VK_STRUCTURE_TYPE_PIPELINE_INPUT_ASSEMBLY_STATE_CREATE_INFO;
-			inputAssembly.topology = VK_PRIMITIVE_TOPOLOGY_TRIANGLE_LIST;
-			inputAssembly.primitiveRestartEnable = VK_FALSE;
-
-			VkViewport viewport{};
-			viewport.x = 0.0f;
-			viewport.y = 0.0f;
-			viewport.width = (float) 1280;
-			viewport.height = (float) 720;
-			viewport.minDepth = 0.0f;
-			viewport.maxDepth = 1.0f;
-
-			VkRect2D scissor{};
-			scissor.offset = { 0, 0 };
-			scissor.extent = { 1280, 720 };
-
-			VkPipelineViewportStateCreateInfo viewportState{};
-			viewportState.sType = VK_STRUCTURE_TYPE_PIPELINE_VIEWPORT_STATE_CREATE_INFO;
-			viewportState.viewportCount = 1;
-			viewportState.pViewports = &viewport;
-			viewportState.scissorCount = 1;
-			viewportState.pScissors = &scissor;
-
-			VkPipelineRasterizationStateCreateInfo rasterizer{};
-			rasterizer.sType = VK_STRUCTURE_TYPE_PIPELINE_RASTERIZATION_STATE_CREATE_INFO;
-			rasterizer.depthClampEnable = VK_FALSE;
-			rasterizer.rasterizerDiscardEnable = VK_FALSE;
-			rasterizer.polygonMode = VK_POLYGON_MODE_FILL;
-			rasterizer.lineWidth = 1.0f;
-			rasterizer.cullMode = VK_CULL_MODE_BACK_BIT;
-			rasterizer.frontFace = VK_FRONT_FACE_CLOCKWISE;
-			rasterizer.depthBiasEnable = VK_FALSE;
-
-			VkPipelineMultisampleStateCreateInfo multisampling{};
-			multisampling.sType = VK_STRUCTURE_TYPE_PIPELINE_MULTISAMPLE_STATE_CREATE_INFO;
-			multisampling.sampleShadingEnable = VK_FALSE;
-			multisampling.rasterizationSamples = VK_SAMPLE_COUNT_1_BIT;
-
-			VkPipelineColorBlendAttachmentState colorBlendAttachment{};
-			colorBlendAttachment.colorWriteMask = VK_COLOR_COMPONENT_R_BIT | VK_COLOR_COMPONENT_G_BIT | VK_COLOR_COMPONENT_B_BIT | VK_COLOR_COMPONENT_A_BIT;
-			colorBlendAttachment.blendEnable = VK_FALSE;
-
-			VkPipelineColorBlendStateCreateInfo colorBlending{};
-			colorBlending.sType = VK_STRUCTURE_TYPE_PIPELINE_COLOR_BLEND_STATE_CREATE_INFO;
-			colorBlending.logicOpEnable = VK_FALSE;
-			colorBlending.logicOp = VK_LOGIC_OP_COPY;
-			colorBlending.attachmentCount = 1;
-			colorBlending.pAttachments = &colorBlendAttachment;
-			colorBlending.blendConstants[0] = 0.0f;
-			colorBlending.blendConstants[1] = 0.0f;
-			colorBlending.blendConstants[2] = 0.0f;
-			colorBlending.blendConstants[3] = 0.0f;
-
-			VkPipelineLayoutCreateInfo pipelineLayoutInfo{};
-			pipelineLayoutInfo.sType = VK_STRUCTURE_TYPE_PIPELINE_LAYOUT_CREATE_INFO;
-			pipelineLayoutInfo.setLayoutCount = 0;
-			pipelineLayoutInfo.pushConstantRangeCount = 0;
-
-			if (vkCreatePipelineLayout(m_Device, &pipelineLayoutInfo, nullptr, &m_PipelineLayout) != VK_SUCCESS) {
-				throw std::runtime_error("failed to create pipeline layout!");
-			}
-
-			VkGraphicsPipelineCreateInfo pipelineInfo{};
-			pipelineInfo.sType = VK_STRUCTURE_TYPE_GRAPHICS_PIPELINE_CREATE_INFO;
-			pipelineInfo.stageCount = 2;
-			pipelineInfo.pStages = shaderStages;
-			pipelineInfo.pVertexInputState = &vertexInputInfo;
-			pipelineInfo.pInputAssemblyState = &inputAssembly;
-			pipelineInfo.pViewportState = &viewportState;
-			pipelineInfo.pRasterizationState = &rasterizer;
-			pipelineInfo.pMultisampleState = &multisampling;
-			pipelineInfo.pColorBlendState = &colorBlending;
-			pipelineInfo.layout = m_PipelineLayout;
-			pipelineInfo.renderPass = m_RenderPass;
-			pipelineInfo.subpass = 0;
-			pipelineInfo.basePipelineHandle = VK_NULL_HANDLE;
-
-			if (vkCreateGraphicsPipelines(m_Device, VK_NULL_HANDLE, 1, &pipelineInfo, nullptr, &m_GraphicsPipeline) != VK_SUCCESS) {
-				throw std::runtime_error("failed to create graphics pipeline!");
-			}
-
-		//	vkDestroyShaderModule(m_Device, fragShaderModule, nullptr);
-		//	vkDestroyShaderModule(m_Device, vertShaderModule, nullptr);
 		}
 
 		VkShaderModule VKGraphicsContext::createShaderModule(const std::vector<char>& code) {
@@ -932,7 +788,7 @@ namespace Neon
 
 				VkRenderPassBeginInfo renderPassInfo{};
 				renderPassInfo.sType = VK_STRUCTURE_TYPE_RENDER_PASS_BEGIN_INFO;
-				renderPassInfo.renderPass = m_RenderPass;
+				renderPassInfo.renderPass = NEON_CAST(VKGraphicsPipeline*, m_Pipeline)->m_RenderPass;
 				renderPassInfo.framebuffer = swapChainFramebuffers[i];
 				renderPassInfo.renderArea.offset = { 0, 0 };
 				renderPassInfo.renderArea.extent = { 1280, 720};
@@ -949,22 +805,14 @@ namespace Neon
 
 				vkCmdBeginRenderPass(NEON_CAST(VKCommandBuffer*, commandBuffers[i])->m_CommandBufferObj, &renderPassInfo, VK_SUBPASS_CONTENTS_INLINE);
 
-				vkCmdBindPipeline(NEON_CAST(VKCommandBuffer*, commandBuffers[i])->m_CommandBufferObj, VK_PIPELINE_BIND_POINT_GRAPHICS, m_GraphicsPipeline);
+				commandBuffers[i]->SetGraphicsPipeline(m_Pipeline);
 
-			//	VkBuffer vertexBuffers[] = { NEON_CAST(VKVertexBuffer*, vertexBuffer)->m_VertexBufferObj };
-			//	VkDeviceSize offsets[] = { 0 };
-			//	vkCmdBindVertexBuffers(NEON_CAST(VKCommandBuffer*, commandBuffers[i])->m_CommandBufferObj, 0, 1, &NEON_CAST(VKVertexBuffer*, vertexBuffer)->m_VertexBufferObj, offsets);
 
+			
 				commandBuffers[i]->SetVertexBuffer(vertexBuffer);
+				commandBuffers[i]->SetIndexBuffer(indexBuffer);
 
-				vkCmdBindIndexBuffer(NEON_CAST(VKCommandBuffer*, commandBuffers[i])->m_CommandBufferObj, NEON_CAST(VKIndexBuffer*, indexBuffer)->m_IndexBufferObj, 0, VK_INDEX_TYPE_UINT16);
-
-			//	vkCmdDraw(commandBuffers[i], static_cast<uint32_t>(vertices.size()), 1, 0, 0);
-
-
-				vkCmdDraw(NEON_CAST(VKCommandBuffer*, commandBuffers[i])->m_CommandBufferObj, vertexBuffer->GetVertexCount(), 1, 0, 0);
-
-				vkCmdDrawIndexed(NEON_CAST(VKCommandBuffer*, commandBuffers[i])->m_CommandBufferObj, 6, 1, 0, 0, 0);
+				commandBuffers[i]->DrawIndexed(6, 0, 0);
 
 				vkCmdEndRenderPass(NEON_CAST(VKCommandBuffer*, commandBuffers[i])->m_CommandBufferObj);
 

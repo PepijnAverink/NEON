@@ -2,6 +2,7 @@
 #include "./graphics/objects/swapchain/swapchain.h"
 
 #include <vulkan/vulkan.h>
+#include <vector>
 
 namespace Neon
 {
@@ -22,7 +23,9 @@ namespace Neon
 
 		private:
 			friend class VKGraphicsContext; // Remove me
-			VkSwapchainKHR m_SwapchainObj;
+			VkSwapchainKHR		 m_SwapchainObj;
+
+			std::vector<VkImage> m_SwapchainImages;
 		};
 	}
 }

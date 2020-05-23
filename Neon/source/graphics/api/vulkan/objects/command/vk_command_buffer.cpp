@@ -3,7 +3,7 @@
 #include "./graphics/api/vulkan/objects/command/vk_command_buffer_type.h"
 #include "./graphics/api/vulkan/vk_error.h"
 
-#include "./graphics/api/directx12/resources/buffer/dx12_vertex_buffer.h"
+#include "./graphics/api/vulkan/pipeline/vk_graphics_pipeline.h"
 
 #include "./graphics/objects/command_generic/viewport.h"
 
@@ -55,7 +55,7 @@ namespace Neon
 		// Include the minDepth and maxDepth values
 		void VKCommandBuffer::SetGraphicsPipeline(GraphicsPipeline* _graphicsPipeline) const
 		{
-
+			vkCmdBindPipeline(m_CommandBufferObj, VK_PIPELINE_BIND_POINT_GRAPHICS, NEON_CAST(VKGraphicsPipeline*, _graphicsPipeline)->m_GraphicsPipeline);
 		}
 
 		void VKCommandBuffer::SetVertexBuffer(VertexBuffer* _vertexBuffer) const
@@ -66,6 +66,8 @@ namespace Neon
 
 		void VKCommandBuffer::SetIndexBuffer(IndexBuffer* _indexBuffer) const
 		{
+			// Abstract the type
+			vkCmdBindIndexBuffer(m_CommandBufferObj, NEON_CAST(VKIndexBuffer*, _indexBuffer)->m_IndexBufferObj, 0, VK_INDEX_TYPE_UINT16);
 
 		}
 		void VKCommandBuffer::SetTopology(const Topology _topology) const
@@ -78,12 +80,12 @@ namespace Neon
 
 		}
 
-		void VKCommandBuffer::SetViewport(Viewport * _viewport) const
+		void VKCommandBuffer::SetViewport(Viewport* _viewport) const
 		{
 
 		}
 
-		void VKCommandBuffer::SetScissor(Scissor * _scissor) const
+		void VKCommandBuffer::SetScissor(Scissor* _scissor) const
 		{
 
 		}
@@ -101,6 +103,7 @@ namespace Neon
 		}
 		void VKCommandBuffer::DrawIndexed(const uint32_t _indexCount, const uint32_t _indexOffset, uint32_t _vertexOffset) const
 		{
+			vkCmdDrawIndexed(m_CommandBufferObj, _indexCount, 1, _indexOffset, _vertexOffset, 0);
 		}
 	}
 }

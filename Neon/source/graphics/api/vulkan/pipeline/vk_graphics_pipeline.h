@@ -13,6 +13,8 @@ namespace Neon
 			VKGraphicsPipeline(const GraphicsPipelineDescriptor* _graphicsPipelineDescriptor);
 
 		private:
+			friend class VKGraphicsContext; // Remove me
+			friend class VKCommandBuffer;
 			VkRenderPass	 m_RenderPass;
 			VkPipelineLayout m_PipelineLayout;
 			VkPipeline		 m_GraphicsPipeline;

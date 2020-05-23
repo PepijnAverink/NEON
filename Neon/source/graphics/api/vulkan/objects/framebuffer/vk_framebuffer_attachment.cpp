@@ -9,5 +9,10 @@ namespace Neon
 		{
 
 		}
+		VKFramebufferAttachment::VKFramebufferAttachment(const FramebufferAttachmentDescriptor* _framebufferAttachmentDescriptor, VkImage _image)
+			: FramebufferAttachment(_framebufferAttachmentDescriptor)
+		{
+
+		}
 	}
 }

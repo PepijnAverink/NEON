@@ -30,7 +30,7 @@ namespace Neon
 
 			BackBufferFormat m_Format;
 
-			int m_BackBufferCount;
+			unsigned int m_BackBufferCount;
 			int m_CurrentFrameIndex;
 
 			int m_Width;

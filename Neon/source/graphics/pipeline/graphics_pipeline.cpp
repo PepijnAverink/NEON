@@ -6,9 +6,9 @@
 #include "./graphics/api/directx12/pipeline/dx12_graphics_pipeline.h"
 #endif
 
-//#if defined(NEON_SUPPORT_VULKAN)
-//#include "./graphics/api/vulkan/objects/command/vk_command_buffer.h"
-//#endif
+#if defined(NEON_SUPPORT_VULKAN)
+#include "./graphics/api/vulkan/pipeline/vk_graphics_pipeline.h"
+#endif
 
 namespace Neon
 {
@@ -18,9 +18,9 @@ namespace Neon
 		{
 			GraphicsAPI api = GraphicsDriver::GetGraphicsAPI();
 
-		//	// Vulkan
-		//	if (api == GraphicsAPI::VULKAN)
-		//		return new VKCommandBuffer(_commandBufferDescriptor);
+			//	// Vulkan
+			if (api == GraphicsAPI::VULKAN)
+				return new VKGraphicsPipeline(_graphicsPipelineDescriptor);
 
 			// DirectX12
 			if (api == GraphicsAPI::DIRECTX12)
