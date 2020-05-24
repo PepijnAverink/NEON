@@ -101,12 +101,12 @@ namespace Neon
 				m_CommandListObj->ClearDepthStencilView(NEON_CAST(DX12Framebuffer*, _framebuffer)->GetDepthStencilHandle(), D3D12_CLEAR_FLAG_DEPTH, 1.0f, 0, 0, nullptr);
 		}
 
-		void DX12CommandBuffer::BeginRenderpass(Renderpass* _renderpass, Framebuffer* _framebuffer) const
+		void DX12CommandBuffer::BeginRenderpass(Framebuffer* _framebuffer) const
 		{
 			m_CommandListObj->OMSetRenderTargets(_framebuffer->GetAttachmentCount(), &NEON_CAST(DX12Framebuffer*, _framebuffer)->GetAttachmentHandle(), FALSE, _framebuffer->IsDepthStencilActive() ? &NEON_CAST(DX12Framebuffer*, _framebuffer)->GetDepthStencilHandle() : nullptr);
 		}
 
-		void DX12CommandBuffer::EndRenderpass(Renderpass* _renderpass) const
+		void DX12CommandBuffer::EndRenderpass() const
 		{
 
 		}

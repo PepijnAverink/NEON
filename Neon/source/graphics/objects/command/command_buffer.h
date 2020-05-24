@@ -25,7 +25,6 @@ namespace Neon
 		class Viewport;
 		class Scissor;
 
-		class Renderpass;
 		class Framebuffer;
 
 		class FramebufferAttachment;
@@ -56,8 +55,8 @@ namespace Neon
 
 			virtual void ClearFrameBuffer(Framebuffer* _framebuffer, const float* _color, const uint32_t _offset, const uint32_t _count, uint32_t _flags) const = 0;
 
-			virtual void BeginRenderpass(Renderpass* _renderpass, Framebuffer* _framebuffer) const = 0;
-			virtual void EndRenderpass(Renderpass* _renderpass) const = 0;
+			virtual void BeginRenderpass(Framebuffer* _framebuffer) const = 0;
+			virtual void EndRenderpass() const = 0;
 
 			virtual void TransitionFramebufferAttachment(FramebufferAttachment* _framebufferAttachment, const FramebufferAttachmentTransitionState _fromState, const FramebufferAttachmentTransitionState _toState) const = 0;
 

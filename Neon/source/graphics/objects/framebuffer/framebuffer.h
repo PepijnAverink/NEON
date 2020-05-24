@@ -8,11 +8,12 @@ namespace Neon
 {
 	namespace Graphics
 	{
-		class Renderpass;
+		class GraphicsPipeline;
 		class Framebuffer
 		{
 		public:
-			static Framebuffer* Create(const FramebufferDescriptor* _framebufferDescriptor, Renderpass* _renderpass);
+			static Framebuffer* Create(const FramebufferDescriptor* _framebufferDescriptor, GraphicsPipeline* _graphicsPipeline);
+			virtual ~Framebuffer() {}
 
 			inline uint32_t GetAttachmentCount() const { return m_AttachmentCount; }
 

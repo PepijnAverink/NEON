@@ -169,7 +169,6 @@
     <ClInclude Include="source\graphics\api\directx12\objects\framebuffer\dx12_framebuffer.h" />
     <ClInclude Include="source\graphics\api\directx12\objects\framebuffer\dx12_framebuffer_attachment.h" />
     <ClInclude Include="source\graphics\api\directx12\objects\framebuffer\dx12_framebuffer_attachment_transition_state.h" />
-    <ClInclude Include="source\graphics\api\directx12\objects\renderpass\dx12_renderpass.h" />
     <ClInclude Include="source\graphics\api\directx12\objects\swapchain\dx12_graphics_surface.h" />
     <ClInclude Include="source\graphics\api\directx12\objects\swapchain\dx12_swapchain.h" />
     <ClInclude Include="source\graphics\api\directx12\objects\sync\dx12_fence.h" />
@@ -188,7 +187,6 @@
     <ClInclude Include="source\graphics\api\vulkan\objects\framebuffer\vk_framebuffer.h" />
     <ClInclude Include="source\graphics\api\vulkan\objects\framebuffer\vk_framebuffer_attachment.h" />
     <ClInclude Include="source\graphics\api\vulkan\objects\framebuffer\vk_framebuffer_attachment_transition_state.h" />
-    <ClInclude Include="source\graphics\api\vulkan\objects\renderpass\vk_renderpass.h" />
     <ClInclude Include="source\graphics\api\vulkan\objects\swapchain\vk_graphics_surface.h" />
     <ClInclude Include="source\graphics\api\vulkan\objects\swapchain\vk_swapchain.h" />
     <ClInclude Include="source\graphics\api\vulkan\objects\sync\vk_fence.h" />
@@ -230,8 +228,6 @@
     <ClInclude Include="source\graphics\objects\framebuffer\framebuffer_descriptor.h" />
     <ClInclude Include="source\graphics\objects\framebuffer\framebuffer_attachment_format.h" />
     <ClInclude Include="source\graphics\objects\framebuffer\framebuffer_layout.h" />
-    <ClInclude Include="source\graphics\objects\renderpass\renderpass.h" />
-    <ClInclude Include="source\graphics\objects\renderpass\renderpass_descriptor.h" />
     <ClInclude Include="source\graphics\objects\swapchain\back_buffer_format.h" />
     <ClInclude Include="source\graphics\objects\swapchain\graphics_surface.h" />
     <ClInclude Include="source\graphics\objects\swapchain\graphics_surface_descriptor.h" />
@@ -295,7 +291,6 @@
     <ClCompile Include="source\graphics\api\directx12\objects\command_generic\dx12_viewport.cpp" />
     <ClCompile Include="source\graphics\api\directx12\objects\framebuffer\dx12_framebuffer.cpp" />
     <ClCompile Include="source\graphics\api\directx12\objects\framebuffer\dx12_framebuffer_attachment.cpp" />
-    <ClCompile Include="source\graphics\api\directx12\objects\renderpass\dx12_renderpass.cpp" />
     <ClCompile Include="source\graphics\api\directx12\objects\swapchain\dx12_graphics_surface.cpp" />
     <ClCompile Include="source\graphics\api\directx12\objects\swapchain\dx12_swapchain.cpp" />
     <ClCompile Include="source\graphics\api\directx12\objects\sync\dx12_fence.cpp" />
@@ -309,7 +304,6 @@
     <ClCompile Include="source\graphics\api\vulkan\objects\command\vk_command_queue.cpp" />
     <ClCompile Include="source\graphics\api\vulkan\objects\framebuffer\vk_framebuffer.cpp" />
     <ClCompile Include="source\graphics\api\vulkan\objects\framebuffer\vk_framebuffer_attachment.cpp" />
-    <ClCompile Include="source\graphics\api\vulkan\objects\renderpass\vk_renderpass.cpp" />
     <ClCompile Include="source\graphics\api\vulkan\objects\swapchain\vk_graphics_surface.cpp" />
     <ClCompile Include="source\graphics\api\vulkan\objects\swapchain\vk_swapchain.cpp" />
     <ClCompile Include="source\graphics\api\vulkan\objects\sync\vk_fence.cpp" />
@@ -331,7 +325,6 @@
     <ClCompile Include="source\graphics\objects\framebuffer\framebuffer.cpp" />
     <ClCompile Include="source\graphics\objects\framebuffer\framebuffer_attachment.cpp" />
     <ClCompile Include="source\graphics\objects\framebuffer\framebuffer_layout.cpp" />
-    <ClCompile Include="source\graphics\objects\renderpass\renderpass.cpp" />
     <ClCompile Include="source\graphics\objects\swapchain\graphics_surface.cpp" />
     <ClCompile Include="source\graphics\objects\swapchain\swapchain.cpp" />
     <ClCompile Include="source\graphics\objects\sync\fence.cpp" />

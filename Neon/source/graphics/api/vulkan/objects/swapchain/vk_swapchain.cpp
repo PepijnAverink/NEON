@@ -101,7 +101,7 @@ namespace Neon
 
 		VKSwapchain::~VKSwapchain()
 		{
-
+			int z = 0;
 		}
 
 		FramebufferAttachment* VKSwapchain::GetFramebufferAttachment(const int _i) const

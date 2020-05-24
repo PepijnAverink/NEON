@@ -154,13 +154,6 @@ namespace Neon
 			// Framebuffer
 			FramebufferLayout framebufferLayout = { FramebufferAttachmentType::NEON_FRAMEBUFFER_ATTACHMENT_TYPE_COLOR_OUTPUT, };
 
-			// RenderpassDescriptor
-			RenderpassDescriptor renderpassDesc = {};
-			renderpassDesc.Name   = "Main-Renderpass";
-			renderpassDesc.Layout = FramebufferLayout({ NEON_FRAMEBUFFER_ATTACHMENT_TYPE_COLOR_OUTPUT, });
-
-			m_Renderpass = Renderpass::Create(&renderpassDesc);
-
 			// Setup depthBufferDescriptor
 			FramebufferAttachmentDescriptor framebufferAttachmentDesc = {};
 			framebufferAttachmentDesc.Name = "Main-DepthBuffer";
@@ -187,7 +180,7 @@ namespace Neon
 				FramebufferAttachment* attachments[] = { m_Swapchain->GetFramebufferAttachment(i), m_DepthAttachment };
 				framebufferDesc.Attachments = attachments;
 
-				m_Framebuffer[i] = Framebuffer::Create(&framebufferDesc, m_Renderpass);
+				m_Framebuffer[i] = Framebuffer::Create(&framebufferDesc, m_GraphicsPipeline);
 			}
 
 			// Create vertex buffer
@@ -285,7 +278,7 @@ namespace Neon
 			const float clearColor[] = { 0.8f, 0.2f, 0.4f, 1.0f };
 			m_CommandBuffers[frameIndex]->ClearFrameBuffer(m_Framebuffer[frameIndex], clearColor, 0, 0, NEON_CLEAR_COLOR_BIT | NEON_CLEAR_DEPTH_STENCIL_BIT);
 
-			m_CommandBuffers[frameIndex]->BeginRenderpass(m_Renderpass, m_Framebuffer[frameIndex]);
+			m_CommandBuffers[frameIndex]->BeginRenderpass(m_Framebuffer[frameIndex]);
 
 			// draw triangle
 			m_CommandBuffers[frameIndex]->SetViewport(m_Viewport);
@@ -301,7 +294,7 @@ namespace Neon
 			// Transition state back
 			m_CommandBuffers[frameIndex]->TransitionFramebufferAttachment(m_Framebuffer[frameIndex]->GetAttachment(0), NEON_FRAMEBUFFER_TRANSITION_STATE_RENDER, NEON_FRAMEBUFFER_TRANSITION_STATE_PRESENT);
 
-			m_CommandBuffers[frameIndex]->EndRenderpass(m_Renderpass);
+			m_CommandBuffers[frameIndex]->EndRenderpass();
 
 			m_CommandBuffers[frameIndex]->EndRecording();
 

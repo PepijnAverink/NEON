@@ -13,6 +13,8 @@ namespace Neon
 {
 	namespace Graphics
 	{
+		static VKGraphicsPipeline* s_GraphicsPipeline;
+
 		// TODO:: Track commandBufferState for VK implementation
 		VKCommandBuffer::VKCommandBuffer(const CommandBufferDescriptor* _commandBufferDescriptor)
 			: CommandBuffer(_commandBufferDescriptor)
@@ -55,7 +57,8 @@ namespace Neon
 		// Include the minDepth and maxDepth values
 		void VKCommandBuffer::SetGraphicsPipeline(GraphicsPipeline* _graphicsPipeline) const
 		{
-			vkCmdBindPipeline(m_CommandBufferObj, VK_PIPELINE_BIND_POINT_GRAPHICS, NEON_CAST(VKGraphicsPipeline*, _graphicsPipeline)->m_GraphicsPipeline);
+			s_GraphicsPipeline = NEON_CAST(VKGraphicsPipeline*, _graphicsPipeline);
+			vkCmdBindPipeline(m_CommandBufferObj, VK_PIPELINE_BIND_POINT_GRAPHICS, s_GraphicsPipeline->m_GraphicsPipeline);
 		}
 
 		void VKCommandBuffer::SetVertexBuffer(VertexBuffer* _vertexBuffer) const
@@ -92,10 +95,10 @@ namespace Neon
 		void VKCommandBuffer::ClearFrameBuffer(Framebuffer * _framebuffer, const float* _color, const uint32_t _offset, const uint32_t _count, uint32_t _flags) const
 		{
 		}
-		void VKCommandBuffer::BeginRenderpass(Renderpass * _renderpass, Framebuffer * _framebuffer) const
+		void VKCommandBuffer::BeginRenderpass(Framebuffer * _framebuffer) const
 		{
 		}
-		void VKCommandBuffer::EndRenderpass(Renderpass * _renderpass) const
+		void VKCommandBuffer::EndRenderpass() const
 		{
 		}
 		void VKCommandBuffer::TransitionFramebufferAttachment(FramebufferAttachment * _framebufferAttachment, const FramebufferAttachmentTransitionState _fromState, const FramebufferAttachmentTransitionState _toState) const

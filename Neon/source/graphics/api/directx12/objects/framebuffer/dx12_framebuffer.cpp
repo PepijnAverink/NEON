@@ -9,7 +9,7 @@ namespace Neon
 {
 	namespace Graphics
 	{
-		DX12Framebuffer::DX12Framebuffer(const FramebufferDescriptor* _framebufferDescriptor, Renderpass* _renderpass)
+		DX12Framebuffer::DX12Framebuffer(const FramebufferDescriptor* _framebufferDescriptor, GraphicsPipeline* _graphicsPipeline)
 			: Framebuffer(_framebufferDescriptor)
 		{
 			// Setup RV DescriptorHeap

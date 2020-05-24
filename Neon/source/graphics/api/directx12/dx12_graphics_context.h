@@ -20,7 +20,6 @@
 
 #include "./graphics/api/directx12/pipeline/dx12_graphics_pipeline.h"
 
-#include "./graphics/api/directx12/objects/renderpass/dx12_renderpass.h"
 #include "./graphics/api/directx12/objects/framebuffer/dx12_framebuffer.h"
 
 #include "./graphics/objects/command_generic/viewport.h"
@@ -82,7 +81,6 @@ namespace Neon
 			Swapchain*		  m_Swapchain;
 			GraphicsSurface*  m_GraphicsSurface;
 
-			Renderpass*		  m_Renderpass;
 			Framebuffer*	  m_Framebuffer[frameBufferCount];
 		};
 	}

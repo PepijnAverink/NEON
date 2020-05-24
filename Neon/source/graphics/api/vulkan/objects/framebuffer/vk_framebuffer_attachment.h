@@ -11,12 +11,16 @@ namespace Neon
 		{
 		public:
 			VKFramebufferAttachment(const FramebufferAttachmentDescriptor* _framebufferAttachmentDescriptor);
+			virtual ~VKFramebufferAttachment();
 
 		private:
 			friend class VKSwapchain;
 			VKFramebufferAttachment(const FramebufferAttachmentDescriptor* _framebufferAttachmentDescriptor, VkImage _image);
 
-			VkImage m_Image;
+			friend class VKGraphicsContext; // Remove me
+			friend class VKFramebuffer;
+			VkImage		m_Image;
+			VkImageView m_ImageView;
 		};
 	}
 }

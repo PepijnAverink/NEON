@@ -9,6 +9,7 @@ namespace Neon
 		{
 		public:
 			static FramebufferAttachment* Create(const FramebufferAttachmentDescriptor* _framebufferAttachmentDescriptor);
+			virtual ~FramebufferAttachment() {}
 
 			inline FramebufferAttachmentType GetType() const { return m_Type; }
 

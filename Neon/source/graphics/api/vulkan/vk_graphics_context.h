@@ -24,6 +24,9 @@
 #include "./graphics/api/vulkan/objects/swapchain/vk_swapchain.h"
 #include "./graphics/api/vulkan/objects/swapchain/vk_graphics_surface.h"
 
+#include "./graphics/api/vulkan/objects/framebuffer/vk_framebuffer.h"
+#include "./graphics/api/vulkan/objects/framebuffer/vk_framebuffer_attachment.h"
+
 namespace Neon
 {
 	namespace Graphics
@@ -60,7 +63,6 @@ namespace Neon
 			void CreateSwapchain();
 			void CreateCommandQueues();
 			void createGraphicsPipeline();
-			void createRenderPass();
 			void findQueueFamilies();
 
 			VkShaderModule createShaderModule(const std::vector<char>& code);
@@ -95,6 +97,9 @@ namespace Neon
 
 			Swapchain*		 m_Swapchain;
 			GraphicsSurface* m_Surface;
+
+			Framebuffer*	  m_Framebuffer[frameBufferCount];
+		//	FramebufferAttachment* m_FramebufferAttachments[frameBufferCount];
 		};
 	}
 }

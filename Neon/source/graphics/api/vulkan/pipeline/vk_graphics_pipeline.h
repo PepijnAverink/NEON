@@ -15,6 +15,7 @@ namespace Neon
 		private:
 			friend class VKGraphicsContext; // Remove me
 			friend class VKCommandBuffer;
+			friend class VKFramebuffer;
 			VkRenderPass	 m_RenderPass;
 			VkPipelineLayout m_PipelineLayout;
 			VkPipeline		 m_GraphicsPipeline;

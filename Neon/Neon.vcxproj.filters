@@ -342,12 +342,6 @@
     <ClInclude Include="source\graphics\api\directx12\objects\command_generic\dx12_scissor.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="source\graphics\objects\renderpass\renderpass.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="source\graphics\objects\renderpass\renderpass_descriptor.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="source\graphics\objects\framebuffer\framebuffer.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -367,9 +361,6 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="source\graphics\objects\framebuffer\framebuffer_layout.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="source\graphics\api\directx12\objects\renderpass\dx12_renderpass.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="source\graphics\api\directx12\objects\framebuffer\dx12_framebuffer_attachment.h">
@@ -403,9 +394,6 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="source\graphics\api\directx12\objects\swapchain\dx12_graphics_surface.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="source\graphics\api\vulkan\objects\renderpass\vk_renderpass.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="source\graphics\api\vulkan\objects\framebuffer\vk_framebuffer.h">
@@ -575,9 +563,6 @@
     <ClCompile Include="source\graphics\api\directx12\objects\command_generic\dx12_scissor.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="source\graphics\objects\renderpass\renderpass.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="source\graphics\objects\framebuffer\framebuffer.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -585,9 +570,6 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="source\graphics\objects\framebuffer\framebuffer_layout.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="source\graphics\api\directx12\objects\renderpass\dx12_renderpass.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="source\graphics\api\directx12\objects\framebuffer\dx12_framebuffer_attachment.cpp">
@@ -609,9 +591,6 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="source\graphics\api\directx12\objects\swapchain\dx12_graphics_surface.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="source\graphics\api\vulkan\objects\renderpass\vk_renderpass.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="source\graphics\api\vulkan\objects\framebuffer\vk_framebuffer.cpp">

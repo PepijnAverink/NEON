@@ -24,13 +24,8 @@ namespace Neon
 
 		VkQueue graphicsQueue;
 
-		std::vector<VkImage> swapChainImages;
-
 		uint32_t graphicsQueueFamily;
 		uint32_t presentQueueFamily;
-
-		std::vector<VkImageView> swapChainImageViews;
-		std::vector<VkFramebuffer> swapChainFramebuffers;
 
 		VkPresentModeKHR choosePresentMode(const std::vector<VkPresentModeKHR> presentModes) {
 			for (const auto& presentMode : presentModes) {
@@ -166,10 +161,9 @@ namespace Neon
 
 			m_Swapchain = Swapchain::Create(commandQueue, &swapchainDesc);
 
-			CreateSwapchain();
-
 			createGraphicsPipeline();
-			createRenderPass();
+
+			CreateSwapchain();
 
 			CreateCommandQueues();
 		}
@@ -214,6 +208,8 @@ namespace Neon
 
 			acuireFence->WaitForFence();
 			acuireFence->Reset();
+
+			imageIndex = 0;
 
 			if (res != VK_SUCCESS && res != VK_SUBOPTIMAL_KHR) {
 				std::cerr << "failed to acquire image" << std::endl;
@@ -434,192 +430,36 @@ namespace Neon
 
 		void VKGraphicsContext::CreateSwapchain()
 		{
-		//	// Find surface capabilities
-		//	VkSurfaceCapabilitiesKHR surfaceCapabilities;
-		//	if (vkGetPhysicalDeviceSurfaceCapabilitiesKHR(m_PhysicalDevice, windowSurface, &surfaceCapabilities) != VK_SUCCESS) {
-		//		std::cerr << "failed to acquire presentation surface capabilities" << std::endl;
-		//		exit(1);
-		//	}
-		//
-		//	// Find supported surface formats
-		//	uint32_t formatCount;
-		//	if (vkGetPhysicalDeviceSurfaceFormatsKHR(m_PhysicalDevice, windowSurface, &formatCount, nullptr) != VK_SUCCESS || formatCount == 0) {
-		//		std::cerr << "failed to get number of supported surface formats" << std::endl;
-		//		exit(1);
-		//	}
-		//
-		//	std::vector<VkSurfaceFormatKHR> surfaceFormats(formatCount);
-		//	if (vkGetPhysicalDeviceSurfaceFormatsKHR(m_PhysicalDevice, windowSurface, &formatCount, surfaceFormats.data()) != VK_SUCCESS) {
-		//		std::cerr << "failed to get supported surface formats" << std::endl;
-		//		exit(1);
-		//	}
-		//
-		//	// Find supported present modes
-		//	uint32_t presentModeCount;
-		//	if (vkGetPhysicalDeviceSurfacePresentModesKHR(m_PhysicalDevice, windowSurface, &presentModeCount, nullptr) != VK_SUCCESS || presentModeCount == 0) {
-		//		std::cerr << "failed to get number of supported presentation modes" << std::endl;
-		//		exit(1);
-		//	}
-		//
-		//	std::vector<VkPresentModeKHR> presentModes(presentModeCount);
-		//	if (vkGetPhysicalDeviceSurfacePresentModesKHR(m_PhysicalDevice, windowSurface, &presentModeCount, presentModes.data()) != VK_SUCCESS) {
-		//		std::cerr << "failed to get supported presentation modes" << std::endl;
-		//		exit(1);
-		//	}
-		//
-		//	// Determine number of images for swap chain
-		//	uint32_t imageCount = surfaceCapabilities.minImageCount + 1;
-		//	if (surfaceCapabilities.maxImageCount != 0 && imageCount > surfaceCapabilities.maxImageCount) {
-		//		imageCount = surfaceCapabilities.maxImageCount;
-		//	}
-		//
-		//	std::cout << "using " << imageCount << " images for swap chain" << std::endl;
-		//
-		//	// Select a surface format
-		//	// Select a surface format
-		//	VkSurfaceFormatKHR surfaceFormat = chooseSurfaceFormat(surfaceFormats);
-		//	swapChainImageFormat = surfaceFormat.format;
-		//
-		//	// Select swap chain size
-		//	VkExtent2D swapChainExtent = chooseSwapExtent(surfaceCapabilities);
-		//
-		//	// Check if swap chain supports being the destination of an image transfer
-		//	// Note: AMD driver bug, though it would be nice to implement a workaround that doesn't use transfering
-		//	if (!(surfaceCapabilities.supportedUsageFlags & VK_IMAGE_USAGE_TRANSFER_DST_BIT)) {
-		//		std::cerr << "swap chain image does not support VK_IMAGE_TRANSFER_DST usage" << std::endl;
-		//		//exit(1);
-		//	}
-		//
-		//	// Determine transformation to use (preferring no transform)
-		//	VkSurfaceTransformFlagBitsKHR surfaceTransform;
-		//	if (surfaceCapabilities.supportedTransforms & VK_SURFACE_TRANSFORM_IDENTITY_BIT_KHR) {
-		//		surfaceTransform = VK_SURFACE_TRANSFORM_IDENTITY_BIT_KHR;
-		//	}
-		//	else {
-		//		surfaceTransform = surfaceCapabilities.currentTransform;
-		//	}
-		//
-		//
-		//
-		//	// Choose presentation mode (preferring MAILBOX ~= triple buffering)
-		//	VkPresentModeKHR presentMode = choosePresentMode(presentModes);
-		//
-		//	// Finally, create the swap chain
-		//	VkSwapchainCreateInfoKHR createInfo = {};
-		//	createInfo.sType = VK_STRUCTURE_TYPE_SWAPCHAIN_CREATE_INFO_KHR;
-		//	createInfo.surface = windowSurface;
-		//	createInfo.minImageCount = imageCount;
-		//	createInfo.imageFormat = surfaceFormat.format;;
-		//	createInfo.imageColorSpace = surfaceFormat.colorSpace;
-		//	createInfo.imageExtent = swapChainExtent;
-		//	createInfo.imageArrayLayers = 1;
-		//	createInfo.imageUsage = VK_IMAGE_USAGE_COLOR_ATTACHMENT_BIT | VK_IMAGE_USAGE_TRANSFER_DST_BIT;
-		//	createInfo.imageSharingMode = VK_SHARING_MODE_EXCLUSIVE;
-		//	createInfo.queueFamilyIndexCount = 0;
-		//	createInfo.pQueueFamilyIndices = nullptr;
-		//	createInfo.preTransform = surfaceTransform;
-		//	createInfo.compositeAlpha = VK_COMPOSITE_ALPHA_OPAQUE_BIT_KHR;
-		//	createInfo.presentMode = presentMode;
-		//	createInfo.clipped = VK_TRUE;
-		//	createInfo.oldSwapchain = VK_NULL_HANDLE;
-		//
-		//	if (vkCreateSwapchainKHR(m_Device, &createInfo, nullptr, &swapChain) != VK_SUCCESS) {
-		//		std::cerr << "failed to create swap chain" << std::endl;
-		//		exit(1);
-		//	}
-		//	else {
-		//		std::cout << "created swap chain" << std::endl;
-		//	}
-		//
-		//	// Store the images used by the swap chain
-		//	// Note: these are the images that swap chain image indices refer to
-		//	// Note: actual number of images may differ from requested number, since it's a lower bound
-		//	uint32_t actualImageCount = 0;
-		//	if (vkGetSwapchainImagesKHR(m_Device, swapChain, &actualImageCount, nullptr) != VK_SUCCESS || actualImageCount == 0) {
-		//		std::cerr << "failed to acquire number of swap chain images" << std::endl;
-		//		exit(1);
-		//	}
-		
-			uint32_t imageCount = 3;// Remove hardcoded
 
-			swapChainImages.resize(imageCount);
-			swapChainFramebuffers.resize(imageCount);
+			// Framebuffer
+			FramebufferLayout framebufferLayout = { FramebufferAttachmentType::NEON_FRAMEBUFFER_ATTACHMENT_TYPE_COLOR_OUTPUT, };
+			
+			// Setup FramebufferDescriptor
+			FramebufferDescriptor framebufferDesc = {};
+			framebufferDesc.Name = "Main-Framebuffer";
+			framebufferDesc.Width = 1280;
+			framebufferDesc.Height = 720;
+			framebufferDesc.AttachmentCount = 1;
+			framebufferDesc.DepthAttachment = false;
+			framebufferDesc.Layout = framebufferLayout;
+			
+
+
+			for (int i = 0; i < frameBufferCount; ++i)
+			{		
+				// Create Framebuffer
+				FramebufferAttachment** att = new FramebufferAttachment*[1];
+				att[0] = m_Swapchain->GetFramebufferAttachment(i);
+				framebufferDesc.Attachments = att;
 		
-			if (vkGetSwapchainImagesKHR(m_Device, NEON_CAST(VKSwapchain*, m_Swapchain)->m_SwapchainObj, &imageCount, swapChainImages.data()) != VK_SUCCESS) {
-				std::cerr << "failed to acquire swap chain images" << std::endl;
-				exit(1);
+				m_Framebuffer[i] = Framebuffer::Create(&framebufferDesc, m_Pipeline);
 			}
-		
-			swapChainImageViews.resize(swapChainImages.size());
-		
-			for (size_t i = 0; i < swapChainImages.size(); i++) {
-				VkImageViewCreateInfo createInfo{};
-				createInfo.sType = VK_STRUCTURE_TYPE_IMAGE_VIEW_CREATE_INFO;
-				createInfo.image = swapChainImages[i];
-				createInfo.viewType = VK_IMAGE_VIEW_TYPE_2D;
-				createInfo.format = VK_FORMAT_R8G8B8A8_UNORM;
-				createInfo.components.r = VK_COMPONENT_SWIZZLE_IDENTITY;
-				createInfo.components.g = VK_COMPONENT_SWIZZLE_IDENTITY;
-				createInfo.components.b = VK_COMPONENT_SWIZZLE_IDENTITY;
-				createInfo.components.a = VK_COMPONENT_SWIZZLE_IDENTITY;
-				createInfo.subresourceRange.aspectMask = VK_IMAGE_ASPECT_COLOR_BIT;
-				createInfo.subresourceRange.baseMipLevel = 0;
-				createInfo.subresourceRange.levelCount = 1;
-				createInfo.subresourceRange.baseArrayLayer = 0;
-				createInfo.subresourceRange.layerCount = 1;
-		
-				if (vkCreateImageView(m_Device, &createInfo, nullptr, &swapChainImageViews[i]) != VK_SUCCESS) {
-					throw std::runtime_error("failed to create image views!");
-				}
-			}
-		
+
 			std::cout << "acquired swap chain images" << std::endl;
-
 		}
 
-		void VKGraphicsContext::createRenderPass() {
-
-			swapChainFramebuffers.resize(swapChainImageViews.size());
-
-			for (size_t i = 0; i < swapChainImageViews.size(); i++) {
-				VkImageView attachments[] = {
-					swapChainImageViews[i]
-				};
-
-				VkFramebufferCreateInfo framebufferInfo{};
-				framebufferInfo.sType = VK_STRUCTURE_TYPE_FRAMEBUFFER_CREATE_INFO;
-				framebufferInfo.renderPass = NEON_CAST(VKGraphicsPipeline*, m_Pipeline)->m_RenderPass;
-				framebufferInfo.attachmentCount = 1;
-				framebufferInfo.pAttachments = attachments;
-				framebufferInfo.width = 1280;
-				framebufferInfo.height = 720;
-				framebufferInfo.layers = 1;
-
-				if (vkCreateFramebuffer(m_Device, &framebufferInfo, nullptr, &swapChainFramebuffers[i]) != VK_SUCCESS) {
-					throw std::runtime_error("failed to create framebuffer!");
-				}
-			}
-		}
-
-		static std::vector<char> readFile(const std::string& filename) {
-			std::ifstream file(filename, std::ios::ate | std::ios::binary);
-
-			if (!file.is_open()) {
-				throw std::runtime_error("failed to open file!");
-			}
-
-			size_t fileSize = (size_t)file.tellg();
-			std::vector<char> buffer(fileSize);
-
-			file.seekg(0);
-			file.read(buffer.data(), fileSize);
-
-			file.close();
-
-			return buffer;
-		}
-
-		void VKGraphicsContext::createGraphicsPipeline() {
+		void VKGraphicsContext::createGraphicsPipeline()
+		{
 
 			// Setup ShaderDescriptor
 			ShaderDescriptor shaderDesc				= {};
@@ -649,7 +489,8 @@ namespace Neon
 			VkPipelineShaderStageCreateInfo shaderStages[] = { NEON_CAST(VKShader*, shader)->m_VertexStageInfo, NEON_CAST(VKShader*, shader)->m_FragmentStageInfo };
 		}
 
-		VkShaderModule VKGraphicsContext::createShaderModule(const std::vector<char>& code) {
+		VkShaderModule VKGraphicsContext::createShaderModule(const std::vector<char>& code)
+		{
 			VkShaderModuleCreateInfo createInfo{};
 			createInfo.sType = VK_STRUCTURE_TYPE_SHADER_MODULE_CREATE_INFO;
 			createInfo.codeSize = code.size();
@@ -701,7 +542,7 @@ namespace Neon
 
 
 			// Create command buffer
-			for (int i = 0; i < swapChainImages.size(); ++i)
+			for (int i = 0; i < frameBufferCount; ++i)
 				commandBuffers.push_back(CommandBuffer::Create(&commandBufferDesc));
 
 			float vertices[] = {
@@ -761,7 +602,7 @@ namespace Neon
 			subResourceRange.layerCount = 1;
 
 			// Record the command buffer for every swap chain image
-			for (uint32_t i = 0; i < swapChainImages.size(); i++) {
+			for (uint32_t i = 0; i < frameBufferCount; i++) {
 				// Change layout of image to be optimal for clearing
 				VkImageMemoryBarrier presentToClearBarrier = {};
 				presentToClearBarrier.sType = VK_STRUCTURE_TYPE_IMAGE_MEMORY_BARRIER;
@@ -771,7 +612,7 @@ namespace Neon
 				presentToClearBarrier.newLayout = VK_IMAGE_LAYOUT_TRANSFER_DST_OPTIMAL;
 				presentToClearBarrier.srcQueueFamilyIndex = presentQueueFamily;
 				presentToClearBarrier.dstQueueFamilyIndex = presentQueueFamily;
-				presentToClearBarrier.image = swapChainImages[i];
+				presentToClearBarrier.image = NEON_CAST(VKFramebufferAttachment*, m_Framebuffer[i]->GetAttachment(0))->m_Image;
 				presentToClearBarrier.subresourceRange = subResourceRange;
 
 				// Change layout of image to be optimal for presenting
@@ -783,32 +624,25 @@ namespace Neon
 				clearToPresentBarrier.newLayout = VK_IMAGE_LAYOUT_PRESENT_SRC_KHR;
 				clearToPresentBarrier.srcQueueFamilyIndex = presentQueueFamily;
 				clearToPresentBarrier.dstQueueFamilyIndex = presentQueueFamily;
-				clearToPresentBarrier.image = swapChainImages[i];
+				clearToPresentBarrier.image = NEON_CAST(VKFramebufferAttachment*, m_Framebuffer[i]->GetAttachment(0))->m_Image;
 				clearToPresentBarrier.subresourceRange = subResourceRange;
 
 				VkRenderPassBeginInfo renderPassInfo{};
 				renderPassInfo.sType = VK_STRUCTURE_TYPE_RENDER_PASS_BEGIN_INFO;
 				renderPassInfo.renderPass = NEON_CAST(VKGraphicsPipeline*, m_Pipeline)->m_RenderPass;
-				renderPassInfo.framebuffer = swapChainFramebuffers[i];
+				renderPassInfo.framebuffer = NEON_CAST(VKFramebuffer*, m_Framebuffer[i])->m_FramebufferObj;
 				renderPassInfo.renderArea.offset = { 0, 0 };
 				renderPassInfo.renderArea.extent = { 1280, 720};
-
-				VkClearValue clearColor1 = { 0.0f, 0.0f, 0.0f, 1.0f };
-				renderPassInfo.clearValueCount = 1;
-				renderPassInfo.pClearValues = &clearColor1;
 
 				// Record command buffer
 				commandBuffers[i]->StartRecording();
 
-				vkCmdClearColorImage(NEON_CAST(VKCommandBuffer*, commandBuffers[i])->m_CommandBufferObj, swapChainImages[i], VK_IMAGE_LAYOUT_TRANSFER_DST_OPTIMAL, &clearColor, 1, &subResourceRange);
-
-
+				VkImage im = NEON_CAST(VKFramebufferAttachment*, m_Framebuffer[i]->GetAttachment(0))->m_Image;
+				vkCmdClearColorImage(NEON_CAST(VKCommandBuffer*, commandBuffers[i])->m_CommandBufferObj, im, VK_IMAGE_LAYOUT_TRANSFER_DST_OPTIMAL, &clearColor, 1, &subResourceRange);
+			
+				commandBuffers[i]->SetGraphicsPipeline(m_Pipeline);
 				vkCmdBeginRenderPass(NEON_CAST(VKCommandBuffer*, commandBuffers[i])->m_CommandBufferObj, &renderPassInfo, VK_SUBPASS_CONTENTS_INLINE);
 
-				commandBuffers[i]->SetGraphicsPipeline(m_Pipeline);
-
-
-			
 				commandBuffers[i]->SetVertexBuffer(vertexBuffer);
 				commandBuffers[i]->SetIndexBuffer(indexBuffer);
 

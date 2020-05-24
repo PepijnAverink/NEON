@@ -11,7 +11,7 @@ namespace Neon
 		class DX12Framebuffer : public Framebuffer
 		{
 		public:
-			DX12Framebuffer(const FramebufferDescriptor* _framebufferDescriptor, Renderpass* _renderpass);
+			DX12Framebuffer(const FramebufferDescriptor* _framebufferDescriptor, GraphicsPipeline* _graphicsPipeline);
 
 			CD3DX12_CPU_DESCRIPTOR_HANDLE GetAttachmentHandle() const { return CD3DX12_CPU_DESCRIPTOR_HANDLE(m_DescriptorHeap->GetCPUDescriptorHandleForHeapStart()); }
 			CD3DX12_CPU_DESCRIPTOR_HANDLE GetDepthStencilHandle() const { return CD3DX12_CPU_DESCRIPTOR_HANDLE(m_DepthDescriptorHeap->GetCPUDescriptorHandleForHeapStart()); }

@@ -32,8 +32,8 @@ namespace Neon
 
 			virtual void ClearFrameBuffer(Framebuffer* _framebuffer, const float* _color, const uint32_t _offset, const uint32_t _count, uint32_t _flags) const override;
 
-			virtual void BeginRenderpass(Renderpass* _renderpass, Framebuffer* _framebuffer) const override;
-			virtual void EndRenderpass(Renderpass* _renderpass) const override;
+			virtual void BeginRenderpass(Framebuffer* _framebuffer) const override;
+			virtual void EndRenderpass() const override;
 
 			virtual void TransitionFramebufferAttachment(FramebufferAttachment* _framebufferAttachment, const FramebufferAttachmentTransitionState _fromState, const FramebufferAttachmentTransitionState _toState) const override;
 
