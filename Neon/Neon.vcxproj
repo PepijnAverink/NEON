@@ -163,8 +163,7 @@
     <ClInclude Include="source\graphics\api\directx12\objects\command\dx12_command_queue.h" />
     <ClInclude Include="source\graphics\api\directx12\objects\command\dx12_command_queue_type.h" />
     <ClInclude Include="source\graphics\api\directx12\objects\command_generic\dx12_scissor.h" />
-    <ClInclude Include="source\graphics\api\directx12\objects\command_generic\dx12_topology.h" />
-    <ClInclude Include="source\graphics\api\directx12\objects\command_generic\dx12_topology_state.h" />
+    <ClInclude Include="source\graphics\api\directx12\pipeline\topology\dx12_topology.h" />
     <ClInclude Include="source\graphics\api\directx12\objects\command_generic\dx12_viewport.h" />
     <ClInclude Include="source\graphics\api\directx12\objects\framebuffer\dx12_framebuffer.h" />
     <ClInclude Include="source\graphics\api\directx12\objects\framebuffer\dx12_framebuffer_attachment.h" />
@@ -193,7 +192,7 @@
     <ClInclude Include="source\graphics\api\vulkan\pipeline\rasterizer\vk_cull_faces.h" />
     <ClInclude Include="source\graphics\api\vulkan\pipeline\rasterizer\vk_cull_modes.h" />
     <ClInclude Include="source\graphics\api\vulkan\pipeline\rasterizer\vk_fill_modes.h" />
-    <ClInclude Include="source\graphics\api\vulkan\objects\command_generic\vk_topology.h" />
+    <ClInclude Include="source\graphics\api\vulkan\pipeline\topology\vk_topology.h" />
     <ClInclude Include="source\graphics\api\vulkan\pipeline\vk_graphics_pipeline.h" />
     <ClInclude Include="source\graphics\api\vulkan\resources\buffer\vk_index_buffer.h" />
     <ClInclude Include="source\graphics\api\vulkan\resources\buffer\vk_vertex_buffer.h" />
@@ -249,8 +248,7 @@
     <ClInclude Include="source\graphics\pipeline\rasterizer\fill_modes.h" />
     <ClInclude Include="source\graphics\pipeline\rasterizer\rasterizer_state_descriptor.h" />
     <ClInclude Include="source\graphics\pipeline\rasterizer\rasterizer_state.h" />
-    <ClInclude Include="source\graphics\objects\command_generic\topology.h" />
-    <ClInclude Include="source\graphics\objects\command_generic\topology_state.h" />
+    <ClInclude Include="source\graphics\pipeline\topology\topology.h" />
     <ClInclude Include="source\graphics\resources\buffer\buffer_format.h" />
     <ClInclude Include="source\graphics\resources\buffer\buffer_usage.h" />
     <ClInclude Include="source\graphics\resources\buffer\index_buffer.h" />
@@ -287,7 +285,6 @@
     <ClCompile Include="source\graphics\api\directx12\objects\command\dx12_command_buffer.cpp" />
     <ClCompile Include="source\graphics\api\directx12\objects\command\dx12_command_queue.cpp" />
     <ClCompile Include="source\graphics\api\directx12\objects\command_generic\dx12_scissor.cpp" />
-    <ClCompile Include="source\graphics\api\directx12\objects\command_generic\dx12_topology_state.cpp" />
     <ClCompile Include="source\graphics\api\directx12\objects\command_generic\dx12_viewport.cpp" />
     <ClCompile Include="source\graphics\api\directx12\objects\framebuffer\dx12_framebuffer.cpp" />
     <ClCompile Include="source\graphics\api\directx12\objects\framebuffer\dx12_framebuffer_attachment.cpp" />
@@ -320,7 +317,6 @@
     <ClCompile Include="source\graphics\objects\command\command_buffer.cpp" />
     <ClCompile Include="source\graphics\objects\command\command_queue.cpp" />
     <ClCompile Include="source\graphics\objects\command_generic\scissor.cpp" />
-    <ClCompile Include="source\graphics\objects\command_generic\topology_state.cpp" />
     <ClCompile Include="source\graphics\objects\command_generic\viewport.cpp" />
     <ClCompile Include="source\graphics\objects\framebuffer\framebuffer.cpp" />
     <ClCompile Include="source\graphics\objects\framebuffer\framebuffer_attachment.cpp" />

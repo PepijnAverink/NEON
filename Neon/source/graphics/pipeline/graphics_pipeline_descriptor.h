@@ -5,6 +5,8 @@
 #include "./graphics/pipeline/rasterizer/rasterizer_state.h"
 #include "./graphics/pipeline/inputLayout/input_layout.h"
 
+#include "./graphics/pipeline/topology/topology.h"
+
 namespace Neon
 {
 	namespace Graphics
@@ -24,6 +26,7 @@ namespace Neon
 
 			Shader*		Shader;
 
+			Topology	Topology;
 			RasterizerStateDescriptor* RasterizerStateDescriptor;
 		};
 	}

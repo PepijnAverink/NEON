@@ -7,7 +7,6 @@
 #include "./graphics/api/directx12/dx12_graphics_context.h"
 #include "./graphics/api/directx12/dx12_error.h"
 
-#include "./graphics/api/directx12/objects/command_generic/dx12_topology_state.h"
 #include "./graphics/api/directx12/objects/command_generic/dx12_viewport.h"
 #include "./graphics/api/directx12/objects/command_generic/dx12_scissor.h"
 
@@ -59,6 +58,8 @@ namespace Neon
 
 			// Dont set the root signature here
 			m_CommandListObj->SetGraphicsRootSignature(NEON_CAST(DX12GraphicsPipeline*, _graphicsPipeline)->m_RootSignature);
+
+			m_CommandListObj->IASetPrimitiveTopology(NEON_CAST(DX12GraphicsPipeline*, _graphicsPipeline)->m_InternalTopology);
 		}
 
 		void DX12CommandBuffer::SetVertexBuffer(VertexBuffer* _vertexBuffer) const
@@ -69,16 +70,6 @@ namespace Neon
 		void DX12CommandBuffer::SetIndexBuffer(IndexBuffer* _indexBuffer) const
 		{
 			m_CommandListObj->IASetIndexBuffer(&NEON_CAST(DX12IndexBuffer*, _indexBuffer)->m_IndexBufferView);
-		}
-
-		void DX12CommandBuffer::SetTopology(const Topology _topology) const
-		{
-			m_CommandListObj->IASetPrimitiveTopology(GetDX12Topology(_topology));
-		}
-
-		void DX12CommandBuffer::SetTopology(TopologyState* _topologyState) const
-		{
-			m_CommandListObj->IASetPrimitiveTopology(NEON_CAST(DX12TopologyState*, _topologyState)->m_InternalTopology);
 		}
 
 		void DX12CommandBuffer::SetViewport(Viewport* _viewport) const

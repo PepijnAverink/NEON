@@ -7,8 +7,6 @@
 #include "./graphics/api/directx12/resources/shader/dx12_shader.h"
 #include "./graphics/api/directx12/pipeline/inputLayout/dx12_input_layout.h"
 
-#include "./graphics/objects/command_generic/topology.h"
-
 #include "./graphics/objects/framebuffer/framebuffer_layout.h"
 #include "./graphics/api/directx12/objects/framebuffer/dx12_framebuffer_attachment.h"
 #include "./graphics/objects/framebuffer/framebuffer_attachment_transition_state.h"
@@ -146,6 +144,7 @@ namespace Neon
 			pipelineDesc.ImageHeight  = _window->GetWindowHeight();
 			pipelineDesc.InputLayout  = reflection.Layout;
 			pipelineDesc.Shader		  = shader;
+			pipelineDesc.Topology	  = Topology::NEON_TOPOLOGY_TRIANGLE_LIST;
 			pipelineDesc.RasterizerStateDescriptor = &rasterizerStateDesc;
 			// Create the Graphics Pipeline
 			m_GraphicsPipeline = GraphicsPipeline::Create(&pipelineDesc);
@@ -283,7 +282,6 @@ namespace Neon
 			// draw triangle
 			m_CommandBuffers[frameIndex]->SetViewport(m_Viewport);
 			m_CommandBuffers[frameIndex]->SetScissor(m_Scissor);
-			m_CommandBuffers[frameIndex]->SetTopology(Topology::NEON_TOPOLOGY_TRIANGLE_LIST);
 
 			m_CommandBuffers[frameIndex]->SetVertexBuffer(m_VertexBuffer);
 			m_CommandBuffers[frameIndex]->SetIndexBuffer(m_IndexBuffer);

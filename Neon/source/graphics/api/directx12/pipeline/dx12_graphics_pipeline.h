@@ -18,6 +18,8 @@ namespace Neon
 			friend class DX12GraphicsContext; // TODO:: Remove me
 			ID3D12PipelineState* m_PipelineStateObject;
 			ID3D12RootSignature* m_RootSignature;
+
+			D3D_PRIMITIVE_TOPOLOGY m_InternalTopology;
 		};
 	}
 }

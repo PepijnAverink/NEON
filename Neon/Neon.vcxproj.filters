@@ -321,21 +321,6 @@
     <ClInclude Include="source\graphics\api\vulkan\resources\shader\vk_shader.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="source\graphics\objects\command_generic\topology.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="source\graphics\objects\command_generic\topology_state.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="source\graphics\api\vulkan\objects\command_generic\vk_topology.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="source\graphics\api\directx12\objects\command_generic\dx12_topology.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="source\graphics\api\directx12\objects\command_generic\dx12_topology_state.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="source\graphics\api\directx12\objects\command_generic\dx12_viewport.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -403,6 +388,15 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="source\graphics\api\vulkan\objects\framebuffer\vk_framebuffer_attachment_transition_state.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="source\graphics\api\directx12\pipeline\topology\dx12_topology.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="source\graphics\pipeline\topology\topology.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="source\graphics\api\vulkan\pipeline\topology\vk_topology.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
@@ -543,12 +537,6 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="source\graphics\api\vulkan\resources\shader\vk_shader.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="source\graphics\objects\command_generic\topology_state.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="source\graphics\api\directx12\objects\command_generic\dx12_topology_state.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="source\graphics\objects\command_generic\viewport.cpp">

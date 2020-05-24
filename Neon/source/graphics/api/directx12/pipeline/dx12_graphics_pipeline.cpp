@@ -1,6 +1,7 @@
 #include "./graphics/api/directx12/pipeline/dx12_graphics_pipeline.h"
 #include "./graphics/api/directx12/dx12_graphics_context.h"
 #include "./graphics/api/directx12/pipeline/inputLayout/dx12_input_layout.h"
+#include "./graphics/api/directx12/pipeline/topology/dx12_topology.h"
 #include "./graphics/api/directx12/dx12_error.h"
 
 #include <DX12/d3dx12.h>
@@ -13,6 +14,7 @@ namespace Neon
 	{
 		DX12GraphicsPipeline::DX12GraphicsPipeline(const GraphicsPipelineDescriptor* _graphicsPipelineDescriptor)
 			: GraphicsPipeline(_graphicsPipelineDescriptor)
+			, m_InternalTopology(GetDX12Topology(_graphicsPipelineDescriptor->Topology))
 		{
 			// create root signature
 			CD3DX12_ROOT_SIGNATURE_DESC rootSignatureDesc;
@@ -50,7 +52,7 @@ namespace Neon
 			psoDesc.pRootSignature			= m_RootSignature;
 			psoDesc.VS						= vertexShaderBytecode;
 			psoDesc.PS						= pixelShaderBytecode;
-			psoDesc.PrimitiveTopologyType	= D3D12_PRIMITIVE_TOPOLOGY_TYPE_TRIANGLE;
+			psoDesc.PrimitiveTopologyType	= GetDX12TopologyType(_graphicsPipelineDescriptor->Topology);
 			psoDesc.RTVFormats[0]			= DXGI_FORMAT_R8G8B8A8_UNORM;
 			psoDesc.SampleDesc				= sampleDesc;
 			psoDesc.SampleMask				= 0xffffffff;

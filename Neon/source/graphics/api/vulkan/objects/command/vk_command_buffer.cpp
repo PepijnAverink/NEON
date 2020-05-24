@@ -73,15 +73,6 @@ namespace Neon
 			vkCmdBindIndexBuffer(m_CommandBufferObj, NEON_CAST(VKIndexBuffer*, _indexBuffer)->m_IndexBufferObj, 0, VK_INDEX_TYPE_UINT16);
 
 		}
-		void VKCommandBuffer::SetTopology(const Topology _topology) const
-		{
-
-		}
-
-		void VKCommandBuffer::SetTopology(TopologyState* _topologyState) const
-		{
-
-		}
 
 		void VKCommandBuffer::SetViewport(Viewport* _viewport) const
 		{
