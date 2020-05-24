@@ -1,6 +1,8 @@
 #include "./graphics/api/vulkan/objects/command/vk_command_buffer.h"
 #include "./graphics/api/vulkan/objects/command/vk_command_pool.h"
 #include "./graphics/api/vulkan/objects/command/vk_command_buffer_type.h"
+#include "./graphics/api/vulkan/objects/framebuffer/vk_framebuffer_attachment.h"
+#include "./graphics/objects/framebuffer/framebuffer_clear_flags.h"
 #include "./graphics/api/vulkan/vk_error.h"
 
 #include "./graphics/api/vulkan/pipeline/vk_graphics_pipeline.h"
@@ -13,8 +15,6 @@ namespace Neon
 {
 	namespace Graphics
 	{
-		static VKGraphicsPipeline* s_GraphicsPipeline;
-
 		// TODO:: Track commandBufferState for VK implementation
 		VKCommandBuffer::VKCommandBuffer(const CommandBufferDescriptor* _commandBufferDescriptor)
 			: CommandBuffer(_commandBufferDescriptor)
@@ -55,7 +55,7 @@ namespace Neon
 		}
 		
 		// Include the minDepth and maxDepth values
-		void VKCommandBuffer::SetGraphicsPipeline(GraphicsPipeline* _graphicsPipeline) const
+		void VKCommandBuffer::SetGraphicsPipeline(GraphicsPipeline* _graphicsPipeline)
 		{
 			s_GraphicsPipeline = NEON_CAST(VKGraphicsPipeline*, _graphicsPipeline);
 			vkCmdBindPipeline(m_CommandBufferObj, VK_PIPELINE_BIND_POINT_GRAPHICS, s_GraphicsPipeline->m_GraphicsPipeline);
@@ -92,15 +92,44 @@ namespace Neon
 		{
 
 		}
-		void VKCommandBuffer::ClearFrameBuffer(Framebuffer * _framebuffer, const float* _color, const uint32_t _offset, const uint32_t _count, uint32_t _flags) const
+
+		void VKCommandBuffer::ClearFrameBuffer(Framebuffer* _framebuffer, const float* _color, const uint32_t _offset, const uint32_t _count, uint32_t _flags) const
 		{
+			// Note: contains value for each subresource range
+			VkClearColorValue clearColor = {
+				{ _color[0], _color[1], _color[2], _color[3], } // R, G, B, A
+			};
+
+			// TODO:: Take a look at this
+			VkImageSubresourceRange subResourceRange = {};
+			subResourceRange.aspectMask = VK_IMAGE_ASPECT_COLOR_BIT;
+			subResourceRange.baseMipLevel = 0;
+			subResourceRange.levelCount = 1;
+			subResourceRange.baseArrayLayer = 0;
+			subResourceRange.layerCount = 1;
+
+			// TODO:: Support clearning of whole framebuffer
+			if (_flags & NEON_CLEAR_COLOR_BIT)
+				vkCmdClearColorImage(m_CommandBufferObj, NEON_CAST(VKFramebufferAttachment*, _framebuffer->GetAttachment(0))->m_Image, VK_IMAGE_LAYOUT_TRANSFER_DST_OPTIMAL, &clearColor, 1, &subResourceRange);
 		}
-		void VKCommandBuffer::BeginRenderpass(Framebuffer * _framebuffer) const
+
+		void VKCommandBuffer::BeginRenderpass(Framebuffer* _framebuffer) const
 		{
+			VkRenderPassBeginInfo renderPassInfo{};
+			renderPassInfo.sType = VK_STRUCTURE_TYPE_RENDER_PASS_BEGIN_INFO;
+			renderPassInfo.renderPass  = s_GraphicsPipeline->m_RenderPass;
+			renderPassInfo.framebuffer = NEON_CAST(VKFramebuffer*, _framebuffer)->m_FramebufferObj;
+			renderPassInfo.renderArea.offset = { 0, 0 };
+			renderPassInfo.renderArea.extent = { 1280, 720 }; // TODO:: ABstract this size
+
+			vkCmdBeginRenderPass(m_CommandBufferObj, &renderPassInfo, VK_SUBPASS_CONTENTS_INLINE);
 		}
+
 		void VKCommandBuffer::EndRenderpass() const
 		{
+			vkCmdEndRenderPass(m_CommandBufferObj);
 		}
+
 		void VKCommandBuffer::TransitionFramebufferAttachment(FramebufferAttachment * _framebufferAttachment, const FramebufferAttachmentTransitionState _fromState, const FramebufferAttachmentTransitionState _toState) const
 		{
 		}

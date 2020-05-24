@@ -19,6 +19,7 @@ namespace Neon
 
 			friend class VKGraphicsContext; // Remove me
 			friend class VKFramebuffer;
+			friend class VKCommandBuffer;
 			VkImage		m_Image;
 			VkImageView m_ImageView;
 		};

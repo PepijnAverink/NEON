@@ -17,8 +17,8 @@ namespace Neon
 			virtual void AddAttachment(FramebufferAttachment* _framebufferAttachment) override;
 
 			friend class VKGraphicsContext; // Remove me
-			VKFramebuffer(const FramebufferDescriptor* _framebufferDescriptor, GraphicsPipeline* _graphicsPipeline, VkImageView* _attachments); // Remove me
 
+			friend class VKCommandBuffer;
 			VkFramebuffer m_FramebufferObj;
 		};
 	}

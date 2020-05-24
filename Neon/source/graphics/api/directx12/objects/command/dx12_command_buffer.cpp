@@ -53,7 +53,7 @@ namespace Neon
 		//	DX12_ThrowIfFailed(m_CommandListObj->Close());
 		}
 
-		void DX12CommandBuffer::SetGraphicsPipeline(GraphicsPipeline* _graphicsPipeline) const
+		void DX12CommandBuffer::SetGraphicsPipeline(GraphicsPipeline* _graphicsPipeline)
 		{
 			m_CommandListObj->SetPipelineState(NEON_CAST(DX12GraphicsPipeline*, _graphicsPipeline)->m_PipelineStateObject);
 

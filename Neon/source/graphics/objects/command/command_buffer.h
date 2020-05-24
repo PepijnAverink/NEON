@@ -42,7 +42,7 @@ namespace Neon
 			virtual void Reset() const = 0;
 
 			// Commands
-			virtual void SetGraphicsPipeline(GraphicsPipeline* _graphicsPipeline) const = 0;
+			virtual void SetGraphicsPipeline(GraphicsPipeline* _graphicsPipeline) = 0;
 
 			virtual void SetVertexBuffer(VertexBuffer* _vertexBuffer) const = 0;
 			virtual void SetIndexBuffer(IndexBuffer* _indexBuffer) const = 0;

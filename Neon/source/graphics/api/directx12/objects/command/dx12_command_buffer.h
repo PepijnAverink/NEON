@@ -19,7 +19,7 @@ namespace Neon
 			virtual void Reset() const override;
 
 			// Commands
-			virtual void SetGraphicsPipeline(GraphicsPipeline* _graphicsPipeline) const override;
+			virtual void SetGraphicsPipeline(GraphicsPipeline* _graphicsPipeline) override;
 
 			virtual void SetVertexBuffer(VertexBuffer* _vertexBuffer) const override;
 			virtual void SetIndexBuffer(IndexBuffer* _indexBuffer) const override;

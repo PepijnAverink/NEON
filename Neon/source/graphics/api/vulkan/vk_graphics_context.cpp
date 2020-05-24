@@ -13,6 +13,8 @@
 
 #include "./graphics/api/vulkan/resources/shader/vk_shader.h"
 
+#include "./graphics/objects/framebuffer/framebuffer_clear_flags.h"
+
 namespace Neon
 {
 	namespace Graphics
@@ -590,10 +592,6 @@ namespace Neon
 			indexBuffer = IndexBuffer::Create(commandBuffers[0], &indexBufferDesc);
 
 			// Note: contains value for each subresource range
-			VkClearColorValue clearColor = {
-				{ 0.4f, 0.6f, 0.9f, 1.0f } // R, G, B, A
-			};
-
 			VkImageSubresourceRange subResourceRange = {};
 			subResourceRange.aspectMask = VK_IMAGE_ASPECT_COLOR_BIT;
 			subResourceRange.baseMipLevel = 0;
@@ -627,28 +625,24 @@ namespace Neon
 				clearToPresentBarrier.image = NEON_CAST(VKFramebufferAttachment*, m_Framebuffer[i]->GetAttachment(0))->m_Image;
 				clearToPresentBarrier.subresourceRange = subResourceRange;
 
-				VkRenderPassBeginInfo renderPassInfo{};
-				renderPassInfo.sType = VK_STRUCTURE_TYPE_RENDER_PASS_BEGIN_INFO;
-				renderPassInfo.renderPass = NEON_CAST(VKGraphicsPipeline*, m_Pipeline)->m_RenderPass;
-				renderPassInfo.framebuffer = NEON_CAST(VKFramebuffer*, m_Framebuffer[i])->m_FramebufferObj;
-				renderPassInfo.renderArea.offset = { 0, 0 };
-				renderPassInfo.renderArea.extent = { 1280, 720};
-
 				// Record command buffer
 				commandBuffers[i]->StartRecording();
 
-				VkImage im = NEON_CAST(VKFramebufferAttachment*, m_Framebuffer[i]->GetAttachment(0))->m_Image;
-				vkCmdClearColorImage(NEON_CAST(VKCommandBuffer*, commandBuffers[i])->m_CommandBufferObj, im, VK_IMAGE_LAYOUT_TRANSFER_DST_OPTIMAL, &clearColor, 1, &subResourceRange);
-			
+				
 				commandBuffers[i]->SetGraphicsPipeline(m_Pipeline);
-				vkCmdBeginRenderPass(NEON_CAST(VKCommandBuffer*, commandBuffers[i])->m_CommandBufferObj, &renderPassInfo, VK_SUBPASS_CONTENTS_INLINE);
+
+				const float clearColor[] = { 0.8f, 0.2f, 0.4f, 1.0f };
+				commandBuffers[i]->ClearFrameBuffer(m_Framebuffer[i], clearColor, 0, 0, NEON_CLEAR_COLOR_BIT | NEON_CLEAR_DEPTH_STENCIL_BIT);
+
+
+				commandBuffers[i]->BeginRenderpass(m_Framebuffer[i]);
 
 				commandBuffers[i]->SetVertexBuffer(vertexBuffer);
 				commandBuffers[i]->SetIndexBuffer(indexBuffer);
 
 				commandBuffers[i]->DrawIndexed(6, 0, 0);
 
-				vkCmdEndRenderPass(NEON_CAST(VKCommandBuffer*, commandBuffers[i])->m_CommandBufferObj);
+				commandBuffers[i]->EndRenderpass();
 
 
 				vkCmdPipelineBarrier(NEON_CAST(VKCommandBuffer*, commandBuffers[i])->m_CommandBufferObj, VK_PIPELINE_STAGE_TRANSFER_BIT, VK_PIPELINE_STAGE_TRANSFER_BIT, 0, 0, nullptr, 0, nullptr, 1, &presentToClearBarrier);

@@ -45,20 +45,5 @@ namespace Neon
 			// Add attachment
 			m_FramebufferAttachments.push_back(_framebufferAttachment);
 		}
-
-		VKFramebuffer::VKFramebuffer(const FramebufferDescriptor* _framebufferDescriptor, GraphicsPipeline* _graphicsPipeline, VkImageView* _attachments)
-			: Framebuffer(_framebufferDescriptor)
-		{
-			VkFramebufferCreateInfo framebufferInfo{};
-			framebufferInfo.sType = VK_STRUCTURE_TYPE_FRAMEBUFFER_CREATE_INFO;
-			framebufferInfo.renderPass = NEON_CAST(VKGraphicsPipeline*, _graphicsPipeline)->m_RenderPass;
-			framebufferInfo.attachmentCount = m_AttachmentCount;
-			framebufferInfo.pAttachments = _attachments;
-			framebufferInfo.width = _framebufferDescriptor->Width;
-			framebufferInfo.height = _framebufferDescriptor->Height;
-			framebufferInfo.layers = 1;
-
-			VK_ThrowIfFailed(vkCreateFramebuffer(VKGraphicsContext::GetInstance()->GetGraphicsDevice(), &framebufferInfo, nullptr, &m_FramebufferObj));
-		}
 	}
 }
