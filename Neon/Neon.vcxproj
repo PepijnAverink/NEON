@@ -83,7 +83,7 @@
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
-      <AdditionalDependencies>d3d12.lib;dxgi.lib;d3dcompiler.lib;dxguid.lib;vulkan-1.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>d3d11.lib;d3d12.lib;dxgi.lib;d3dcompiler.lib;dxguid.lib;vulkan-1.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <AdditionalLibraryDirectories>$(VULKAN_SDK)\Lib32\;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Link>
   </ItemDefinitionGroup>
@@ -100,7 +100,7 @@
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
-      <AdditionalDependencies>d3d12.lib;dxgi.lib;d3dcompiler.lib;dxguid.lib;vulkan-1.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>d3d11.lib;d3d12.lib;dxgi.lib;d3dcompiler.lib;dxguid.lib;vulkan-1.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <AdditionalLibraryDirectories>$(VULKAN_SDK)\Lib\;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Link>
   </ItemDefinitionGroup>
@@ -121,7 +121,7 @@
       <SubSystem>Console</SubSystem>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
-      <AdditionalDependencies>d3d12.lib;dxgi.lib;d3dcompiler.lib;dxguid.lib;vulkan-1.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>d3d11.lib;d3d12.lib;dxgi.lib;d3dcompiler.lib;dxguid.lib;vulkan-1.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <AdditionalLibraryDirectories>$(VULKAN_SDK)\Lib32\;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Link>
   </ItemDefinitionGroup>
@@ -142,7 +142,7 @@
       <SubSystem>Console</SubSystem>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
-      <AdditionalDependencies>d3d12.lib;dxgi.lib;d3dcompiler.lib;dxguid.lib;vulkan-1.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>d3d11.lib;d3d12.lib;dxgi.lib;d3dcompiler.lib;dxguid.lib;vulkan-1.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <AdditionalLibraryDirectories>$(VULKAN_SDK)\Lib\;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Link>
   </ItemDefinitionGroup>
@@ -155,6 +155,8 @@
     <ClInclude Include="source\core\window\window.h" />
     <ClInclude Include="source\core\window\window_descriptor.h" />
     <ClInclude Include="source\gameplay\neon_game.h" />
+    <ClInclude Include="source\graphics\api\directx11\dx11_error.h" />
+    <ClInclude Include="source\graphics\api\directx11\dx11_graphics_context.h" />
     <ClInclude Include="source\graphics\api\directx12\dx12_error.h" />
     <ClInclude Include="source\graphics\api\directx12\dx12_graphics_context.h" />
     <ClInclude Include="source\graphics\api\directx12\objects\command\dx12_command_pool.h" />
@@ -178,6 +180,8 @@
     <ClInclude Include="source\graphics\api\directx12\resources\buffer\dx12_vertex_buffer.h" />
     <ClInclude Include="source\graphics\api\directx12\resources\memory\dx12_memory_pool.h" />
     <ClInclude Include="source\graphics\api\directx12\resources\shader\dx12_shader.h" />
+    <ClInclude Include="source\graphics\api\opengl\gl_error.h" />
+    <ClInclude Include="source\graphics\api\opengl\gl_graphics_context.h" />
     <ClInclude Include="source\graphics\api\vulkan\objects\command\vk_command_buffer_type.h" />
     <ClInclude Include="source\graphics\api\vulkan\objects\command\vk_command_pool.h" />
     <ClInclude Include="source\graphics\api\vulkan\objects\command\vk_command_buffer.h" />
@@ -203,10 +207,11 @@
     <ClInclude Include="source\graphics\graphics_context.h" />
     <ClInclude Include="source\graphics\graphics_defines.h" />
     <ClInclude Include="source\graphics\graphics_driver.h" />
-    <ClInclude Include="source\graphics\hardware\adapter\adapter_type.h" />
-    <ClInclude Include="source\graphics\hardware\adapter\display_mode_descriptor.h" />
-    <ClInclude Include="source\graphics\hardware\adapter\video_adapter_descriptor.h" />
-    <ClInclude Include="source\graphics\hardware\adapter\video_output_descriptor.h" />
+    <ClInclude Include="source\graphics\hardware\adapter\vendor_helper.h" />
+    <ClInclude Include="source\graphics\hardware\adapter\video_adapter_type.h" />
+    <ClInclude Include="source\graphics\hardware\adapter\display_mode.h" />
+    <ClInclude Include="source\graphics\hardware\adapter\video_adapter.h" />
+    <ClInclude Include="source\graphics\hardware\adapter\video_output.h" />
     <ClInclude Include="source\graphics\objects\command\command_pool.h" />
     <ClInclude Include="source\graphics\objects\command\command_buffer.h" />
     <ClInclude Include="source\graphics\objects\command\command_buffer_descriptor.h" />
@@ -280,6 +285,7 @@
     <ClCompile Include="source\core\engine.cpp" />
     <ClCompile Include="source\core\window\window.cpp" />
     <ClCompile Include="source\gameplay\neon_game.cpp" />
+    <ClCompile Include="source\graphics\api\directx11\dx11_graphics_context.cpp" />
     <ClCompile Include="source\graphics\api\directx12\dx12_graphics_context.cpp" />
     <ClCompile Include="source\graphics\api\directx12\objects\command\dx12_command_pool.cpp" />
     <ClCompile Include="source\graphics\api\directx12\objects\command\dx12_command_buffer.cpp" />
@@ -296,6 +302,7 @@
     <ClCompile Include="source\graphics\api\directx12\resources\buffer\dx12_vertex_buffer.cpp" />
     <ClCompile Include="source\graphics\api\directx12\resources\memory\dx12_memory_pool.cpp" />
     <ClCompile Include="source\graphics\api\directx12\resources\shader\dx12_shader.cpp" />
+    <ClCompile Include="source\graphics\api\opengl\gl_graphics_context.cpp" />
     <ClCompile Include="source\graphics\api\vulkan\objects\command\vk_command_pool.cpp" />
     <ClCompile Include="source\graphics\api\vulkan\objects\command\vk_command_buffer.cpp" />
     <ClCompile Include="source\graphics\api\vulkan\objects\command\vk_command_queue.cpp" />
@@ -312,7 +319,7 @@
     <ClCompile Include="source\graphics\api\vulkan\vk_graphics_context.cpp" />
     <ClCompile Include="source\graphics\graphics_context.cpp" />
     <ClCompile Include="source\graphics\graphics_driver.cpp" />
-    <ClCompile Include="source\graphics\hardware\adapter\display_mode_descriptor.cpp" />
+    <ClCompile Include="source\graphics\hardware\adapter\display_mode.cpp" />
     <ClCompile Include="source\graphics\objects\command\command_pool.cpp" />
     <ClCompile Include="source\graphics\objects\command\command_buffer.cpp" />
     <ClCompile Include="source\graphics\objects\command\command_queue.cpp" />

@@ -8,8 +8,10 @@ namespace Neon
 		enum GraphicsAPI
 		{
 			NONE,
-			DIRECTX12,
+			OPENGL,
 			VULKAN,
+			DIRECTX11,
+			DIRECTX12,
 		};
 
 		class GraphicsDriver

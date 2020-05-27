@@ -23,6 +23,9 @@ namespace Neon
 			inline int GetWindowWidth()  const { return m_Width; }
 			inline int GetWindowHeight() const { return m_Height; }
 
+			inline int GetScreenWidth()  const { return m_ScreenWidth; }
+			inline int GetScreenHeight() const { return m_ScreenHeight; }
+
 			inline bool GetVSync() const { return m_VSync; }
 
 			virtual inline void* GetNativeWindowHandle() const = 0;
@@ -34,6 +37,9 @@ namespace Neon
 			std::string m_WindowTitle;
 			int m_Width;
 			int m_Height;
+
+			int m_ScreenWidth;
+			int m_ScreenHeight;
 
 			bool m_VSync;
 			bool m_Focussed;

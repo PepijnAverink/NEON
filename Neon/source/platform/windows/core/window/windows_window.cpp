@@ -37,6 +37,10 @@ namespace Neon
 			m_WindowHandle = CreateWindowEx(NULL, "WindowClass", m_WindowTitle.c_str(), WS_OVERLAPPEDWINDOW, CW_USEDEFAULT, CW_USEDEFAULT,
 				m_Width + GetDefaultBorderWidth(), m_Height + GetDefaultBorderHeight(), NULL, NULL, GetModuleHandle(NULL), NULL);
 
+
+			// Get monitor resolution
+			GetDesktopResolution();
+
 			return true;
 		}
 
@@ -84,6 +88,16 @@ namespace Neon
 			const int sizingBorder = GetSystemMetrics(SM_CYFRAME);
 			const int borderPadding = GetSystemMetrics(SM_CXPADDEDBORDER);
 			return    sizingBorder * 2 + borderPadding * 2;
+		}
+
+		void WindowsWindow::GetDesktopResolution()
+		{
+			RECT desktop;
+			const HWND hDesktop = GetDesktopWindow();
+			
+			GetWindowRect(hDesktop, &desktop);
+			m_ScreenWidth  = desktop.right;
+			m_ScreenHeight = desktop.bottom;
 		}
 
 		static LRESULT CALLBACK WndProc(HWND hwnd, UINT message, WPARAM wParam, LPARAM lParam)

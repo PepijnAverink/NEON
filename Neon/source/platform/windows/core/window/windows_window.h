@@ -27,6 +27,8 @@ namespace Neon
 			int GetDefaultBorderHeight();
 			int GetDefaultBorderWidth();
 
+			void GetDesktopResolution();
+
 			HWND m_WindowHandle;
 		};
 	}

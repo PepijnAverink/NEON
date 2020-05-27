@@ -1,5 +1,8 @@
 #pragma once
+#include "./graphics/hardware/adapter/video_adapter.h"
+
 #include <string>
+#include <vector>
 
 namespace Neon
 {
@@ -9,7 +12,6 @@ namespace Neon
 	namespace Graphics
 	{
 		// TODO:: Only do initialisation code, pass the window to swapchain
-		// TODO:: Graphics context becomes obsolete, move API init to A graphics device abstraction
 		// Graphics context will then live in general and serve as a container of abstracted objects
 		class GraphicsContext
 		{
@@ -29,11 +31,14 @@ namespace Neon
 			unsigned int m_ClientWidth;
 			unsigned int m_ClientHeight;
 
+			unsigned int m_ScreenWidth;
+			unsigned int m_ScreenHeight;
+
 			bool		 m_VSync = false;
 
 			// Video card
-			std::string  m_VideoCardName;
-			unsigned int m_VideoCardMemory = 0;
+			std::vector<VideoAdapter*>  m_Adapters;
+			uint32_t					m_CurrentAdapter;
 		};
 	}
 }

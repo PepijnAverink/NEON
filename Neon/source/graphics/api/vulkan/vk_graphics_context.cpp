@@ -548,10 +548,15 @@ namespace Neon
 				commandBuffers.push_back(CommandBuffer::Create(&commandBufferDesc));
 
 			float vertices[] = {
-				-0.5f, -0.5f, 1.0f, 0.0f, 0.0f,
-				0.5f, -0.5f, 0.0f, 1.0f, 0.0f,
-				0.5f, 0.5f, 0.0f, 0.0f, 1.0f,
-				-0.5f, 0.5f, 1.0f, 1.0f, 1.0f
+				-0.8f, -0.5f, 0.0f, 1.0f, 0.0f, 0.0f,
+				0.8f, -0.5f, 0.0f, 0.0f, 1.0f, 0.0f,
+				0.8f, 0.5f, 0.0f, 0.0f, 0.0f, 1.0f,
+				-0.8f, 0.5f, 0.0f, 1.0f, 1.0f, 1.0f,
+				
+				-0.5f, -0.5f, -0.5f, 1.0f, 1.0f, 1.0f,
+				0.5f, -0.5f, -0.5f, 1.0f, 1.0f, 1.0f,
+				0.5f, 0.5f, -0.5f, 1.0f, 1.0f, 1.0f,
+				-0.5f, 0.5f, -0.5f, 1.0f, 1.0f, 1.0f,
 			};
 
 			MemoryPoolDescriptor memoryPoolDesc = {};
@@ -572,7 +577,8 @@ namespace Neon
 			vertexBuffer = VertexBuffer::Create(commandBuffers[0], &vertexBufferDesc);
 			
 
-			uint16_t indices[] = { 0, 1, 2, 2, 3, 0 };
+			uint16_t indices[] = { 0, 1, 2, 2, 3, 0,
+								4, 5, 6, 6, 7, 4 };
 
 			MemoryPoolDescriptor imemoryPoolDesc = {};
 			imemoryPoolDesc.Name = "VertexMemoryPool";
@@ -587,7 +593,7 @@ namespace Neon
 			indexBufferDesc.Usage = BufferUsage::NEON_BUFFER_USAGE_STATIC;
 			indexBufferDesc.Indices = indices;
 			indexBufferDesc.IMemoryPool = imemoryPool;
-			indexBufferDesc.IndexCount = 6;
+			indexBufferDesc.IndexCount = 12;
 
 			indexBuffer = IndexBuffer::Create(commandBuffers[0], &indexBufferDesc);
 
@@ -640,7 +646,7 @@ namespace Neon
 				commandBuffers[i]->SetVertexBuffer(vertexBuffer);
 				commandBuffers[i]->SetIndexBuffer(indexBuffer);
 
-				commandBuffers[i]->DrawIndexed(6, 0, 0);
+				commandBuffers[i]->DrawIndexed(indexBuffer->GetIndexCount(), 0, 0);
 
 				commandBuffers[i]->EndRenderpass();
 

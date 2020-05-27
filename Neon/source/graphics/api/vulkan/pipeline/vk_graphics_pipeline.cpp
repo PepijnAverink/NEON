@@ -51,19 +51,19 @@ namespace Neon
 
 			VkVertexInputBindingDescription bindingDescription{};
 			bindingDescription.binding = 0;
-			bindingDescription.stride = sizeof(float) * 5;
+			bindingDescription.stride = sizeof(float) * 6;
 			bindingDescription.inputRate = VK_VERTEX_INPUT_RATE_VERTEX;
 		
 			VkVertexInputAttributeDescription attributeDescriptions[2] = {};
 			attributeDescriptions[0].binding = 0;
 			attributeDescriptions[0].location = 0;
-			attributeDescriptions[0].format = VK_FORMAT_R32G32_SFLOAT;
+			attributeDescriptions[0].format = VK_FORMAT_R32G32B32_SFLOAT;
 			attributeDescriptions[0].offset = 0;
 		
 			attributeDescriptions[1].binding = 0;
 			attributeDescriptions[1].location = 1;
 			attributeDescriptions[1].format = VK_FORMAT_R32G32B32_SFLOAT;
-			attributeDescriptions[1].offset = sizeof(float) * 2;
+			attributeDescriptions[1].offset = sizeof(float) * 3;
 		
 			VkPipelineVertexInputStateCreateInfo vertexInputInfo{};
 			vertexInputInfo.sType = VK_STRUCTURE_TYPE_PIPELINE_VERTEX_INPUT_STATE_CREATE_INFO;
