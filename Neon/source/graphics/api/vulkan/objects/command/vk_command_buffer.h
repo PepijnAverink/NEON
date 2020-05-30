@@ -15,7 +15,7 @@ namespace Neon
 			virtual ~VKCommandBuffer() { }
 
 			virtual void StartRecording()  const override;
-			virtual void EndRecording()	   const override;
+			virtual void EndRecording()	         override;
 
 			virtual void Reset() const override;
 

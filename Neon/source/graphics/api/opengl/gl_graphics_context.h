@@ -8,7 +8,7 @@ namespace Neon
 		class GLGraphicsContext : public GraphicsContext
 		{
 		public:
-			GLGraphicsContext(Core::Window* _window);
+			GLGraphicsContext(const GraphicsContextDescriptor* _graphicsContextDescriptor);
 			virtual ~GLGraphicsContext();
 
 			virtual bool Initialize() override;

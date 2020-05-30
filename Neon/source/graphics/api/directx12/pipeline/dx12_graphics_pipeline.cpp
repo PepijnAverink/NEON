@@ -27,26 +27,27 @@ namespace Neon
 			std::vector<D3D12_INPUT_ELEMENT_DESC> elements;
 			GetDX12InputLayout(elements, &_graphicsPipelineDescriptor->InputLayout);
 
-			// fill out an input layout description structure
+			// Fill out an input layout description structure
 			D3D12_INPUT_LAYOUT_DESC inputLayoutDesc = {};
-			inputLayoutDesc.NumElements = _graphicsPipelineDescriptor->InputLayout.GetElementCount();
-			inputLayoutDesc.pInputElementDescs = elements.data();
+			inputLayoutDesc.NumElements			= _graphicsPipelineDescriptor->InputLayout.GetElementCount();
+			inputLayoutDesc.pInputElementDescs  = elements.data();
 
 
-			// fill out a shader bytecode structure
+			// Fill out a shader bytecode structure
 			D3D12_SHADER_BYTECODE vertexShaderBytecode = {};
 			vertexShaderBytecode.BytecodeLength  = NEON_CAST(DX12Shader*, _graphicsPipelineDescriptor->Shader)->m_VertexShaderBytes->GetBufferSize();
 			vertexShaderBytecode.pShaderBytecode = NEON_CAST(DX12Shader*, _graphicsPipelineDescriptor->Shader)->m_VertexShaderBytes->GetBufferPointer();
 
-			// fill out shader bytecode structure for pixel shader
+			// Fill out shader bytecode structure for pixel shader
 			D3D12_SHADER_BYTECODE pixelShaderBytecode = {};
 			pixelShaderBytecode.BytecodeLength  = NEON_CAST(DX12Shader*, _graphicsPipelineDescriptor->Shader)->m_FragmentShaderBytes->GetBufferSize();
 			pixelShaderBytecode.pShaderBytecode = NEON_CAST(DX12Shader*, _graphicsPipelineDescriptor->Shader)->m_FragmentShaderBytes->GetBufferPointer();
 
+			// Sample desc
 			DXGI_SAMPLE_DESC sampleDesc = {};
 			sampleDesc.Count = 1;
 
-			// create a pipeline state object (PSO)
+			// Create a pipeline state object (PSO)
 			D3D12_GRAPHICS_PIPELINE_STATE_DESC psoDesc = {};
 			psoDesc.InputLayout				= inputLayoutDesc;
 			psoDesc.pRootSignature			= m_RootSignature;
@@ -61,7 +62,7 @@ namespace Neon
 			psoDesc.NumRenderTargets		= 1;
 			psoDesc.DepthStencilState		= CD3DX12_DEPTH_STENCIL_DESC(D3D12_DEFAULT);
 
-			// create the pso
+			// Create the pso
 			DX12_ThrowIfFailed(DX12GraphicsContext::GetInstance()->GetGraphicsDevice()->CreateGraphicsPipelineState(&psoDesc, IID_PPV_ARGS(&m_PipelineStateObject)));
 		}
 

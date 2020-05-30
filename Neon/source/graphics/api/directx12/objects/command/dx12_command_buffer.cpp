@@ -38,7 +38,7 @@ namespace Neon
 			m_CommandListObj->Reset(commandPool->m_CommandAllocator, NULL);
 		}
 
-		void DX12CommandBuffer::EndRecording() const
+		void DX12CommandBuffer::EndRecording()
 		{
 			DX12_ThrowIfFailed(m_CommandListObj->Close());
 		}

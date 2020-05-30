@@ -13,9 +13,9 @@ namespace Neon
 		{
 			// Setup the surface
 			VkWin32SurfaceCreateInfoKHR surfaceCreateInfo = {};
-			surfaceCreateInfo.sType = VK_STRUCTURE_TYPE_WIN32_SURFACE_CREATE_INFO_KHR;
+			surfaceCreateInfo.sType     = VK_STRUCTURE_TYPE_WIN32_SURFACE_CREATE_INFO_KHR;
 			surfaceCreateInfo.hinstance = GetModuleHandle(NULL);
-			surfaceCreateInfo.hwnd = (HWND)_graphicsSurfaceDescriptor->Window->GetNativeWindowHandle();
+			surfaceCreateInfo.hwnd      = (HWND)_graphicsSurfaceDescriptor->Window->GetNativeWindowHandle();
 
 			// Create WindowSurface
 			VK_ThrowIfFailed(vkCreateWin32SurfaceKHR(VKGraphicsContext::GetInstance()->GetGraphicsInstance(), &surfaceCreateInfo, NULL, &m_WindowSurfaceObj));

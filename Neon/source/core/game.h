@@ -7,6 +7,7 @@ namespace Neon
 {
 	namespace Core
 	{
+		class Window;
 		class Game
 		{
 		public:
@@ -18,7 +19,7 @@ namespace Neon
 
 			virtual ~Game() {}
 
-			virtual bool Initialize() = 0;
+			virtual bool Initialize(Window* _window) = 0;
 			virtual bool Terminate()  = 0;
 
 			virtual void Update(const float _dt) = 0;

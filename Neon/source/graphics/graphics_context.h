@@ -1,4 +1,5 @@
 #pragma once
+#include "./graphics/graphics_context_descriptor.h"
 #include "./graphics/hardware/adapter/video_adapter.h"
 
 #include <string>
@@ -16,9 +17,9 @@ namespace Neon
 		class GraphicsContext
 		{
 		public:
-			static GraphicsContext* Create(Core::Window* _window);
+			static GraphicsContext* Create(const GraphicsContextDescriptor* _graphicsContextDescriptor);
 			static GraphicsContext* GetGraphicsContext();
-			virtual ~GraphicsContext() {};
+			virtual ~GraphicsContext();
 
 			virtual bool Initialize() = 0;
 			virtual bool Terminate() = 0;
@@ -26,7 +27,7 @@ namespace Neon
 			virtual void Present() = 0;
 
 		protected:
-			GraphicsContext(Core::Window* _window);
+			GraphicsContext(const GraphicsContextDescriptor* _graphicsContextDescriptor);
 
 			unsigned int m_ClientWidth;
 			unsigned int m_ClientHeight;

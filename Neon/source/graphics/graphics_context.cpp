@@ -21,21 +21,23 @@ namespace Neon
 	{
 		static GraphicsContext* s_GraphicsContext = nullptr;
 
-		GraphicsContext* GraphicsContext::Create(Core::Window* _window)
+		GraphicsContext* GraphicsContext::Create(const GraphicsContextDescriptor* _graphicsContextDescriptor)
 		{
-			GraphicsAPI api = GraphicsDriver::GetGraphicsAPI();
+			// Setup api
+			GraphicsAPI api = _graphicsContextDescriptor->GraphicsApi;
+			GraphicsDriver::Create(api);
 
 			// Vulkan
 			if (api == GraphicsAPI::VULKAN)
-				return new VKGraphicsContext(_window);
+				return new VKGraphicsContext(_graphicsContextDescriptor);
 
 			// DirectX11
 			if (api == GraphicsAPI::DIRECTX11)
-				return new DX11GraphicsContext(_window);
+				return new DX11GraphicsContext(_graphicsContextDescriptor);
 
 			// DirectX12
 			if (api == GraphicsAPI::DIRECTX12)
-				return new DX12GraphicsContext(_window);
+				return new DX12GraphicsContext(_graphicsContextDescriptor);
 
 			printf("[ERROR] GraphicsContext::Create() No valid api abstraction for found for object: GraphicsContext");
 			return nullptr;
@@ -47,12 +49,18 @@ namespace Neon
 			return s_GraphicsContext;
 		}
 
-		GraphicsContext::GraphicsContext(Core::Window* _window)
-			: m_ClientWidth(_window->GetWindowWidth())
-			, m_ClientHeight(_window->GetWindowHeight())
-			, m_ScreenWidth(_window->GetScreenWidth())
-			, m_ScreenHeight(_window->GetScreenHeight())
-			, m_VSync(_window->GetVSync())
+		GraphicsContext::~GraphicsContext()
+		{
+			// Destroy api
+			GraphicsDriver::Destroy();
+		}
+
+		GraphicsContext::GraphicsContext(const GraphicsContextDescriptor* _graphicsContextDescriptor)
+			: m_ClientWidth(_graphicsContextDescriptor->Window->GetWindowWidth())
+			, m_ClientHeight(_graphicsContextDescriptor->Window->GetWindowHeight())
+			, m_ScreenWidth(_graphicsContextDescriptor->Window->GetScreenWidth())
+			, m_ScreenHeight(_graphicsContextDescriptor->Window->GetScreenHeight())
+			, m_VSync(_graphicsContextDescriptor->Window->GetVSync())
 		{ 
 			s_GraphicsContext = this;
 		}

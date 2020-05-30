@@ -1,6 +1,7 @@
 #pragma once
 #include "./graphics/objects/swapchain/back_buffer_format.h"
 #include "./graphics/objects/swapchain/graphics_surface.h"
+#include "./graphics/hardware/adapter/video_adapter.h"
 
 #include <string>
 
@@ -21,6 +22,8 @@ namespace Neon
 
 			BackBufferFormat Format;
 			GraphicsSurface* Surface;
+
+			VideoAdapter* Adapter;
 		};
 	}
 }

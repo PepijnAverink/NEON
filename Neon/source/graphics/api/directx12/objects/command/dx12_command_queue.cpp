@@ -40,11 +40,5 @@ namespace Neon
 			auto fence = NEON_CAST(DX12Fence*, _signalFence);
 			m_CommandQueueObj->Signal(fence->m_FenceObj, fence->m_FenceValue);
 		}
-
-		// TODO:: implement
-		void DX12CommandQueue::ExecuteCommandBuffers(const unsigned int _commandBufferCount, CommandBuffer* _commandBuffers[]) const
-		{
-
-		}
 	}
 }

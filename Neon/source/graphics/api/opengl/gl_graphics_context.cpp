@@ -4,8 +4,8 @@ namespace Neon
 {
 	namespace Graphics
 	{
-		GLGraphicsContext::GLGraphicsContext(Core::Window* _window)
-			: GraphicsContext(_window)
+		GLGraphicsContext::GLGraphicsContext(const GraphicsContextDescriptor* _graphicsContextDescriptor)
+			: GraphicsContext(_graphicsContextDescriptor)
 		{
 
 		}

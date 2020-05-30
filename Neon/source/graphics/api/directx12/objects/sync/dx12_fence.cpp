@@ -8,10 +8,10 @@ namespace Neon
 	{
 		DX12Fence::DX12Fence(const FenceDescriptor* _fenceDestriptor)
 			: Fence(_fenceDestriptor)
+			, m_FenceValue(0)
 		{
-			m_FenceValue = 0;
 			m_FenceEvent = CreateEvent(nullptr, FALSE, FALSE, nullptr);
-			DX12_ThrowIfFailed(DX12GraphicsContext::GetInstance()->GetGraphicsDevice()->CreateFence(0, D3D12_FENCE_FLAG_NONE, IID_PPV_ARGS(&m_FenceObj)));
+			DX12_ThrowIfFailed(DX12GraphicsContext::GetInstance()->GetGraphicsDevice()->CreateFence(m_FenceValue, D3D12_FENCE_FLAG_NONE, IID_PPV_ARGS(&m_FenceObj)));
 		}
 
 		DX12Fence::~DX12Fence()

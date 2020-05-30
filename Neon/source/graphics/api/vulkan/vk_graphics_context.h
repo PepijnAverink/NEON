@@ -34,7 +34,7 @@ namespace Neon
 		class VKGraphicsContext final : public GraphicsContext
 		{
 		public:
-			VKGraphicsContext(Core::Window* _window);
+			VKGraphicsContext(const GraphicsContextDescriptor* _graphicsContextDescriptor);
 			virtual ~VKGraphicsContext();
 
 			virtual bool Initialize() override;

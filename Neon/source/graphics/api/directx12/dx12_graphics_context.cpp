@@ -22,8 +22,8 @@ namespace Neon
 			DirectX::XMFLOAT4 color;
 		};
 
-		DX12GraphicsContext::DX12GraphicsContext(Core::Window* _window)
-			: GraphicsContext(_window)
+		DX12GraphicsContext::DX12GraphicsContext(const GraphicsContextDescriptor* _graphicsContextDescriptor)
+			: GraphicsContext(_graphicsContextDescriptor)
 		{
 			HRESULT hr;
 
@@ -109,15 +109,15 @@ namespace Neon
 
 			GraphicsSurfaceDescriptor graphicsSurfaceDesc = {};
 			graphicsSurfaceDesc.Name = "Main-GraphicsSurface";
-			graphicsSurfaceDesc.Window = _window;
+			graphicsSurfaceDesc.Window = _graphicsContextDescriptor->Window;
 
 			m_GraphicsSurface = GraphicsSurface::Create(&graphicsSurfaceDesc);
 
 			// Setup the swapchain desc
 			SwapchainDescriptor swapchainDesc = {};
 			swapchainDesc.Name			  = "Main-Swapchain";
-			swapchainDesc.Width			  = _window->GetWindowWidth();
-			swapchainDesc.Height		  = _window->GetWindowHeight();
+			swapchainDesc.Width			  = _graphicsContextDescriptor->Window->GetWindowWidth();
+			swapchainDesc.Height		  = _graphicsContextDescriptor->Window->GetWindowHeight();
 			swapchainDesc.BackBufferCount = 3;
 			swapchainDesc.Surface		  = m_GraphicsSurface;
 		
@@ -140,8 +140,8 @@ namespace Neon
 			// Setup GraphicsPipeline Descriptor
 			GraphicsPipelineDescriptor pipelineDesc = {};
 			pipelineDesc.Name		  = "Main-GraphicsPipeline";
-			pipelineDesc.ImageWidth   = _window->GetWindowWidth();
-			pipelineDesc.ImageHeight  = _window->GetWindowHeight();
+			pipelineDesc.ImageWidth   = _graphicsContextDescriptor->Window->GetWindowWidth();
+			pipelineDesc.ImageHeight  = _graphicsContextDescriptor->Window->GetWindowHeight();
 			pipelineDesc.InputLayout  = reflection.Layout;
 			pipelineDesc.Shader		  = shader;
 			pipelineDesc.Topology	  = Topology::NEON_TOPOLOGY_TRIANGLE_LIST;
@@ -230,8 +230,8 @@ namespace Neon
 			m_IndexBuffer = IndexBuffer::Create(m_CommandBuffers[0], &indexBufferDesc);
 
 			// Set viewport and scissor
-			m_Viewport = Viewport::Create(0, 0, _window->GetWindowWidth(), _window->GetWindowHeight());
-			m_Scissor  = Scissor::Create(0, 0, _window->GetWindowWidth(), _window->GetWindowHeight());
+			m_Viewport = Viewport::Create(0, 0, _graphicsContextDescriptor->Window->GetWindowWidth(), _graphicsContextDescriptor->Window->GetWindowHeight());
+			m_Scissor  = Scissor::Create(0, 0, _graphicsContextDescriptor->Window->GetWindowWidth(), _graphicsContextDescriptor->Window->GetWindowHeight());
 
 			// Execute commandBuffer 
 			m_CommandBuffers[0]->EndRecording();

@@ -36,7 +36,7 @@ namespace Neon
 		class DX12GraphicsContext final : public GraphicsContext
 		{
 		public:
-			DX12GraphicsContext(Core::Window* _window);
+			DX12GraphicsContext(const GraphicsContextDescriptor* _graphicsContextDescriptor);
 			virtual ~DX12GraphicsContext();
 
 			virtual bool Initialize() override;

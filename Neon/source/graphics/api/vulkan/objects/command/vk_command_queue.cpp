@@ -34,11 +34,5 @@ namespace Neon
 			VK_ThrowIfFailed(vkQueueSubmit(m_CommandQueueObj, 1, &submitInfo, NEON_CAST(VKFence*, _signalFence)->m_FenceObj));
 		
 		}
-
-		// TODO:: implement
-		void VKCommandQueue::ExecuteCommandBuffers(const unsigned int _commandBufferCount, CommandBuffer* _commandBuffers[]) const
-		{
-
-		}
 	}
 }

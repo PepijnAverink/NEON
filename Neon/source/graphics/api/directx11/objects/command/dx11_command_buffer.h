@@ -1,17 +1,17 @@
 #pragma once
 #include "./graphics/objects/command/command_buffer.h"
 
-#include <d3d12.h>
+#include <D3D11.h>
 
 namespace Neon
 {
 	namespace Graphics
 	{
-		class DX12CommandBuffer final : public CommandBuffer
+		class DX11CommandBuffer : public CommandBuffer
 		{
 		public:
-			DX12CommandBuffer(const CommandBufferDescriptor* _commandBufferDescriptor);
-			virtual ~DX12CommandBuffer();
+			DX11CommandBuffer(const CommandBufferDescriptor* _commandBufferDescriptor);
+			virtual ~DX11CommandBuffer();
 
 			virtual void StartRecording()  const override;
 			virtual void EndRecording()	         override;
@@ -35,14 +35,12 @@ namespace Neon
 			virtual void TransitionFramebufferAttachment(FramebufferAttachment* _framebufferAttachment, const FramebufferAttachmentTransitionState _fromState, const FramebufferAttachmentTransitionState _toState) const override;
 
 			virtual void DrawIndexed(const uint32_t _indexCount, const uint32_t _indexOffset, uint32_t _vertexOffset) const override;
-		//	virtual void Draw();
+			//	virtual void Draw();
 
 		private:
-			friend class DX12CommandQueue;
-			friend class DX12VertexBuffer;
-			friend class DX12IndexBuffer;
-			friend class DX12GraphicsContext;
-			ID3D12GraphicsCommandList* m_CommandListObj;
+			friend class DX11CommandQueue;
+			ID3D11DeviceContext* m_DeferedContext;
+			ID3D11CommandList*   m_DeferedListObj = NULL;
 		};
 	}
 }

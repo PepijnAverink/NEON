@@ -22,7 +22,6 @@ namespace Neon
 			virtual ~CommandQueue() {}
 
 			virtual void ExecuteCommandBuffer(CommandBuffer* _commandBuffer, Fence* _signalFence) const = 0;
-			virtual void ExecuteCommandBuffers(const unsigned int _commandBufferCount, CommandBuffer* _commandBuffers[]) const = 0;
 
 			// Getters
 			inline const std::string	  GetCommandQueueName() const;

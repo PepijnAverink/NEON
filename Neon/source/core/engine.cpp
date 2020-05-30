@@ -51,7 +51,6 @@ namespace Neon
 			: m_EngineName("")
 			, m_EngineVersion(0)
 			, m_Window(nullptr)
-			, m_GraphicsContext(nullptr)
 			, m_Game(nullptr)
 			, m_Running(false)
 		{ }
@@ -60,7 +59,6 @@ namespace Neon
 			: m_EngineName(_engineName)
 			, m_EngineVersion(_versionID)
 			, m_Window(nullptr)
-			, m_GraphicsContext(nullptr)
 			, m_Game(nullptr)
 			, m_Running(false)
 		{ }
@@ -78,11 +76,6 @@ namespace Neon
 			m_Window = Window::Create(windowDesc);
 			m_Window->Intialize();
 
-			// Create graphics context
-			Graphics::GraphicsDriver::Create(Graphics::GraphicsAPI::DIRECTX11);
-			m_GraphicsContext = Graphics::GraphicsContext::Create(m_Window);
-			m_GraphicsContext->Initialize();
-
 			return true;
 		}
 
@@ -94,10 +87,6 @@ namespace Neon
 				m_Game->Terminate();
 				delete m_Game; m_Game = nullptr;
 			}
-
-			// Destroys graphics context
-			m_GraphicsContext->Terminate();
-			delete m_GraphicsContext; m_GraphicsContext = nullptr;
 
 			Graphics::GraphicsDriver::Destroy();
 
@@ -120,7 +109,7 @@ namespace Neon
 
 			// Initialize game
 			m_Game = _game;
-			m_Game->Initialize();
+			m_Game->Initialize(m_Window);
 
 			m_Window->Show();
 
@@ -134,8 +123,6 @@ namespace Neon
 
 				m_Game->Update(1.0f);
 				m_Game->Render();
-
-				m_GraphicsContext->Present();
 			}
 
 			m_Window->Hide();

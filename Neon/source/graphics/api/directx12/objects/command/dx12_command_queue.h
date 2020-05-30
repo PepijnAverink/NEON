@@ -14,7 +14,6 @@ namespace Neon
 			virtual ~DX12CommandQueue();
 
 			virtual void ExecuteCommandBuffer(CommandBuffer* _commandBuffer, Fence* _signalFence) const override;
-			virtual void ExecuteCommandBuffers(const unsigned int _commandBufferCount, CommandBuffer* _commandBuffers[]) const override;
 
 		private:
 			friend class DX12Swapchain;

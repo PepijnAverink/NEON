@@ -61,7 +61,7 @@ namespace Neon
 			if (surfaceCapabilities.currentExtent.width == -1) {
 				VkExtent2D swapChainExtent = {};
 
-				swapChainExtent.width = min(max(640, surfaceCapabilities.minImageExtent.width), surfaceCapabilities.maxImageExtent.width);
+				swapChainExtent.width  = min(max(640, surfaceCapabilities.minImageExtent.width), surfaceCapabilities.maxImageExtent.width);
 				swapChainExtent.height = min(max(480, surfaceCapabilities.minImageExtent.height), surfaceCapabilities.maxImageExtent.height);
 
 				return swapChainExtent;
@@ -129,11 +129,11 @@ namespace Neon
 			}
 		}
 
-		VKGraphicsContext::VKGraphicsContext(Core::Window* _window)
-			: GraphicsContext(_window)
+		VKGraphicsContext::VKGraphicsContext(const GraphicsContextDescriptor* _graphicsContextDescriptor)
+			: GraphicsContext(_graphicsContextDescriptor)
 		{
 			// Remove me
-			hwnd = (HWND)_window->GetNativeWindowHandle();
+			hwnd = (HWND)_graphicsContextDescriptor->Window->GetNativeWindowHandle();
 
 			CreateInstance();
 
@@ -144,7 +144,7 @@ namespace Neon
 
 			GraphicsSurfaceDescriptor graphicsSurfaceDesc = {};
 			graphicsSurfaceDesc.Name   = "Main-GraphicsSurface";
-			graphicsSurfaceDesc.Window = _window;
+			graphicsSurfaceDesc.Window = _graphicsContextDescriptor->Window;
 
 			m_Surface = GraphicsSurface::Create(&graphicsSurfaceDesc);
 
@@ -643,10 +643,10 @@ namespace Neon
 
 				commandBuffers[i]->BeginRenderpass(m_Framebuffer[i]);
 
-				commandBuffers[i]->SetVertexBuffer(vertexBuffer);
-				commandBuffers[i]->SetIndexBuffer(indexBuffer);
+			//	commandBuffers[i]->SetVertexBuffer(vertexBuffer);
+			//	commandBuffers[i]->SetIndexBuffer(indexBuffer);
 
-				commandBuffers[i]->DrawIndexed(indexBuffer->GetIndexCount(), 0, 0);
+		//		commandBuffers[i]->DrawIndexed(indexBuffer->GetIndexCount(), 0, 0);
 
 				commandBuffers[i]->EndRenderpass();
 

@@ -44,7 +44,7 @@ namespace Neon
 			vkBeginCommandBuffer(m_CommandBufferObj, &m_BeginInfo);
 		}
 
-		void VKCommandBuffer::EndRecording() const
+		void VKCommandBuffer::EndRecording()
 		{
 		 	VK_ThrowIfFailed(vkEndCommandBuffer(m_CommandBufferObj));
 		}

@@ -9,8 +9,8 @@ namespace Neon
 {
 	namespace Graphics
 	{
-		DX11GraphicsContext::DX11GraphicsContext(Core::Window* _window)
-			: GraphicsContext(_window)
+		DX11GraphicsContext::DX11GraphicsContext(const GraphicsContextDescriptor* _graphicsContextDescriptor)
+			: GraphicsContext(_graphicsContextDescriptor)
 		{ }
 
 		DX11GraphicsContext::~DX11GraphicsContext()
@@ -20,8 +20,19 @@ namespace Neon
 
 		bool DX11GraphicsContext::Initialize()
 		{
+			// Create factory
+			DX11_ThrowIfFailed(CreateDXGIFactory(__uuidof(IDXGIFactory), (void**)&m_Factory));
+
 			GetAdapters();
 			CreateDevice();
+
+			// Setup commad buffer descriptor
+			CommandBufferDescriptor commandBufferDesc = {};
+			commandBufferDesc.Name = "Main-CommandBuffer:";
+			commandBufferDesc.Type = CommandBufferType::NEON_COMMAND_BUFFER_TYPE_DIRECT;
+			commandBufferDesc.CommandPool = nullptr;
+
+			m_CommandBuffer = CommandBuffer::Create(&commandBufferDesc);
 
 			return false;
 		}
@@ -38,12 +49,8 @@ namespace Neon
 
 		void DX11GraphicsContext::GetAdapters()
 		{
-			// Create the factory
-			IDXGIFactory* factory;
 			IDXGIAdapter* adapter;
-			DX11_ThrowIfFailed(CreateDXGIFactory(__uuidof(IDXGIFactory), (void**)&factory));
-
-			for (UINT i = 0; factory->EnumAdapters(i, &adapter) != DXGI_ERROR_NOT_FOUND; ++i)
+			for (UINT i = 0; m_Factory->EnumAdapters(i, &adapter) != DXGI_ERROR_NOT_FOUND; ++i)
 			{
 				// Get adapter descriptor
 				DXGI_ADAPTER_DESC adapterDesc;
@@ -118,29 +125,28 @@ namespace Neon
 				adapterOutput->Release();
 				adapter->Release();
 			}
-
-			// Release factory
-			factory->Release();
 		}
 
 		void DX11GraphicsContext::CreateDevice()
 		{
 			// Get the adapter
-			IDXGIFactory* factory;
 			IDXGIAdapter* adapter;
-			DX11_ThrowIfFailed(CreateDXGIFactory(__uuidof(IDXGIFactory), (void**)&factory));
-			factory->EnumAdapters(m_CurrentAdapter, &adapter);
+			m_Factory->EnumAdapters(m_CurrentAdapter, &adapter);
 			
 			unsigned int flags = 0;
 			// IF DEBUG
 			flags = D3D11_CREATE_DEVICE_DEBUG;
 
-			// Create the device
+			// Create old device
+			ID3D11Device* temp_device;
 			D3D_FEATURE_LEVEL featureLevel = D3D_FEATURE_LEVEL_11_0;
-			DX11_ThrowIfFailed(D3D11CreateDevice(adapter, D3D_DRIVER_TYPE_UNKNOWN, NULL, D3D11_CREATE_DEVICE_DEBUG, &featureLevel, 1, D3D11_SDK_VERSION, &m_Device, NULL, &m_DeviceContext));
+			DX11_ThrowIfFailed(D3D11CreateDevice(adapter, D3D_DRIVER_TYPE_UNKNOWN, NULL, D3D11_CREATE_DEVICE_DEBUG, &featureLevel, 1, D3D11_SDK_VERSION, &temp_device, NULL, &m_DeviceContext));
+			
+			// Create new device
+			temp_device->QueryInterface(__uuidof(ID3D11Device5), (void**)&m_Device);
 
 			// Cleanup
-			factory->Release();
+			temp_device->Release();
 			adapter->Release();
 		}
 	}

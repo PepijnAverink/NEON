@@ -44,6 +44,8 @@ namespace Neon
 			// Get
 			m_SwapChainObj      = static_cast<IDXGISwapChain3*>(tempSwapChain);
 			m_CurrentFrameIndex = m_SwapChainObj->GetCurrentBackBufferIndex();
+
+			dxgiFactory->Release();
 		}
 
 		DX12Swapchain::~DX12Swapchain()

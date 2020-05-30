@@ -33,7 +33,6 @@ namespace Neon
 			VersionID   m_EngineVersion;
 
 			Window*     m_Window;
-			Graphics::GraphicsContext* m_GraphicsContext;
 
 			Game*       m_Game;
 			bool        m_Running;

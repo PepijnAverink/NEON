@@ -34,7 +34,7 @@ namespace Neon
 			virtual ~CommandBuffer() {}
 
 			virtual void StartRecording()  const = 0;
-			virtual void EndRecording()	   const = 0;
+			virtual void EndRecording()	         = 0;
 
 			virtual void Reset() const = 0;
 
