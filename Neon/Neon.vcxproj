@@ -157,6 +157,14 @@
     <ClInclude Include="source\gameplay\neon_game.h" />
     <ClInclude Include="source\graphics\api\directx11\dx11_error.h" />
     <ClInclude Include="source\graphics\api\directx11\dx11_graphics_context.h" />
+    <ClInclude Include="source\graphics\api\directx11\objects\command\dx11_command_buffer.h" />
+    <ClInclude Include="source\graphics\api\directx11\objects\command\dx11_command_pool.h" />
+    <ClInclude Include="source\graphics\api\directx11\objects\command\dx11_command_queue.h" />
+    <ClInclude Include="source\graphics\api\directx11\objects\framebuffer\dx11_framebuffer.h" />
+    <ClInclude Include="source\graphics\api\directx11\objects\framebuffer\dx11_framebuffer_attachment.h" />
+    <ClInclude Include="source\graphics\api\directx11\objects\swapchain\dx11_graphics_surface.h" />
+    <ClInclude Include="source\graphics\api\directx11\objects\swapchain\dx11_swapchain.h" />
+    <ClInclude Include="source\graphics\api\directx11\objects\sync\dx11_fence.h" />
     <ClInclude Include="source\graphics\api\directx12\dx12_error.h" />
     <ClInclude Include="source\graphics\api\directx12\dx12_graphics_context.h" />
     <ClInclude Include="source\graphics\api\directx12\objects\command\dx12_command_pool.h" />
@@ -205,6 +213,7 @@
     <ClInclude Include="source\graphics\api\vulkan\vk_error.h" />
     <ClInclude Include="source\graphics\api\vulkan\vk_graphics_context.h" />
     <ClInclude Include="source\graphics\graphics_context.h" />
+    <ClInclude Include="source\graphics\graphics_context_descriptor.h" />
     <ClInclude Include="source\graphics\graphics_defines.h" />
     <ClInclude Include="source\graphics\graphics_driver.h" />
     <ClInclude Include="source\graphics\hardware\adapter\vendor_helper.h" />
@@ -286,6 +295,14 @@
     <ClCompile Include="source\core\window\window.cpp" />
     <ClCompile Include="source\gameplay\neon_game.cpp" />
     <ClCompile Include="source\graphics\api\directx11\dx11_graphics_context.cpp" />
+    <ClCompile Include="source\graphics\api\directx11\objects\command\dx11_command_buffer.cpp" />
+    <ClCompile Include="source\graphics\api\directx11\objects\command\dx11_command_pool.cpp" />
+    <ClCompile Include="source\graphics\api\directx11\objects\command\dx11_command_queue.cpp" />
+    <ClCompile Include="source\graphics\api\directx11\objects\framebuffer\dx11_framebuffer.cpp" />
+    <ClCompile Include="source\graphics\api\directx11\objects\framebuffer\dx11_framebuffer_attachment.cpp" />
+    <ClCompile Include="source\graphics\api\directx11\objects\swapchain\dx11_graphics_surface.cpp" />
+    <ClCompile Include="source\graphics\api\directx11\objects\swapchain\dx11_swapchain.cpp" />
+    <ClCompile Include="source\graphics\api\directx11\objects\sync\dx11_fence.cpp" />
     <ClCompile Include="source\graphics\api\directx12\dx12_graphics_context.cpp" />
     <ClCompile Include="source\graphics\api\directx12\objects\command\dx12_command_pool.cpp" />
     <ClCompile Include="source\graphics\api\directx12\objects\command\dx12_command_buffer.cpp" />
