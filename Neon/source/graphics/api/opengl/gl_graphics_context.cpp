@@ -24,10 +24,5 @@ namespace Neon
 		{
 			return false;
 		}
-
-		void GLGraphicsContext::Present()
-		{
-
-		}
 	}
 }

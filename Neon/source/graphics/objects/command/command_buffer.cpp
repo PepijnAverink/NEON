@@ -30,7 +30,6 @@ namespace Neon
 			if (api == GraphicsAPI::DIRECTX11)
 				return new DX11CommandBuffer(_commandBufferDescriptor);
 
-
 			// DirectX12
 			if (api == GraphicsAPI::DIRECTX12)
 				return new DX12CommandBuffer(_commandBufferDescriptor);

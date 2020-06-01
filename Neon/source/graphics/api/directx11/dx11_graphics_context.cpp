@@ -133,12 +133,14 @@ namespace Neon
 			flags = D3D11_CREATE_DEVICE_DEBUG;
 
 			// Create old device
-			ID3D11Device* temp_device;
+			ID3D11Device*        temp_device;
+			ID3D11DeviceContext* temp_device_context;
 			D3D_FEATURE_LEVEL featureLevel = D3D_FEATURE_LEVEL_11_0;
-			DX11_ThrowIfFailed(D3D11CreateDevice(adapter, D3D_DRIVER_TYPE_UNKNOWN, NULL, D3D11_CREATE_DEVICE_DEBUG, &featureLevel, 1, D3D11_SDK_VERSION, &temp_device, NULL, &m_DeviceContext));
+			DX11_ThrowIfFailed(D3D11CreateDevice(adapter, D3D_DRIVER_TYPE_UNKNOWN, NULL, D3D11_CREATE_DEVICE_DEBUG, &featureLevel, 1, D3D11_SDK_VERSION, &temp_device, NULL, &temp_device_context));
 			
 			// Create new device
 			temp_device->QueryInterface(__uuidof(ID3D11Device5), (void**)&m_Device);
+			m_DeviceContext = static_cast<ID3D11DeviceContext4*>(temp_device_context);
 
 			// Cleanup
 			temp_device->Release();

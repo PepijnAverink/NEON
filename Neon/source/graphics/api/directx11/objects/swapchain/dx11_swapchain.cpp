@@ -3,6 +3,7 @@
 #include "./graphics/api/directx11/objects/framebuffer/dx11_framebuffer_attachment.h"
 #include "./graphics/api/directx11/objects/sync/dx11_fence.h"
 #include "./graphics/api/directx11/objects/command/dx11_command_queue.h"
+#include "./graphics/api/directx11/objects/command/dx11_command_buffer.h"
 #include "./graphics/api/directx11/dx11_graphics_context.h"
 #include "./graphics/api/directx11/dx11_error.h"
 
@@ -20,13 +21,15 @@ namespace Neon
 			// Initialize the swap chain description
 			DXGI_SWAP_CHAIN_DESC swapChainDesc = {};
 			
+			VideoAdapter* adapter = DX11GraphicsContext::GetInstance()->GetCurrentAdapter();
+
 			// Build the description object
 			swapChainDesc.BufferCount							= m_BackBufferCount;
 			swapChainDesc.BufferDesc.Width						= _swapchainDescriptor->Width;
 			swapChainDesc.BufferDesc.Height						= _swapchainDescriptor->Height;
 			swapChainDesc.BufferDesc.Format						= DXGI_FORMAT_R8G8B8A8_UNORM;
-			swapChainDesc.BufferDesc.RefreshRate.Numerator		= _swapchainDescriptor->Adapter->DisplayModes[0].Numerator;
-			swapChainDesc.BufferDesc.RefreshRate.Denominator	= _swapchainDescriptor->Adapter->DisplayModes[0].Denominator;
+			swapChainDesc.BufferDesc.RefreshRate.Numerator		= adapter->DisplayModes[0].Numerator;
+			swapChainDesc.BufferDesc.RefreshRate.Denominator	= adapter->DisplayModes[0].Denominator;
 			swapChainDesc.BufferUsage							= DXGI_USAGE_RENDER_TARGET_OUTPUT;
 			swapChainDesc.OutputWindow							= (HWND)NEON_CAST(DX11GraphicsSurface*, _swapchainDescriptor->Surface)->m_WindowHandle;
 			swapChainDesc.SampleDesc.Count						= 1;
@@ -44,9 +47,6 @@ namespace Neon
 			// Get
 			m_SwapchainObj		= static_cast<IDXGISwapChain3*>(tempSwapChain);
 			m_CurrentFrameIndex = m_SwapchainObj->GetCurrentBackBufferIndex();
-
-			// cleanup
-			tempSwapChain->Release();
 		}
 
 		DX11Swapchain::~DX11Swapchain()
@@ -63,7 +63,7 @@ namespace Neon
 
 			// Aquire image
 			ID3D11Texture2D* image;
-			DX11_ThrowIfFailed(m_SwapchainObj->GetBuffer(_i, IID_PPV_ARGS(&image)));
+			DX11_ThrowIfFailed(m_SwapchainObj->GetBuffer(0, IID_PPV_ARGS(&image)));
 
 			// Return attachment
 			return new DX11FramebufferAttachment(&framebuffetAttachmentDesc, image);
@@ -80,7 +80,7 @@ namespace Neon
 			
 			// Signal fence
 			auto fence = NEON_CAST(DX11Fence*, _signalFence);
-		//	NEON_CAST(DX11CommandQueue*, _commandQueue)->m_CommandQueueObj->Signal(fence->m_FenceObj, fence->m_FenceValue);
+			DX11GraphicsContext::GetInstance()->GetGraphicsDeviceContext()->Signal(fence->m_FenceObj, fence->m_FenceValue);
 
 			return m_CurrentFrameIndex;
 		}

@@ -1,5 +1,6 @@
 #include "./graphics/api/directx11/objects/command/dx11_command_queue.h"
 #include "./graphics/api/directx11/objects/command/dx11_command_buffer.h"
+#include "./graphics/api/directx11/objects/sync/dx11_fence.h"
 #include "./graphics/api/directx11/dx11_graphics_context.h"
 #include "./graphics/api/directx11/dx11_error.h"
 
@@ -23,6 +24,11 @@ namespace Neon
 		{
 			// TODO:: Restoring context is slow, do this manually
 			DX11GraphicsContext::GetInstance()->GetGraphicsDeviceContext()->ExecuteCommandList(NEON_CAST(DX11CommandBuffer*, _commandBuffer)->m_DeferedListObj, TRUE);
+
+			// Signal fence
+			auto fence = NEON_CAST(DX11Fence*, _signalFence);
+			DX11GraphicsContext::GetInstance()->GetGraphicsDeviceContext()->Signal(fence->m_FenceObj, fence->m_FenceValue);
+
 		}
 	}
 }

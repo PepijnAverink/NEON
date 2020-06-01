@@ -13,9 +13,6 @@ namespace Neon
 
 			virtual bool Initialize() override;
 			virtual bool Terminate()  override;
-
-			virtual void Present() override;
-
 		};
 	}
 }

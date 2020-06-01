@@ -22,7 +22,7 @@ namespace Neon
 			// Setup GraphicsContextDesc
 			GraphicsContextDescriptor graphicsContextDesc = {};
 			graphicsContextDesc.Window = _window;
-			graphicsContextDesc.GraphicsApi = GraphicsAPI::VULKAN;
+			graphicsContextDesc.GraphicsApi = GraphicsAPI::DIRECTX11;
 			graphicsContextDesc.QueueLayout = queueLayout;
 
 			// Create GraphicsContext
@@ -107,39 +107,39 @@ namespace Neon
 			// Create Fence
 			m_SubmitFence = Fence::Create(&SfenceDesc);
 		}
-		// ==================================================================
-		// Pipeline
-		// ==================================================================
-		{
-			// Setup ShaderDesc
-			ShaderDescriptor shaderDesc = {};
-			shaderDesc.VertexShaderPath				= "./assets/shaders/vert.spv";
-		//	shaderDesc.VertexShaderPath				= "./assets/shaders/vertex_shader.hlsl";
-			shaderDesc.VertexShaderFunctionName		= "main";
-			shaderDesc.FragmentShaderPath			= "./assets/shaders/frag.spv";
-		//	shaderDesc.FragmentShaderPath			= "./assets/shaders/fragment_shader.hlsl";
-			shaderDesc.FragmentShaderFunctionName	= "main";
-			shaderDesc.HotReload					= false;
-
-			// Create Shader
-			ShaderReflection reflection;
-			Shader* shader = Shader::Create(reflection, &shaderDesc); // TODO:: shader goes out of scope, even if pointer is stored, and do not store all data causeing a crahs on pipeline creation
-
-			RasterizerStateDescriptor rasterizerStateDesc = {};
-
-			// Setup GraphicsPipelineDesc
-			GraphicsPipelineDescriptor pipelineDesc = {};
-			pipelineDesc.Name						= "Main-GraphicsPipeline";
-			pipelineDesc.ImageWidth					= 1280;
-			pipelineDesc.ImageHeight				= 720;
-			pipelineDesc.Shader						= shader;
-			pipelineDesc.RasterizerStateDescriptor	= &rasterizerStateDesc;
-			pipelineDesc.InputLayout				= reflection.Layout;
-			pipelineDesc.Topology					= Topology::NEON_TOPOLOGY_TRIANGLE_LIST;
-
-			// Create GraphicsPipeline
-			m_Pipeline = GraphicsPipeline::Create(&pipelineDesc);
-		}
+	//	// ==================================================================
+	//	// Pipeline
+	//	// ==================================================================
+	//	{
+	//		// Setup ShaderDesc
+	//		ShaderDescriptor shaderDesc = {};
+	//		shaderDesc.VertexShaderPath				= "./assets/shaders/vert.spv";
+	//	//	shaderDesc.VertexShaderPath				= "./assets/shaders/vertex_shader.hlsl";
+	//		shaderDesc.VertexShaderFunctionName		= "main";
+	//		shaderDesc.FragmentShaderPath			= "./assets/shaders/frag.spv";
+	//	//	shaderDesc.FragmentShaderPath			= "./assets/shaders/fragment_shader.hlsl";
+	//		shaderDesc.FragmentShaderFunctionName	= "main";
+	//		shaderDesc.HotReload					= false;
+	//
+	//		// Create Shader
+	//		ShaderReflection reflection;
+	//		Shader* shader = Shader::Create(reflection, &shaderDesc); // TODO:: shader goes out of scope, even if pointer is stored, and do not store all data causeing a crahs on pipeline creation
+	//
+	//		RasterizerStateDescriptor rasterizerStateDesc = {};
+	//
+	//		// Setup GraphicsPipelineDesc
+	//		GraphicsPipelineDescriptor pipelineDesc = {};
+	//		pipelineDesc.Name						= "Main-GraphicsPipeline";
+	//		pipelineDesc.ImageWidth					= 1280;
+	//		pipelineDesc.ImageHeight				= 720;
+	//		pipelineDesc.Shader						= shader;
+	//		pipelineDesc.RasterizerStateDescriptor	= &rasterizerStateDesc;
+	//		pipelineDesc.InputLayout				= reflection.Layout;
+	//		pipelineDesc.Topology					= Topology::NEON_TOPOLOGY_TRIANGLE_LIST;
+	//
+	//		// Create GraphicsPipeline
+	//		m_Pipeline = GraphicsPipeline::Create(&pipelineDesc);
+	//	}
 		// ==================================================================
 		// Framebuffer
 		// ==================================================================
@@ -169,85 +169,85 @@ namespace Neon
 				m_Framebuffer[i] = Framebuffer::Create(&framebufferDesc, m_Pipeline);
 			}
 		}
-		// ==================================================================
-		// VertexBuffer
-		// ==================================================================
-		{
-			m_CommandBuffers[0]->StartRecording();
-
-			float vertices[] = {
-			 -0.5f,  0.5f, 0.5f, 0.0f, 0.0f, 1.0f, 1.0f,
-			  0.5f, -0.5f, 0.5f, 0.0f, 0.0f, 1.0f, 1.0f,
-			 -0.5f, -0.5f, 0.5f, 0.0f, 0.0f, 1.0f, 1.0f,
-			  0.5f,  0.5f, 0.5f, 0.0f, 0.0f, 1.0f, 1.0f,
-			
-			 -0.75f,  0.75f, 0.7f, 0.0f, 1.0f, 0.0f, 1.0f,
-			   0.0f,  0.0f,  0.7f, 0.0f, 1.0f, 0.0f, 1.0f,
-			 -0.75f,  0.0f,  0.7f, 0.0f, 1.0f, 0.0f, 1.0f,
-			   0.0f,  0.75f, 0.7f, 0.0f, 1.0f, 0.0f, 1.0f,
-			};
-
-			// Setup MemoryPoolDesc
-			MemoryPoolDescriptor memoryPoolDesc = {};
-			memoryPoolDesc.Name		= "VertexMemoryPool";
-			memoryPoolDesc.Access	= MemoryAccess::NEON_MEMORY_ACCESS_GPU_ONLY;
-			memoryPoolDesc.Size		= sizeof(vertices);
-
-			// Create MemoryPool
-			m_VmemoryPool = MemoryPool::Create(&memoryPoolDesc);
-
-			// Setup VertexBufferDesc
-			VertexBufferDescriptor vertexBufferDesc = {};
-			vertexBufferDesc.Name			= "VertexBuffer";
-			vertexBufferDesc.Size			= sizeof(vertices);
-			vertexBufferDesc.Usage			= BufferUsage::NEON_BUFFER_USAGE_STATIC;
-			vertexBufferDesc.Vertices		= vertices;
-			vertexBufferDesc.VMemoryPool	= m_VmemoryPool;
-			vertexBufferDesc.VertexCount	= 8;
-			vertexBufferDesc.VertexStride	= sizeof(float) * 7;
-			vertexBufferDesc.Offset			= 0;
-
-			// Create VertexBuffer
-			m_VertexBuffer = VertexBuffer::Create(m_CommandBuffers[0], &vertexBufferDesc);
-		}
-		// ==================================================================
-		// IndexBuffer
-		// ==================================================================
-		{
-		//	uint16_t indices[] = { 0, 1, 2, 2, 3, 0,
-		//						4, 5, 6, 6, 7, 4 };
-
-			uint16_t indices[] = { 0, 1, 2, 3, 1, 0,
-								4, 5, 6, 7, 5, 4 };
-
-			// Setup MemoryPoolDesc
-			MemoryPoolDescriptor imemoryPoolDesc = {};
-			imemoryPoolDesc.Name	= "VertexMemoryPool";
-			imemoryPoolDesc.Access	= MemoryAccess::NEON_MEMORY_ACCESS_GPU_ONLY;
-			imemoryPoolDesc.Size	= sizeof(indices);
-
-			// Create MemoryPool
-			m_ImemoryPool = MemoryPool::Create(&imemoryPoolDesc);
-
-			// Setup IndexBufferDesc
-			IndexBufferDescriptor indexBufferDesc = {};
-			indexBufferDesc.Name		= "IndexBuffer";
-			indexBufferDesc.Size		= sizeof(indices);
-			indexBufferDesc.Usage		= BufferUsage::NEON_BUFFER_USAGE_STATIC;
-			indexBufferDesc.Indices		= indices;
-			indexBufferDesc.IMemoryPool = m_ImemoryPool;
-			indexBufferDesc.IndexCount	= 12;
-			indexBufferDesc.Format = BufferFormat::NEON_BUFFER_FORMAT_UINT32;
-
-			// Create IndexBuffer
-			m_IndexBuffer = IndexBuffer::Create(m_CommandBuffers[0], &indexBufferDesc);
-
-			m_CommandBuffers[0]->EndRecording();
-			m_CommandQueue->ExecuteCommandBuffer(m_CommandBuffers[0], m_SubmitFence);
-
-			m_SubmitFence->WaitForFence();
-			m_SubmitFence->Reset();
-		}
+	//	// ==================================================================
+	//	// VertexBuffer
+	//	// ==================================================================
+	//	{
+	//		m_CommandBuffers[0]->StartRecording();
+	//
+	//		float vertices[] = {
+	//		 -0.5f,  0.5f, 0.5f, 0.0f, 0.0f, 1.0f, 1.0f,
+	//		  0.5f, -0.5f, 0.5f, 0.0f, 0.0f, 1.0f, 1.0f,
+	//		 -0.5f, -0.5f, 0.5f, 0.0f, 0.0f, 1.0f, 1.0f,
+	//		  0.5f,  0.5f, 0.5f, 0.0f, 0.0f, 1.0f, 1.0f,
+	//		
+	//		 -0.75f,  0.75f, 0.7f, 0.0f, 1.0f, 0.0f, 1.0f,
+	//		   0.0f,  0.0f,  0.7f, 0.0f, 1.0f, 0.0f, 1.0f,
+	//		 -0.75f,  0.0f,  0.7f, 0.0f, 1.0f, 0.0f, 1.0f,
+	//		   0.0f,  0.75f, 0.7f, 0.0f, 1.0f, 0.0f, 1.0f,
+	//		};
+	//
+	//		// Setup MemoryPoolDesc
+	//		MemoryPoolDescriptor memoryPoolDesc = {};
+	//		memoryPoolDesc.Name		= "VertexMemoryPool";
+	//		memoryPoolDesc.Access	= MemoryAccess::NEON_MEMORY_ACCESS_GPU_ONLY;
+	//		memoryPoolDesc.Size		= sizeof(vertices);
+	//
+	//		// Create MemoryPool
+	//		m_VmemoryPool = MemoryPool::Create(&memoryPoolDesc);
+	//
+	//		// Setup VertexBufferDesc
+	//		VertexBufferDescriptor vertexBufferDesc = {};
+	//		vertexBufferDesc.Name			= "VertexBuffer";
+	//		vertexBufferDesc.Size			= sizeof(vertices);
+	//		vertexBufferDesc.Usage			= BufferUsage::NEON_BUFFER_USAGE_STATIC;
+	//		vertexBufferDesc.Vertices		= vertices;
+	//		vertexBufferDesc.VMemoryPool	= m_VmemoryPool;
+	//		vertexBufferDesc.VertexCount	= 8;
+	//		vertexBufferDesc.VertexStride	= sizeof(float) * 7;
+	//		vertexBufferDesc.Offset			= 0;
+	//
+	//		// Create VertexBuffer
+	//		m_VertexBuffer = VertexBuffer::Create(m_CommandBuffers[0], &vertexBufferDesc);
+	//	}
+	//	// ==================================================================
+	//	// IndexBuffer
+	//	// ==================================================================
+	//	{
+	//	//	uint16_t indices[] = { 0, 1, 2, 2, 3, 0,
+	//	//						4, 5, 6, 6, 7, 4 };
+	//
+	//		uint16_t indices[] = { 0, 1, 2, 3, 1, 0,
+	//							4, 5, 6, 7, 5, 4 };
+	//
+	//		// Setup MemoryPoolDesc
+	//		MemoryPoolDescriptor imemoryPoolDesc = {};
+	//		imemoryPoolDesc.Name	= "VertexMemoryPool";
+	//		imemoryPoolDesc.Access	= MemoryAccess::NEON_MEMORY_ACCESS_GPU_ONLY;
+	//		imemoryPoolDesc.Size	= sizeof(indices);
+	//
+	//		// Create MemoryPool
+	//		m_ImemoryPool = MemoryPool::Create(&imemoryPoolDesc);
+	//
+	//		// Setup IndexBufferDesc
+	//		IndexBufferDescriptor indexBufferDesc = {};
+	//		indexBufferDesc.Name		= "IndexBuffer";
+	//		indexBufferDesc.Size		= sizeof(indices);
+	//		indexBufferDesc.Usage		= BufferUsage::NEON_BUFFER_USAGE_STATIC;
+	//		indexBufferDesc.Indices		= indices;
+	//		indexBufferDesc.IMemoryPool = m_ImemoryPool;
+	//		indexBufferDesc.IndexCount	= 12;
+	//		indexBufferDesc.Format = BufferFormat::NEON_BUFFER_FORMAT_UINT32;
+	//
+	//		// Create IndexBuffer
+	//		m_IndexBuffer = IndexBuffer::Create(m_CommandBuffers[0], &indexBufferDesc);
+	//
+	//		m_CommandBuffers[0]->EndRecording();
+	//		m_CommandQueue->ExecuteCommandBuffer(m_CommandBuffers[0], m_SubmitFence);
+	//
+	//		m_SubmitFence->WaitForFence();
+	//		m_SubmitFence->Reset();
+	//	}
 		// ==================================================================
 		// CommandObjects
 		// ==================================================================
@@ -295,7 +295,7 @@ namespace Neon
 		m_CommandPool->Reset();
 		m_CommandBuffers[frameIndex]->StartRecording();
 	
-		m_CommandBuffers[frameIndex]->SetGraphicsPipeline(m_Pipeline);
+	//	m_CommandBuffers[frameIndex]->SetGraphicsPipeline(m_Pipeline);
 	
 	
 		m_CommandBuffers[frameIndex]->TransitionFramebufferAttachment(m_Framebuffer[frameIndex]->GetAttachment(0), NEON_FRAMEBUFFER_TRANSITION_STATE_PRESENT, NEON_FRAMEBUFFER_TRANSITION_STATE_RENDER);
@@ -306,13 +306,13 @@ namespace Neon
 	
 		m_CommandBuffers[frameIndex]->BeginRenderpass(m_Framebuffer[frameIndex]);
 	
-		m_CommandBuffers[frameIndex]->SetViewport(m_Viewport);
-		m_CommandBuffers[frameIndex]->SetScissor(m_Scissor);
-	
-		m_CommandBuffers[frameIndex]->SetVertexBuffer(m_VertexBuffer);
-		m_CommandBuffers[frameIndex]->SetIndexBuffer(m_IndexBuffer);
-	
-		m_CommandBuffers[frameIndex]->DrawIndexed(m_IndexBuffer->GetIndexCount(), 0, 0);
+	//	m_CommandBuffers[frameIndex]->SetViewport(m_Viewport);
+	//	m_CommandBuffers[frameIndex]->SetScissor(m_Scissor);
+	//
+	//	m_CommandBuffers[frameIndex]->SetVertexBuffer(m_VertexBuffer);
+	//	m_CommandBuffers[frameIndex]->SetIndexBuffer(m_IndexBuffer);
+	//
+	//	m_CommandBuffers[frameIndex]->DrawIndexed(m_IndexBuffer->GetIndexCount(), 0, 0);
 	
 		m_CommandBuffers[frameIndex]->EndRenderpass();
 	

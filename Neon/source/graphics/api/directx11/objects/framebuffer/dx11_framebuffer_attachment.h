@@ -15,10 +15,15 @@ namespace Neon
 
 		private:
 			friend class DX11Swapchain;
+			friend class DX11CommandBuffer;
 			DX11FramebufferAttachment(const FramebufferAttachmentDescriptor* _framebufferAttachmentDescriptor, ID3D11Texture2D* _image);
 
 			ID3D11Texture2D*		m_Image;
-			ID3D11RenderTargetView* m_ImageView;
+			union
+			{
+				ID3D11RenderTargetView*  m_ImageView;
+				ID3D11DepthStencilView*  m_DepthStencilView;
+			};
 		};
 	}
 }

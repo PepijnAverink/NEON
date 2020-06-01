@@ -2,6 +2,10 @@
 
 #include "./graphics/graphics_driver.h"
 
+#if defined (NEON_SUPPORT_DIRECTX11)	
+#include "./graphics/api/directx11/objects/command/dx11_command_pool.h"
+#endif
+
 #if defined (NEON_SUPPORT_DIRECTX12)	
 #include "./graphics/api/directx12/objects/command/dx12_command_pool.h"
 #endif
@@ -21,6 +25,10 @@ namespace Neon
 			// Vulkan
 			if (api == GraphicsAPI::VULKAN)
 				return new VKCommandPool(_commandPoolDescriptor);
+
+			// DirectX12
+			if (api == GraphicsAPI::DIRECTX11)
+				return new DX11CommandPool(_commandPoolDescriptor);
 
 			// DirectX12
 			if (api == GraphicsAPI::DIRECTX12)

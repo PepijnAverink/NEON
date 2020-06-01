@@ -1,6 +1,9 @@
 #include "./graphics/objects/swapchain/graphics_surface.h"
-
 #include "./graphics/graphics_driver.h"
+
+#if defined (NEON_SUPPORT_DIRECTX11)	
+#include "./graphics/api/directx11/objects/swapchain/dx11_graphics_surface.h"
+#endif
 
 #if defined (NEON_SUPPORT_DIRECTX12)	
 #include "./graphics/api/directx12/objects/swapchain/dx12_graphics_surface.h"
@@ -21,6 +24,10 @@ namespace Neon
 			// Vulkan
 			if (api == GraphicsAPI::VULKAN)
 				return new VKGraphicsSurface(_graphicsSurfaceDescriptor);
+
+			// DirectX11
+			if (api == GraphicsAPI::DIRECTX11)
+				return new DX11GraphicsSurface(_graphicsSurfaceDescriptor);
 
 			// DirectX12
 			if (api == GraphicsAPI::DIRECTX12)

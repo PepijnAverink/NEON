@@ -165,6 +165,7 @@
     <ClInclude Include="source\graphics\api\directx11\objects\swapchain\dx11_graphics_surface.h" />
     <ClInclude Include="source\graphics\api\directx11\objects\swapchain\dx11_swapchain.h" />
     <ClInclude Include="source\graphics\api\directx11\objects\sync\dx11_fence.h" />
+    <ClInclude Include="source\graphics\api\directx11\pipeline\dx11_graphics_pipeline.h" />
     <ClInclude Include="source\graphics\api\directx12\dx12_error.h" />
     <ClInclude Include="source\graphics\api\directx12\dx12_graphics_context.h" />
     <ClInclude Include="source\graphics\api\directx12\objects\command\dx12_command_pool.h" />
@@ -305,6 +306,7 @@
     <ClCompile Include="source\graphics\api\directx11\objects\swapchain\dx11_graphics_surface.cpp" />
     <ClCompile Include="source\graphics\api\directx11\objects\swapchain\dx11_swapchain.cpp" />
     <ClCompile Include="source\graphics\api\directx11\objects\sync\dx11_fence.cpp" />
+    <ClCompile Include="source\graphics\api\directx11\pipeline\dx11_graphics_pipeline.cpp" />
     <ClCompile Include="source\graphics\api\directx12\dx12_graphics_context.cpp" />
     <ClCompile Include="source\graphics\api\directx12\objects\command\dx12_command_pool.cpp" />
     <ClCompile Include="source\graphics\api\directx12\objects\command\dx12_command_buffer.cpp" />

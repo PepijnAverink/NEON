@@ -1,6 +1,9 @@
 #include "./graphics/objects/framebuffer/framebuffer.h"
-
 #include "./graphics/graphics_driver.h"
+
+#if defined (NEON_SUPPORT_DIRECTX11)	
+#include "./graphics/api/directx11/objects/framebuffer/dx11_framebuffer.h"
+#endif
 
 #if defined (NEON_SUPPORT_DIRECTX12)	
 #include "./graphics/api/directx12/objects/framebuffer/dx12_framebuffer.h"
@@ -21,6 +24,10 @@ namespace Neon
 			// Vulkan
 			if (api == GraphicsAPI::VULKAN)
 				return new VKFramebuffer(_framebufferDescriptor, _graphicsPipeline);
+
+			// DirectX11
+			if (api == GraphicsAPI::DIRECTX11)
+				return new DX11Framebuffer(_framebufferDescriptor, _graphicsPipeline);
 
 			// DirectX12
 			if (api == GraphicsAPI::DIRECTX12)

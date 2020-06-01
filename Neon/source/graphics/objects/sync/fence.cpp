@@ -1,6 +1,9 @@
 #include "./graphics/objects/sync/fence.h"
-
 #include "./graphics/graphics_driver.h"
+
+#if defined (NEON_SUPPORT_DIRECTX11)	
+#include "./graphics/api/directx11/objects/sync/dx11_fence.h"
+#endif
 
 #if defined (NEON_SUPPORT_DIRECTX12)	
 #include "./graphics/api/directx12/objects/sync/dx12_fence.h"
@@ -21,6 +24,10 @@ namespace Neon
 			// Vulkan
 			if (api == GraphicsAPI::VULKAN)
 				return new VKFence(_fenceDescriptor);
+
+			// DirectX11
+			if (api == GraphicsAPI::DIRECTX11)
+				return new DX11Fence(_fenceDescriptor);
 
 			// DirectX12
 			if (api == GraphicsAPI::DIRECTX12)

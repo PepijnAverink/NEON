@@ -24,6 +24,9 @@ namespace Neon
 			virtual bool Initialize() = 0;
 			virtual bool Terminate()  = 0;
 
+			// Getters
+			VideoAdapter* GetCurrentAdapter() const { return m_Adapters[m_CurrentAdapter]; }
+
 		protected:
 			GraphicsContext(const GraphicsContextDescriptor* _graphicsContextDescriptor);
 

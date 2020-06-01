@@ -1,6 +1,10 @@
 #include "./graphics/api/directx11/objects/command/dx11_command_buffer.h"
+#include "./graphics/api/directx11/objects/framebuffer/dx11_framebuffer.h"
+#include "./graphics/api/directx11/objects/framebuffer/dx11_framebuffer_attachment.h"
 #include "./graphics/api/directx11/dx11_graphics_context.h"
 #include "./graphics/api/directx11/dx11_error.h"
+
+#include "./utilities/casting/casting_helper.h"
 
 namespace Neon
 {
@@ -58,12 +62,13 @@ namespace Neon
 
 		void DX11CommandBuffer::ClearFrameBuffer(Framebuffer* _framebuffer, const float* _color, const uint32_t _offset, const uint32_t _count, uint32_t _flags) const
 		{
-
+			if (_flags & NEON_CLEAR_COLOR_BIT)
+				DX11GraphicsContext::GetInstance()->GetGraphicsDeviceContext()->ClearRenderTargetView(NEON_CAST(DX11FramebufferAttachment*, _framebuffer->GetAttachment(0))->m_ImageView, _color);
 		}
 
-		void DX11CommandBuffer::BeginRenderpass(Framebuffer * _framebuffer) const
+		void DX11CommandBuffer::BeginRenderpass(Framebuffer* _framebuffer) const
 		{
-
+			DX11GraphicsContext::GetInstance()->GetGraphicsDeviceContext()->OMSetRenderTargets(1, &NEON_CAST(DX11FramebufferAttachment*, _framebuffer->GetAttachment(0))->m_ImageView, nullptr);
 		}
 
 		void DX11CommandBuffer::EndRenderpass() const

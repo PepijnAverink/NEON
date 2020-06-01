@@ -21,6 +21,7 @@ namespace Neon
 
 		private:
 			friend class DX11Swapchain;
+			friend class DX11CommandQueue;
 			ID3D11Fence* m_FenceObj;
 			uint64_t     m_FenceValue;
 

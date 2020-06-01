@@ -9,6 +9,7 @@ namespace Neon
 	{
 		class DX11CommandQueue : public CommandQueue
 		{
+		public:
 			DX11CommandQueue(CommandQueueDescriptor* _commandQueueDescriptor);
 			virtual ~DX11CommandQueue();
 
