@@ -1,6 +1,9 @@
 #include "./graphics/objects/command_generic/viewport.h"
-
 #include "./graphics/graphics_driver.h"
+
+#if defined (NEON_SUPPORT_DIRECTX11)	
+#include "./graphics/api/directx11/objects/command_generic/dx11_viewport.h"
+#endif
 
 #if defined (NEON_SUPPORT_DIRECTX12)	
 #include "./graphics/api/directx12/objects/command_generic/dx12_viewport.h"
@@ -23,6 +26,10 @@ namespace Neon
 			//	// Vulkan
 			//	if (api == GraphicsAPI::VULKAN)
 			//		return new VKCommandBuffer(_commandBufferDescriptor);
+
+			// DirectX11
+			if (api == GraphicsAPI::DIRECTX11)
+				return new DX11Viewport(_bottomX, _bottomY, _width, _height);
 
 				// DirectX12
 			if (api == GraphicsAPI::DIRECTX12)

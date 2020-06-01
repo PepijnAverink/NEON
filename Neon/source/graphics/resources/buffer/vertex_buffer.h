@@ -16,7 +16,8 @@ namespace Neon
 			virtual void* Map()   const = 0;
 			virtual void  Unmap() const = 0;
 
-			inline const uint32_t GetVertexCount() const { return m_VertexCount; }
+			inline const uint32_t  GetVertexCount() const { return m_VertexCount; }
+			inline const uint32_t GetVertexStride() const { return m_VertexStride; }
 
 		protected:
 			VertexBuffer(const VertexBufferDescriptor* _vertexBufferDescriptor);

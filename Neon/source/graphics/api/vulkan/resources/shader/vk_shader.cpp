@@ -29,8 +29,7 @@ namespace Neon
 			m_VertexStageInfo.sType  = VK_STRUCTURE_TYPE_PIPELINE_SHADER_STAGE_CREATE_INFO;
 			m_VertexStageInfo.stage  = VK_SHADER_STAGE_VERTEX_BIT;
 			m_VertexStageInfo.module = m_VertexShaderModule;
-			m_VertexStageInfo.pName  = _shaderDescriptor->VertexShaderFunctionName.c_str();
-
+			m_VertexStageInfo.pName  = m_VertexFunctionName.c_str();
 
 			// Read in FragmentShader file
 			void* fragmenShaderBuffer;
@@ -50,7 +49,7 @@ namespace Neon
 			m_FragmentStageInfo.sType  = VK_STRUCTURE_TYPE_PIPELINE_SHADER_STAGE_CREATE_INFO;
 			m_FragmentStageInfo.stage  = VK_SHADER_STAGE_FRAGMENT_BIT;
 			m_FragmentStageInfo.module = m_FragmentShaderModule;
-			m_FragmentStageInfo.pName  = _shaderDescriptor->FragmentShaderFunctionName.c_str();
+			m_FragmentStageInfo.pName  = m_FragmentFunctionName.c_str();
 		}
 
 		VKShader::~VKShader()

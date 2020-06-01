@@ -1,6 +1,10 @@
 #include "./graphics/api/directx11/objects/command/dx11_command_buffer.h"
 #include "./graphics/api/directx11/objects/framebuffer/dx11_framebuffer.h"
 #include "./graphics/api/directx11/objects/framebuffer/dx11_framebuffer_attachment.h"
+#include "./graphics/api/directx11/resources/buffer/dx11_vertex_buffer.h"
+#include "./graphics/api/directx11/resources/buffer/dx11_index_buffer.h"
+#include "./graphics/api/directx11/pipeline/dx11_graphics_pipeline.h"
+#include "./graphics/api/directx11/objects/command_generic/dx11_viewport.h"
 #include "./graphics/api/directx11/dx11_graphics_context.h"
 #include "./graphics/api/directx11/dx11_error.h"
 
@@ -37,22 +41,39 @@ namespace Neon
 
 		void DX11CommandBuffer::SetGraphicsPipeline(GraphicsPipeline* _graphicsPipeline)
 		{
+			DX11GraphicsPipeline* pipeline = NEON_CAST(DX11GraphicsPipeline*, _graphicsPipeline);
 
+			// Set the vertex input layout.
+			m_DeferedContext->IASetInputLayout(pipeline->m_InputLayout);
+
+			// Bind the shader
+			m_DeferedContext->VSSetShader(pipeline->m_InternalShader->m_VertexShader, 0, 0);
+			m_DeferedContext->PSSetShader(pipeline->m_InternalShader->m_FragmentShader, 0, 0);
+
+			m_DeferedContext->OMSetDepthStencilState(pipeline->m_DepthStencilState, 1);
+			m_DeferedContext->RSSetState(pipeline->m_RasterState);
+
+			m_DeferedContext->IASetPrimitiveTopology(D3D10_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
 		}
 
 		void DX11CommandBuffer::SetVertexBuffer(VertexBuffer* _vertexBuffer) const
 		{
+			unsigned int stride = _vertexBuffer->GetVertexStride();
+			unsigned int offset = 0;
 
+			// Bind the buffer
+			m_DeferedContext->IASetVertexBuffers(0, 1, &NEON_CAST(DX11VertexBuffer*, _vertexBuffer)->m_VertexBuffer, &stride, &offset);
 		}
 
 		void DX11CommandBuffer::SetIndexBuffer(IndexBuffer* _indexBuffer) const
 		{
-
+			DX11IndexBuffer* index = NEON_CAST(DX11IndexBuffer*, _indexBuffer);
+			m_DeferedContext->IASetIndexBuffer(index->m_IndexBuffer, index->m_IndexBufferFormat, 0);
 		}
 
 		void DX11CommandBuffer::SetViewport(Viewport* _viewport) const
 		{
-
+			m_DeferedContext->RSSetViewports(1, &NEON_CAST(DX11Viewport*, _viewport)->m_InternalViewport);
 		}
 
 		void DX11CommandBuffer::SetScissor(Scissor* _scissor) const
@@ -63,12 +84,12 @@ namespace Neon
 		void DX11CommandBuffer::ClearFrameBuffer(Framebuffer* _framebuffer, const float* _color, const uint32_t _offset, const uint32_t _count, uint32_t _flags) const
 		{
 			if (_flags & NEON_CLEAR_COLOR_BIT)
-				DX11GraphicsContext::GetInstance()->GetGraphicsDeviceContext()->ClearRenderTargetView(NEON_CAST(DX11FramebufferAttachment*, _framebuffer->GetAttachment(0))->m_ImageView, _color);
+				m_DeferedContext->ClearRenderTargetView(NEON_CAST(DX11FramebufferAttachment*, _framebuffer->GetAttachment(0))->m_ImageView, _color);
 		}
 
 		void DX11CommandBuffer::BeginRenderpass(Framebuffer* _framebuffer) const
 		{
-			DX11GraphicsContext::GetInstance()->GetGraphicsDeviceContext()->OMSetRenderTargets(1, &NEON_CAST(DX11FramebufferAttachment*, _framebuffer->GetAttachment(0))->m_ImageView, nullptr);
+			m_DeferedContext->OMSetRenderTargets(1, &NEON_CAST(DX11FramebufferAttachment*, _framebuffer->GetAttachment(0))->m_ImageView, nullptr);
 		}
 
 		void DX11CommandBuffer::EndRenderpass() const
@@ -82,7 +103,7 @@ namespace Neon
 
 		void DX11CommandBuffer::DrawIndexed(const uint32_t _indexCount, const uint32_t _indexOffset, uint32_t _vertexOffset) const
 		{
-
+			m_DeferedContext->DrawIndexed(_indexCount, 0, 0);
 		}
 	}
 }
