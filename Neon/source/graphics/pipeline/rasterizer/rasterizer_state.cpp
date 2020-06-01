@@ -5,10 +5,14 @@ namespace Neon
 	namespace Graphics
 	{
 		RasterizerState::RasterizerState(const RasterizerStateDescriptor* _rasterizerDescriptor)
-			: m_CullFace(_rasterizerDescriptor->RasterizerCullFace)
-			, m_CullMode(_rasterizerDescriptor->RasterizerCullMode)
-			, m_LineWidth(_rasterizerDescriptor->RasterizerLineWidth)
-			, m_FillMode(_rasterizerDescriptor->RasterizerFillMode)
-		{ }
+		{ 
+			if (_rasterizerDescriptor != nullptr)
+			{
+				m_CullFace = _rasterizerDescriptor->CullFace;
+				m_CullMode = _rasterizerDescriptor->CullMode;
+				m_FillMode = _rasterizerDescriptor->FillMode;
+				m_LineWidth = _rasterizerDescriptor->LineWidth;
+			}
+		}
 	}
 }

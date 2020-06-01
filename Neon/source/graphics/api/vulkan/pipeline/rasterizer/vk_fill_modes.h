@@ -1,5 +1,5 @@
 #pragma once
-#include "./graphics/pipeline/rasterizer/fill_modes.h"
+#include "./graphics/pipeline/rasterizer/fill_mode.h"
 
 #include <vulkan/vulkan.h>
 #include <iostream>
@@ -16,7 +16,6 @@ namespace Neon
 		{
 			switch (_fillMode)
 			{
-				case FillMode::NEON_FILL_MODE_POINT: return VK_POLYGON_MODE_POINT;
 				case FillMode::NEON_FILL_MODE_LINE:  return VK_POLYGON_MODE_LINE;
 				case FillMode::NEON_FILL_MODE_FILL:  return VK_POLYGON_MODE_FILL;
 			}

@@ -1,7 +1,7 @@
 #pragma once
-#include "./graphics/pipeline/rasterizer/cull_faces.h"
-#include "./graphics/pipeline/rasterizer/cull_modes.h"
-#include "./graphics/pipeline/rasterizer/fill_modes.h"
+#include "./graphics/pipeline/rasterizer/cull_face.h"
+#include "./graphics/pipeline/rasterizer/cull_mode.h"
+#include "./graphics/pipeline/rasterizer/fill_mode.h"
 
 namespace Neon
 {
@@ -12,11 +12,11 @@ namespace Neon
 		public:
 			RasterizerStateDescriptor() = default;
 
-			CullFace RasterizerCullFace;	// TODO:: Set default
-			CullMode RasterizerCullMode  = CullMode::NEON_CULL_MODE_NONE;
+			CullFace CullFace;	// TODO:: Set default
+			CullMode CullMode  = CullMode::NEON_CULL_MODE_NONE;
 
-			float	 RasterizerLineWidth = 1.0f;
-			FillMode RasterizerFillMode  = FillMode::NEON_FILL_MODE_FILL;
+			float	 LineWidth = 1.0f;
+			FillMode FillMode  = FillMode::NEON_FILL_MODE_FILL;
 		};
 	}
 }

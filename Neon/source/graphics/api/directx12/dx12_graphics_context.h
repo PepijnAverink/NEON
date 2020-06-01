@@ -45,7 +45,6 @@ namespace Neon
 			// Get's a Dx12 instance
 			static DX12GraphicsContext* GetInstance() { return (DX12GraphicsContext*)GetGraphicsContext(); }
 
-
 			inline ID3D12Device* GetGraphicsDevice() const { return m_Device; }
 
 		private:

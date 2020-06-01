@@ -1,5 +1,5 @@
 #pragma once
-#include "./graphics/pipeline/rasterizer/cull_modes.h"
+#include "./graphics/pipeline/rasterizer/cull_mode.h"
 
 #include <vulkan/vulkan.h>
 #include <iostream>
@@ -18,7 +18,6 @@ namespace Neon
 			{
 				case CullMode::NEON_CULL_MODE_FRONT: return VK_CULL_MODE_FRONT_BIT;
 				case CullMode::NEON_CULL_MODE_BACK:  return VK_CULL_MODE_BACK_BIT;
-				case CullMode::NEON_CULL_MODE_FRONT_AND_BACK:  return VK_CULL_MODE_FRONT_AND_BACK;
 			}
 
 			printf("[warning] GetVKCullMode() - No matching CullMode found, default to: NEON_CULL_MODE_FRONT, CullMode: %i", _cullMode);

@@ -2,6 +2,9 @@
 #include "./graphics/api/directx12/dx12_graphics_context.h"
 #include "./graphics/api/directx12/pipeline/inputLayout/dx12_input_layout.h"
 #include "./graphics/api/directx12/pipeline/topology/dx12_topology.h"
+#include "./graphics/api/directx12/pipeline/rasterizer/dx12_cull_face.h"
+#include "./graphics/api/directx12/pipeline/rasterizer/dx12_fill_mode.h"
+#include "./graphics/api/directx12/pipeline/rasterizer/dx12_cull_mode.h"
 #include "./graphics/api/directx12/dx12_error.h"
 
 #include <DX12/d3dx12.h>
@@ -47,6 +50,12 @@ namespace Neon
 			DXGI_SAMPLE_DESC sampleDesc = {};
 			sampleDesc.Count = 1;
 
+			// RasterizerDesc
+			D3D12_RASTERIZER_DESC rasterizerDesc = {};
+			rasterizerDesc.FrontCounterClockwise = GetDX12FrontCounterClockwise(_graphicsPipelineDescriptor->RasterizerStateDescriptor->CullFace);
+			rasterizerDesc.CullMode = GetDX12FillMode(_graphicsPipelineDescriptor->RasterizerStateDescriptor->CullMode);
+			rasterizerDesc.FillMode = GetDX12FillMode(_graphicsPipelineDescriptor->RasterizerStateDescriptor->FillMode);
+		
 			// Create a pipeline state object (PSO)
 			D3D12_GRAPHICS_PIPELINE_STATE_DESC psoDesc = {};
 			psoDesc.InputLayout				= inputLayoutDesc;
@@ -57,7 +66,7 @@ namespace Neon
 			psoDesc.RTVFormats[0]			= DXGI_FORMAT_R8G8B8A8_UNORM;
 			psoDesc.SampleDesc				= sampleDesc;
 			psoDesc.SampleMask				= 0xffffffff;
-			psoDesc.RasterizerState			= CD3DX12_RASTERIZER_DESC(D3D12_DEFAULT);
+			psoDesc.RasterizerState			= rasterizerDesc;
 			psoDesc.BlendState				= CD3DX12_BLEND_DESC(D3D12_DEFAULT);
 			psoDesc.NumRenderTargets		= 1;
 			psoDesc.DepthStencilState		= CD3DX12_DEPTH_STENCIL_DESC(D3D12_DEFAULT);

@@ -180,6 +180,9 @@
     <ClInclude Include="source\graphics\api\directx12\objects\command\dx12_command_queue.h" />
     <ClInclude Include="source\graphics\api\directx12\objects\command\dx12_command_queue_type.h" />
     <ClInclude Include="source\graphics\api\directx12\objects\command_generic\dx12_scissor.h" />
+    <ClInclude Include="source\graphics\api\directx12\pipeline\rasterizer\dx12_cull_face.h" />
+    <ClInclude Include="source\graphics\api\directx12\pipeline\rasterizer\dx12_cull_mode.h" />
+    <ClInclude Include="source\graphics\api\directx12\pipeline\rasterizer\dx12_fill_mode.h" />
     <ClInclude Include="source\graphics\api\directx12\pipeline\topology\dx12_topology.h" />
     <ClInclude Include="source\graphics\api\directx12\objects\command_generic\dx12_viewport.h" />
     <ClInclude Include="source\graphics\api\directx12\objects\framebuffer\dx12_framebuffer.h" />
@@ -266,9 +269,9 @@
     <ClInclude Include="source\graphics\pipeline\inputLayout\input_layout_element_format.h" />
     <ClInclude Include="source\graphics\pipeline\inputLayout\input_layout.h" />
     <ClInclude Include="source\graphics\pipeline\graphics_pipeline.h" />
-    <ClInclude Include="source\graphics\pipeline\rasterizer\cull_faces.h" />
-    <ClInclude Include="source\graphics\pipeline\rasterizer\cull_modes.h" />
-    <ClInclude Include="source\graphics\pipeline\rasterizer\fill_modes.h" />
+    <ClInclude Include="source\graphics\pipeline\rasterizer\cull_face.h" />
+    <ClInclude Include="source\graphics\pipeline\rasterizer\cull_mode.h" />
+    <ClInclude Include="source\graphics\pipeline\rasterizer\fill_mode.h" />
     <ClInclude Include="source\graphics\pipeline\rasterizer\rasterizer_state_descriptor.h" />
     <ClInclude Include="source\graphics\pipeline\rasterizer\rasterizer_state.h" />
     <ClInclude Include="source\graphics\pipeline\topology\topology.h" />

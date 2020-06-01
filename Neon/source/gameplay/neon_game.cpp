@@ -22,7 +22,7 @@ namespace Neon
 			// Setup GraphicsContextDesc
 			GraphicsContextDescriptor graphicsContextDesc = {};
 			graphicsContextDesc.Window = _window;
-			graphicsContextDesc.GraphicsApi = GraphicsAPI::DIRECTX11;
+			graphicsContextDesc.GraphicsApi = GraphicsAPI::DIRECTX12;
 			graphicsContextDesc.QueueLayout = queueLayout;
 
 			// Create GraphicsContext
@@ -113,21 +113,25 @@ namespace Neon
 		{
 			// Setup ShaderDesc
 			ShaderDescriptor shaderDesc = {};
-			//shaderDesc.VertexShaderPath = "./assets/shaders/vert.spv";
-			shaderDesc.VertexShaderPath = "./assets/shaders/vertex_shader.hlsl";
-			shaderDesc.VertexShaderFunctionName = "main";
-			//shaderDesc.FragmentShaderPath = "./assets/shaders/frag.spv";
-			shaderDesc.FragmentShaderPath = "./assets/shaders/fragment_shader.hlsl";
-			shaderDesc.FragmentShaderFunctionName = "main";
-			shaderDesc.HotReload = false;
+		//	shaderDesc.VertexShaderPath				= "./assets/shaders/vert.spv";
+			shaderDesc.VertexShaderPath				= "./assets/shaders/vertex_shader.hlsl";
+			shaderDesc.VertexShaderFunctionName		= "main";
+		//	shaderDesc.FragmentShaderPath			= "./assets/shaders/frag.spv";
+			shaderDesc.FragmentShaderPath			= "./assets/shaders/fragment_shader.hlsl";
+			shaderDesc.FragmentShaderFunctionName	= "main";
+			shaderDesc.HotReload					= false;
 
 			// Create Shader
-			
 			ShaderReflection reflection;
 			m_Shader = Shader::Create(reflection, &shaderDesc);
 	
+			// Setup RasterizerStateDesc
 			RasterizerStateDescriptor rasterizerStateDesc = {};
-	
+			rasterizerStateDesc.CullFace  = CullFace::NEON_CULL_FACE_CW;
+			rasterizerStateDesc.CullMode  = CullMode::NEON_CULL_MODE_BACK;
+			rasterizerStateDesc.FillMode  = FillMode::NEON_FILL_MODE_FILL;
+			rasterizerStateDesc.LineWidth = 1.0f;
+
 			// Setup GraphicsPipelineDesc
 			GraphicsPipelineDescriptor pipelineDesc = {};
 			pipelineDesc.Name						= "Main-GraphicsPipeline";
