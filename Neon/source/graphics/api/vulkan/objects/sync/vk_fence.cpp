@@ -16,6 +16,9 @@ namespace Neon
 			fenceInfo.flags = VK_FENCE_CREATE_SIGNALED_BIT;
 
 			vkCreateFence(VKGraphicsContext::GetInstance()->GetGraphicsDevice(), &fenceInfo, nullptr, &m_FenceObj);
+
+			// Reset fence on creation;
+			Reset();
 		}
 
 		VKFence::~VKFence()

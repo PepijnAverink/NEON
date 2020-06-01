@@ -73,7 +73,7 @@ namespace Neon
 
 		}
 
-		int DX12Swapchain::AquireNewImage(CommandQueue* _commandQueue, Fence* _signalFence)
+		unsigned int DX12Swapchain::AcquireNewImage(CommandQueue* _commandQueue, Fence* _signalFence)
 		{
 			// Aquire index
 			m_CurrentFrameIndex = m_SwapChainObj->GetCurrentBackBufferIndex();

@@ -2,6 +2,7 @@
 #include "./graphics/api/vulkan/objects/command/vk_command_pool.h"
 #include "./graphics/api/vulkan/objects/command/vk_command_buffer_type.h"
 #include "./graphics/api/vulkan/objects/framebuffer/vk_framebuffer_attachment.h"
+#include "./graphics/api/vulkan/objects/framebuffer/vk_framebuffer_attachment_transition_state.h"
 #include "./graphics/objects/framebuffer/framebuffer_clear_flags.h"
 #include "./graphics/api/vulkan/vk_error.h"
 
@@ -121,9 +122,30 @@ namespace Neon
 			vkCmdEndRenderPass(m_CommandBufferObj);
 		}
 
-		void VKCommandBuffer::TransitionFramebufferAttachment(FramebufferAttachment * _framebufferAttachment, const FramebufferAttachmentTransitionState _fromState, const FramebufferAttachmentTransitionState _toState) const
+		void VKCommandBuffer::TransitionFramebufferAttachment(FramebufferAttachment* _framebufferAttachment, const FramebufferAttachmentTransitionState _fromState, const FramebufferAttachmentTransitionState _toState) const
 		{
+			VkImageSubresourceRange subResourceRange = {};
+			subResourceRange.aspectMask		= VK_IMAGE_ASPECT_COLOR_BIT;
+			subResourceRange.baseMipLevel	= 0;
+			subResourceRange.levelCount		= 1;
+			subResourceRange.baseArrayLayer = 0;
+			subResourceRange.layerCount		= 1;
+
+			// Change layout of image to be optimal for clearing
+			VkImageMemoryBarrier presentToClearBarrier = {};
+			presentToClearBarrier.sType					= VK_STRUCTURE_TYPE_IMAGE_MEMORY_BARRIER;
+			presentToClearBarrier.srcAccessMask			= VK_ACCESS_MEMORY_READ_BIT;
+			presentToClearBarrier.dstAccessMask			= VK_ACCESS_TRANSFER_WRITE_BIT;
+			presentToClearBarrier.oldLayout				= VK_IMAGE_LAYOUT_UNDEFINED;
+			presentToClearBarrier.newLayout				= GetVKFramebufferTransitionState(_toState);
+			presentToClearBarrier.srcQueueFamilyIndex	= VKGraphicsContext::GetInstance()->GetQueueFamilyIDGraphics(); // TODO:: abstract this
+			presentToClearBarrier.dstQueueFamilyIndex	= VKGraphicsContext::GetInstance()->GetQueueFamilyIDGraphics();
+			presentToClearBarrier.image					= NEON_CAST(VKFramebufferAttachment*, _framebufferAttachment)->m_Image;
+			presentToClearBarrier.subresourceRange		= subResourceRange;
+
+			vkCmdPipelineBarrier(m_CommandBufferObj, VK_PIPELINE_STAGE_TRANSFER_BIT, VK_PIPELINE_STAGE_TRANSFER_BIT, 0, 0, nullptr, 0, nullptr, 1, &presentToClearBarrier);
 		}
+
 		void VKCommandBuffer::DrawIndexed(const uint32_t _indexCount, const uint32_t _indexOffset, uint32_t _vertexOffset) const
 		{
 			vkCmdDrawIndexed(m_CommandBufferObj, _indexCount, 1, _indexOffset, _vertexOffset, 0);

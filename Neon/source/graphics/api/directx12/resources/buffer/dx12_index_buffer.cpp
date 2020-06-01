@@ -39,7 +39,7 @@ namespace Neon
 
 			// create a vertex buffer view
 			m_IndexBufferView.BufferLocation = m_IndexBuffer->GetGPUVirtualAddress();
-			m_IndexBufferView.Format		 = DXGI_FORMAT_R32_UINT; // Abstract format
+			m_IndexBufferView.Format		 = DXGI_FORMAT_R16_UINT; // Abstract format
 			m_IndexBufferView.SizeInBytes	 = _indexBufferDescriptor->Size;
 		}
 

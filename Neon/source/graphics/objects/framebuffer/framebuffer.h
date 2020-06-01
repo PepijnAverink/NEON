@@ -1,6 +1,8 @@
 #pragma once
 #include "./graphics/objects/framebuffer/framebuffer_descriptor.h"
 #include "./graphics/objects/framebuffer/framebuffer_attachment.h"
+#include "./graphics/objects/framebuffer/framebuffer_attachment_transition_state.h"
+#include "./graphics/objects/framebuffer/framebuffer_clear_flags.h"
 
 #include <vector>
 

@@ -17,7 +17,7 @@ namespace Neon
 
 			virtual void Resize(const int _width, const int _height) override;
 
-			virtual int  AquireNewImage(CommandQueue* _commandQueue, Fence* _signalFence) override;
+			virtual unsigned int  AcquireNewImage(CommandQueue* _commandQueue, Fence* _signalFence) override;
 			virtual void Present(CommandQueue* _commandQueue, const bool _vsync) const override;
 
 		private:

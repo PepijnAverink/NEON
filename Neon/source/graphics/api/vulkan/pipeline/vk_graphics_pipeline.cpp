@@ -51,7 +51,7 @@ namespace Neon
 
 			VkVertexInputBindingDescription bindingDescription{};
 			bindingDescription.binding = 0;
-			bindingDescription.stride = sizeof(float) * 6;
+			bindingDescription.stride = sizeof(float) * 7;
 			bindingDescription.inputRate = VK_VERTEX_INPUT_RATE_VERTEX;
 		
 			VkVertexInputAttributeDescription attributeDescriptions[2] = {};
@@ -62,7 +62,7 @@ namespace Neon
 		
 			attributeDescriptions[1].binding = 0;
 			attributeDescriptions[1].location = 1;
-			attributeDescriptions[1].format = VK_FORMAT_R32G32B32_SFLOAT;
+			attributeDescriptions[1].format = VK_FORMAT_R32G32B32A32_SFLOAT;
 			attributeDescriptions[1].offset = sizeof(float) * 3;
 		
 			VkPipelineVertexInputStateCreateInfo vertexInputInfo{};
@@ -104,7 +104,7 @@ namespace Neon
 			rasterizer.polygonMode = VK_POLYGON_MODE_FILL;
 			rasterizer.lineWidth = 1.0f;
 			rasterizer.cullMode = VK_CULL_MODE_BACK_BIT;
-			rasterizer.frontFace = VK_FRONT_FACE_CLOCKWISE;
+			rasterizer.frontFace = VK_FRONT_FACE_COUNTER_CLOCKWISE;
 			rasterizer.depthBiasEnable = VK_FALSE;
 			
 			VkPipelineMultisampleStateCreateInfo multisampling{};

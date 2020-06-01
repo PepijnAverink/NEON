@@ -441,6 +441,12 @@
     <ClInclude Include="source\graphics\graphics_context_descriptor.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="source\graphics\objects\command\command_queue_layout.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="source\graphics\objects\command\command_queue_layout_element.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="source\core\engine.cpp">

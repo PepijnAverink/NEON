@@ -40,7 +40,7 @@ namespace Neon
 
 		uint32_t MemoryPool::Align(uint32_t size, uint32_t alignment)
 		{
-			size_t temp = (alignment - (size % alignment)) % alignment;
+			uint32_t temp = (alignment - (size % alignment)) % alignment;
 			return temp + size;
 		}
 	}

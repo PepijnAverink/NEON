@@ -95,13 +95,14 @@ namespace Neon
 			VK_ThrowIfFailed(vkCreateSwapchainKHR(VKGraphicsContext::GetInstance()->GetGraphicsDevice(), &createInfo, nullptr, &m_SwapchainObj));
 
 			// Get swapchainImages
-			m_SwapchainImages.resize(m_BackBufferCount);
-			VK_ThrowIfFailed(vkGetSwapchainImagesKHR(VKGraphicsContext::GetInstance()->GetGraphicsDevice(), m_SwapchainObj, &m_BackBufferCount, m_SwapchainImages.data()));
+			vkGetSwapchainImagesKHR(VKGraphicsContext::GetInstance()->GetGraphicsDevice(), m_SwapchainObj, &m_BackBufferCount, nullptr);
+			m_SwapchainImages = new VkImage[m_BackBufferCount];
+			VK_ThrowIfFailed(vkGetSwapchainImagesKHR(VKGraphicsContext::GetInstance()->GetGraphicsDevice(), m_SwapchainObj, &m_BackBufferCount, m_SwapchainImages));
 		}
 
 		VKSwapchain::~VKSwapchain()
 		{
-			int z = 0;
+			delete[] m_SwapchainImages;
 		}
 
 		FramebufferAttachment* VKSwapchain::GetFramebufferAttachment(const int _i) const
@@ -120,14 +121,23 @@ namespace Neon
 
 		}
 
-		int VKSwapchain::AquireNewImage(CommandQueue* _commandQueue, Fence* _signalFence)
+		unsigned int VKSwapchain::AcquireNewImage(CommandQueue* _commandQueue, Fence* _signalFence)
 		{
-			return 0;
+			VkResult res = vkAcquireNextImageKHR(VKGraphicsContext::GetInstance()->GetGraphicsDevice(), m_SwapchainObj, UINT64_MAX, VK_NULL_HANDLE, NEON_CAST(VKFence*, _signalFence)->m_FenceObj, &m_CurrentFrameIndex);
+			return m_CurrentFrameIndex;
 		}
 
 		void VKSwapchain::Present(CommandQueue* _commandQueue, const bool _vsync) const
 		{
+			VkPresentInfoKHR presentInfo = {};
+			presentInfo.sType				= VK_STRUCTURE_TYPE_PRESENT_INFO_KHR;
+			presentInfo.waitSemaphoreCount	= 0;
+			presentInfo.pWaitSemaphores		= VK_NULL_HANDLE;
+			presentInfo.swapchainCount		= 1;
+			presentInfo.pSwapchains			= &m_SwapchainObj;
+			presentInfo.pImageIndices		= &m_CurrentFrameIndex;
 
+			VkResult res = vkQueuePresentKHR(NEON_CAST(VKCommandQueue*, _commandQueue)->m_CommandQueueObj, &presentInfo);
 		}
 	}
 }

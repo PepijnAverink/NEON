@@ -42,11 +42,6 @@ namespace Neon
 			return false;
 		}
 
-		void DX11GraphicsContext::Present()
-		{
-
-		}
-
 		void DX11GraphicsContext::GetAdapters()
 		{
 			IDXGIAdapter* adapter;

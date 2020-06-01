@@ -9,6 +9,7 @@ namespace Neon
 		{
 		public:
 			static GraphicsSurface* Create(const GraphicsSurfaceDescriptor* _graphicsSurfaceDescriptor);
+			virtual ~GraphicsSurface() {}
 
 		protected:
 			GraphicsSurface(const GraphicsSurfaceDescriptor* _graphicsSurfaceDescriptor);

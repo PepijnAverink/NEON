@@ -21,6 +21,7 @@ namespace Neon
 		private:
 			friend class VKGraphicsContext; // Remove this dependency
 			friend class VKCommandQueue;
+			friend class VKSwapchain;
 			VkFence m_FenceObj;
 
 		};

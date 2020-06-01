@@ -22,6 +22,7 @@ namespace Neon
 
 		private:
 			friend class VKGraphicsContext; // TODO:: Remove me
+			friend class VKSwapchain;
 			VkQueue m_CommandQueueObj;
 		};
 	}

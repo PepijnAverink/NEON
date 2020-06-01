@@ -40,8 +40,6 @@ namespace Neon
 			virtual bool Initialize() override;
 			virtual bool Terminate()  override;
 
-			virtual void Present() override;
-
 			// Get's a VK instance
 			static VKGraphicsContext* GetInstance() { return (VKGraphicsContext*)GetGraphicsContext(); }
 
@@ -52,20 +50,15 @@ namespace Neon
 
 			inline PFN_vkSetDebugUtilsObjectNameEXT GetDebugNameUtils() const { return SetDebugUtilsObjectName; }
 
-			inline uint32_t GetQueueFamilyIDGraphics() const { return m_GraphicsQueueFamilyID; }
+			inline uint32_t GetQueueFamilyIDGraphics() const { return m_GraphicsFamily; }
 
 		private:
 			void CreateInstance();
-			void CreateSurface();
 			void FindPhysicalDevice();
 			bool CheckSwapchainSupport();
-			void CreateLogicalDevice();
-			void CreateSwapchain();
-			void CreateCommandQueues();
-			void createGraphicsPipeline();
-			void findQueueFamilies();
-
-			VkShaderModule createShaderModule(const std::vector<char>& code);
+			void CreateLogicalDevice(const GraphicsContextDescriptor* _graphicsContextDescriptor);
+			void findQueueFamilies(const GraphicsContextDescriptor* _graphicsContextDescriptor);
+			uint32_t QueueFamilyIDHelper(CommandQueueLayoutElement _type);
 
 			bool CheckLayersSupport(const std::vector<const char*> _VKLayers);
 			bool CheckExtensionsSupport(const std::vector<const char*> _VKExtensions);
@@ -75,31 +68,10 @@ namespace Neon
 			VkDevice		 m_Device;
 			VkPhysicalDevice m_PhysicalDevice;
 
-			uint32_t m_GraphicsQueueFamilyID;
-
-			// Abstraction
-			CommandPool* commandPool;
-			CommandQueue* commandQueue;
-			std::vector<CommandBuffer*> commandBuffers;
-
-			Fence* submitFence;
-			Fence* acuireFence;
+			uint32_t m_GraphicsFamily;
+			uint32_t m_PresentFamily;
 
 			PFN_vkSetDebugUtilsObjectNameEXT SetDebugUtilsObjectName;
-
-			VertexBuffer* vertexBuffer;
-			MemoryPool*   memoryPool;
-
-			IndexBuffer* indexBuffer;
-			MemoryPool* imemoryPool;
-
-			GraphicsPipeline* m_Pipeline;
-
-			Swapchain*		 m_Swapchain;
-			GraphicsSurface* m_Surface;
-
-			Framebuffer*	  m_Framebuffer[frameBufferCount];
-		//	FramebufferAttachment* m_FramebufferAttachments[frameBufferCount];
 		};
 	}
 }

@@ -12,6 +12,7 @@ namespace Neon
 		{
 		public:
 			VKGraphicsSurface(const GraphicsSurfaceDescriptor* _graphicsSurfaceDescriptor);
+			virtual ~VKGraphicsSurface();
 
 		private:
 			friend class VKSwapchain;

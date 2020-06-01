@@ -42,8 +42,6 @@ namespace Neon
 			virtual bool Initialize() override;
 			virtual bool Terminate()  override;
 
-			virtual void Present() override;
-
 			// Get's a Dx12 instance
 			static DX12GraphicsContext* GetInstance() { return (DX12GraphicsContext*)GetGraphicsContext(); }
 
@@ -53,35 +51,6 @@ namespace Neon
 		private:
 
 			ID3D12Device* m_Device;
-		
-			int frameIndex;
-
-		//	ID3D12Resource* depthStencilBuffer;
-		//	ID3D12DescriptorHeap* dsDescriptorHeap;
-
-			FramebufferAttachment* m_DepthAttachment;
-
-			// Own abstraction
-			Viewport*		  m_Viewport;
-			Scissor*		  m_Scissor;
-
-			CommandQueue*     m_CommandQueue;
-						      
-			CommandPool*      m_CommandPool;
-			CommandBuffer*    m_CommandBuffers[frameBufferCount];
-						      
-			Fence*		      m_SubmitFence;
-			Fence*		      m_AcuireFence;
-
-			GraphicsPipeline* m_GraphicsPipeline;
-
-			VertexBuffer*     m_VertexBuffer;
-			IndexBuffer*      m_IndexBuffer;
-
-			Swapchain*		  m_Swapchain;
-			GraphicsSurface*  m_GraphicsSurface;
-
-			Framebuffer*	  m_Framebuffer[frameBufferCount];
 		};
 	}
 }

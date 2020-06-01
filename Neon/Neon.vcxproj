@@ -229,6 +229,8 @@
     <ClInclude Include="source\graphics\objects\command\command_pool_descriptor.h" />
     <ClInclude Include="source\graphics\objects\command\command_queue.h" />
     <ClInclude Include="source\graphics\objects\command\command_queue_descriptor.h" />
+    <ClInclude Include="source\graphics\objects\command\command_queue_layout.h" />
+    <ClInclude Include="source\graphics\objects\command\command_queue_layout_element.h" />
     <ClInclude Include="source\graphics\objects\command\command_queue_type.h" />
     <ClInclude Include="source\graphics\objects\command_generic\scissor.h" />
     <ClInclude Include="source\graphics\objects\command_generic\viewport.h" />

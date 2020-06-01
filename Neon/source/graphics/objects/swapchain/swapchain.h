@@ -18,7 +18,7 @@ namespace Neon
 
 			virtual void Resize(const int _width, const int _height) = 0;
 
-			virtual int  AquireNewImage(CommandQueue* _commandQueue, Fence* _signalFence) = 0;
+			virtual unsigned int  AcquireNewImage(CommandQueue* _commandQueue, Fence* _signalFence) = 0;
 			virtual void Present(CommandQueue* _commandQueue, const bool _vsync) const = 0;
 
 			// Getters
@@ -31,7 +31,7 @@ namespace Neon
 			BackBufferFormat m_Format;
 
 			unsigned int m_BackBufferCount;
-			int m_CurrentFrameIndex;
+			unsigned int m_CurrentFrameIndex;
 
 			int m_Width;
 			int m_Height;

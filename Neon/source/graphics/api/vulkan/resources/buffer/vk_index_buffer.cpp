@@ -13,7 +13,7 @@ namespace Neon
 			VkBufferCreateInfo bufferInfo{};
 			bufferInfo.sType		= VK_STRUCTURE_TYPE_BUFFER_CREATE_INFO;
 			bufferInfo.size			= _indexBufferDescriptor->Size;
-			bufferInfo.usage		= VK_BUFFER_USAGE_VERTEX_BUFFER_BIT;
+			bufferInfo.usage		= VK_BUFFER_USAGE_INDEX_BUFFER_BIT;
 			bufferInfo.sharingMode	= VK_SHARING_MODE_EXCLUSIVE;
 
 			VK_ThrowIfFailed(vkCreateBuffer(VKGraphicsContext::GetInstance()->GetGraphicsDevice(), &bufferInfo, nullptr, &m_IndexBufferObj));

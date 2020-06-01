@@ -9,6 +9,15 @@
 
 #include "./graphics/objects/swapchain/swapchain.h"
 
+#include "./graphics/resources/shader/shader.h"
+#include "./graphics/pipeline/graphics_pipeline.h"
+
+#include "./graphics/objects/framebuffer/framebuffer.h"
+
+#include "./graphics/resources/buffer/vertex_buffer.h"
+#include "./graphics/resources/buffer/index_buffer.h"
+#include "./graphics/resources/memory/memory_pool.h"
+
 using namespace Neon::Graphics;
 namespace Neon
 {
@@ -28,15 +37,39 @@ namespace Neon
 		virtual void Render() override;
 
 	private:
-
+		// Context
 		GraphicsContext*  m_GraphicsContext;
 
-	//	CommandQueue*     m_CommandQueue;
-	//
-	//	CommandPool*      m_CommandPool;
-	//	CommandBuffer*    m_CommandBuffers[c_BufferCount];
+		// Commands
+		CommandQueue*     m_CommandQueue;
+	
+		CommandPool*      m_CommandPool;
+		CommandBuffer*    m_CommandBuffers[c_BufferCount];
 
-	//	Swapchain*		  m_Swapchain;
-	//	GraphicsSurface*  m_GraphicsSurface;
+		// Swapchain
+		Swapchain*		  m_Swapchain;
+		GraphicsSurface*  m_GraphicsSurface;
+
+		Fence*			  m_SubmitFence;
+		Fence*			  m_AcquireFence;
+
+		// Pipeline
+		Shader*			  m_Shader;
+		GraphicsPipeline* m_Pipeline;
+
+		// Framebuffer
+		Framebuffer*	  m_Framebuffer[c_BufferCount];
+
+		// Buffers
+		VertexBuffer*	  m_VertexBuffer;
+		MemoryPool*		  m_VmemoryPool;
+						  
+		IndexBuffer*	  m_IndexBuffer;
+		MemoryPool*		  m_ImemoryPool;
+
+		// CommandObjects
+		Viewport*		  m_Viewport;
+		Scissor*		  m_Scissor;
+
 	};
 }

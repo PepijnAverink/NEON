@@ -22,9 +22,7 @@ namespace Neon
 			virtual ~GraphicsContext();
 
 			virtual bool Initialize() = 0;
-			virtual bool Terminate() = 0;
-
-			virtual void Present() = 0;
+			virtual bool Terminate()  = 0;
 
 		protected:
 			GraphicsContext(const GraphicsContextDescriptor* _graphicsContextDescriptor);

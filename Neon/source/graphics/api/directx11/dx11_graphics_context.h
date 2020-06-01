@@ -19,8 +19,6 @@ namespace Neon
 			virtual bool Initialize() override;
 			virtual bool Terminate()  override;
 
-			virtual void Present() override;
-
 			// Get's a Dx12 instance
 			static DX11GraphicsContext* GetInstance() { return (DX11GraphicsContext*)GetGraphicsContext(); }
 
