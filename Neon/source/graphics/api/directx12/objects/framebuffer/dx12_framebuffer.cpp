@@ -39,6 +39,12 @@ namespace Neon
 				AddAttachment(_framebufferDescriptor->Attachments[m_AttachmentCount]);
 		}
 
+		DX12Framebuffer::~DX12Framebuffer()
+		{
+			m_DescriptorHeap->Release();
+			m_DepthDescriptorHeap->Release();
+		}
+
 		void DX12Framebuffer::AddAttachment(FramebufferAttachment* _framebufferAttachment)
 		{			
 			if (_framebufferAttachment->GetType() != FramebufferAttachmentType::NEON_FRAMEBUFFER_ATTACHMENT_TYPE_DEPTH_STENCIL)

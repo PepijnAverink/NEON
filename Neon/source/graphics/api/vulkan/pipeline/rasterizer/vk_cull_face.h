@@ -10,14 +10,15 @@ namespace Neon
 	{
 		// ------------------------------------------
 		// GetVKCullFace function
-		// Retrieves the VkPolygonMode from the FillMode parameter passed by the user.
+		// Retrieves the VkFrontFace from the VkFrontFace parameter passed by the user.
+		// Is inverted internally to resolved (+Y == Down).
 		// ------------------------------------------
 		VkFrontFace GetVKCullFace(const CullFace _cullMode)
 		{
 			switch (_cullMode)
 			{
-				case CullFace::NEON_CULL_FACE_CW:   return VK_FRONT_FACE_CLOCKWISE;
-				case CullFace::NEON_CULL_FACE_CCW:  return VK_FRONT_FACE_COUNTER_CLOCKWISE;
+				case CullFace::NEON_CULL_FACE_CW:   return VK_FRONT_FACE_COUNTER_CLOCKWISE;
+				case CullFace::NEON_CULL_FACE_CCW:  return VK_FRONT_FACE_CLOCKWISE;
 			}
 
 			// TODO:: Inspect default, maybe change it?

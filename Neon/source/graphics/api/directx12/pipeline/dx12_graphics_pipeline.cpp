@@ -55,7 +55,7 @@ namespace Neon
 			rasterizerDesc.FrontCounterClockwise = GetDX12FrontCounterClockwise(_graphicsPipelineDescriptor->RasterizerStateDescriptor->CullFace);
 			rasterizerDesc.CullMode = GetDX12FillMode(_graphicsPipelineDescriptor->RasterizerStateDescriptor->CullMode);
 			rasterizerDesc.FillMode = GetDX12FillMode(_graphicsPipelineDescriptor->RasterizerStateDescriptor->FillMode);
-		
+
 			// Create a pipeline state object (PSO)
 			D3D12_GRAPHICS_PIPELINE_STATE_DESC psoDesc = {};
 			psoDesc.InputLayout				= inputLayoutDesc;
@@ -77,7 +77,8 @@ namespace Neon
 
 		DX12GraphicsPipeline::~DX12GraphicsPipeline()
 		{
-
+			m_PipelineStateObject->Release();
+			m_RootSignature->Release();
 		}
 	}
 }

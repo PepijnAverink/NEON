@@ -1,9 +1,9 @@
 #include "./graphics/api/vulkan/pipeline/vk_graphics_pipeline.h"
 #include "./graphics/api/vulkan/resources/shader/vk_shader.h"
 
-#include "./graphics/api/vulkan/pipeline/rasterizer/vk_cull_faces.h"
-#include "./graphics/api/vulkan/pipeline/rasterizer/vk_cull_modes.h"
-#include "./graphics/api/vulkan/pipeline/rasterizer/vk_fill_modes.h"
+#include "./graphics/api/vulkan/pipeline/rasterizer/vk_cull_face.h"
+#include "./graphics/api/vulkan/pipeline/rasterizer/vk_cull_mode.h"
+#include "./graphics/api/vulkan/pipeline/rasterizer/vk_fill_mode.h"
 
 #include "./graphics/api/vulkan/vk_graphics_context.h"
 #include "./graphics/api/vulkan/vk_error.h"
@@ -47,8 +47,7 @@ namespace Neon
 			VK_ThrowIfFailed(vkCreateRenderPass(VKGraphicsContext::GetInstance()->GetGraphicsDevice(), &renderPassInfo, nullptr, &m_RenderPass));
 
 
-			// Pipeline 
-
+			// Pipeline
 			VkVertexInputBindingDescription bindingDescription{};
 			bindingDescription.binding = 0;
 			bindingDescription.stride = sizeof(float) * 7;
@@ -91,30 +90,30 @@ namespace Neon
 			scissor.extent = { 1280, 720 };
 			
 			VkPipelineViewportStateCreateInfo viewportState{};
-			viewportState.sType = VK_STRUCTURE_TYPE_PIPELINE_VIEWPORT_STATE_CREATE_INFO;
-			viewportState.viewportCount = 1;
-			viewportState.pViewports = &viewport;
-			viewportState.scissorCount = 1;
-			viewportState.pScissors = &scissor;
+			viewportState.sType					= VK_STRUCTURE_TYPE_PIPELINE_VIEWPORT_STATE_CREATE_INFO;
+			viewportState.viewportCount			= 1;
+			viewportState.pViewports			= &viewport;
+			viewportState.scissorCount			= 1;
+			viewportState.pScissors				= &scissor;
 			
 			VkPipelineRasterizationStateCreateInfo rasterizer{};
-			rasterizer.sType = VK_STRUCTURE_TYPE_PIPELINE_RASTERIZATION_STATE_CREATE_INFO;
-			rasterizer.depthClampEnable = VK_FALSE;
-			rasterizer.rasterizerDiscardEnable = VK_FALSE;
-			rasterizer.polygonMode = VK_POLYGON_MODE_FILL;
-			rasterizer.lineWidth = 1.0f;
-			rasterizer.cullMode = VK_CULL_MODE_BACK_BIT;
-			rasterizer.frontFace = VK_FRONT_FACE_COUNTER_CLOCKWISE;
-			rasterizer.depthBiasEnable = VK_FALSE;
+			rasterizer.sType					= VK_STRUCTURE_TYPE_PIPELINE_RASTERIZATION_STATE_CREATE_INFO;
+			rasterizer.depthClampEnable			= VK_FALSE;
+			rasterizer.rasterizerDiscardEnable	= VK_FALSE;
+			rasterizer.polygonMode				= GetVKFillMode(_graphicsPipelineDescriptor->RasterizerStateDescriptor->FillMode);
+			rasterizer.lineWidth				= 1.0f;
+			rasterizer.cullMode					= GetVKCullMode(_graphicsPipelineDescriptor->RasterizerStateDescriptor->CullMode);
+			rasterizer.frontFace				= GetVKCullFace(_graphicsPipelineDescriptor->RasterizerStateDescriptor->CullFace);
+			rasterizer.depthBiasEnable			= VK_FALSE;
 			
 			VkPipelineMultisampleStateCreateInfo multisampling{};
-			multisampling.sType = VK_STRUCTURE_TYPE_PIPELINE_MULTISAMPLE_STATE_CREATE_INFO;
-			multisampling.sampleShadingEnable = VK_FALSE;
-			multisampling.rasterizationSamples = VK_SAMPLE_COUNT_1_BIT;
+			multisampling.sType					= VK_STRUCTURE_TYPE_PIPELINE_MULTISAMPLE_STATE_CREATE_INFO;
+			multisampling.sampleShadingEnable	= VK_FALSE;
+			multisampling.rasterizationSamples	= VK_SAMPLE_COUNT_1_BIT;
 			
 			VkPipelineColorBlendAttachmentState colorBlendAttachment{};
 			colorBlendAttachment.colorWriteMask = VK_COLOR_COMPONENT_R_BIT | VK_COLOR_COMPONENT_G_BIT | VK_COLOR_COMPONENT_B_BIT | VK_COLOR_COMPONENT_A_BIT;
-			colorBlendAttachment.blendEnable = VK_FALSE;
+			colorBlendAttachment.blendEnable	= VK_FALSE;
 			
 			VkPipelineColorBlendStateCreateInfo colorBlending{};
 			colorBlending.sType = VK_STRUCTURE_TYPE_PIPELINE_COLOR_BLEND_STATE_CREATE_INFO;
@@ -137,7 +136,6 @@ namespace Neon
 
 			VkPipelineShaderStageCreateInfo shaderStages[] = { NEON_CAST(VKShader*, _graphicsPipelineDescriptor->Shader)->m_VertexStageInfo, NEON_CAST(VKShader*, _graphicsPipelineDescriptor->Shader)->m_FragmentStageInfo };
 			
-			
 			VkGraphicsPipelineCreateInfo pipelineInfo{};
 			pipelineInfo.sType = VK_STRUCTURE_TYPE_GRAPHICS_PIPELINE_CREATE_INFO;
 			pipelineInfo.stageCount = 2;
@@ -152,7 +150,6 @@ namespace Neon
 			pipelineInfo.renderPass = m_RenderPass;
 			pipelineInfo.subpass = 0;
 			pipelineInfo.basePipelineHandle = VK_NULL_HANDLE;
-
 
 			// Create graphics pipelineObj
 			VK_ThrowIfFailed(vkCreateGraphicsPipelines(VKGraphicsContext::GetInstance()->GetGraphicsDevice(), VK_NULL_HANDLE, 1, &pipelineInfo, nullptr, &m_GraphicsPipeline));

@@ -22,7 +22,7 @@ namespace Neon
 			// Setup GraphicsContextDesc
 			GraphicsContextDescriptor graphicsContextDesc = {};
 			graphicsContextDesc.Window = _window;
-			graphicsContextDesc.GraphicsApi = GraphicsAPI::DIRECTX12;
+			graphicsContextDesc.GraphicsApi = GraphicsAPI::VULKAN;
 			graphicsContextDesc.QueueLayout = queueLayout;
 
 			// Create GraphicsContext
@@ -38,17 +38,17 @@ namespace Neon
 			queueDesc.Name = "Main-CommandQueue";
 			queueDesc.QueueIndex = 0;
 			queueDesc.Type = CommandQueueType::NEON_COMMAND_QUEUE_TYPE_DIRECT;
-
+	
 			// Create CommandQueue
 			m_CommandQueue = CommandQueue::Create(&queueDesc);
 		}
-
+	
 		{
 			// Setup CommandPoolDesc
 			CommandPoolDescriptor poolDesc = {};
 			poolDesc.Name = "Main-CommandPool";
 			poolDesc.Type = CommandBufferType::NEON_COMMAND_BUFFER_TYPE_DIRECT;
-
+	
 			// Create CommandPool
 			m_CommandPool = CommandPool::Create(&poolDesc);
 
@@ -60,7 +60,7 @@ namespace Neon
 				commandBufferDesc.Name			= "Main-CommandBuffer: " + i;
 				commandBufferDesc.Type			= CommandBufferType::NEON_COMMAND_BUFFER_TYPE_DIRECT;
 				commandBufferDesc.CommandPool	= m_CommandPool;
-
+		
 				// Create CommandBuffer
 				m_CommandBuffers[i] = CommandBuffer::Create(&commandBufferDesc);
 			}
@@ -113,11 +113,11 @@ namespace Neon
 		{
 			// Setup ShaderDesc
 			ShaderDescriptor shaderDesc = {};
-		//	shaderDesc.VertexShaderPath				= "./assets/shaders/vert.spv";
-			shaderDesc.VertexShaderPath				= "./assets/shaders/vertex_shader.hlsl";
+			shaderDesc.VertexShaderPath				= "./assets/shaders/vert.spv";
+		//	shaderDesc.VertexShaderPath				= "./assets/shaders/vertex_shader.hlsl";
 			shaderDesc.VertexShaderFunctionName		= "main";
-		//	shaderDesc.FragmentShaderPath			= "./assets/shaders/frag.spv";
-			shaderDesc.FragmentShaderPath			= "./assets/shaders/fragment_shader.hlsl";
+			shaderDesc.FragmentShaderPath			= "./assets/shaders/frag.spv";
+		//	shaderDesc.FragmentShaderPath			= "./assets/shaders/fragment_shader.hlsl";
 			shaderDesc.FragmentShaderFunctionName	= "main";
 			shaderDesc.HotReload					= false;
 
@@ -165,8 +165,11 @@ namespace Neon
 			for (int i = 0; i < frameBufferCount; ++i)
 			{
 				// Get attachment
+				m_BackBufferAttachments[i] = m_Swapchain->GetFramebufferAttachment(i);
+
+				// Get attachment
 				FramebufferAttachment** att = new FramebufferAttachment*[1];
-				att[0] = m_Swapchain->GetFramebufferAttachment(i);
+				att[0] = m_BackBufferAttachments[i];
 
 				framebufferDesc.Attachments = att;
 
@@ -265,6 +268,32 @@ namespace Neon
 
 	bool NeonGame::Terminate()
 	{
+		// Destroy CommandObjects
+		delete m_Viewport;
+	//	delete m_Scissor;
+
+		// Destroy Buffers
+		delete m_VertexBuffer;
+	//	delete m_VmemoryPool;
+		delete m_IndexBuffer;
+	//  delete m_ImemoryPool;
+
+		// Destroy Attachments
+		for (int i = 0; i < c_BufferCount; ++i)
+			delete m_BackBufferAttachments[i];
+
+		// Destroy Framebuffers
+		for (int i = 0; i < c_BufferCount; ++i)
+			delete m_Framebuffer[i];
+
+		// Destroy PipelineState
+		delete m_Pipeline;
+		delete m_Shader;
+
+		// Destroy Fences
+		delete m_AcquireFence;
+		delete m_SubmitFence;
+
 		// Destroy Swapchain
 		delete m_Swapchain;
 		delete m_GraphicsSurface;
@@ -275,7 +304,7 @@ namespace Neon
 
 		delete m_CommandPool;
 		delete m_CommandQueue;
-
+	
 		// Destroy GraphicsContext
 		m_GraphicsContext->Terminate();
 		delete m_GraphicsContext;
@@ -330,7 +359,7 @@ namespace Neon
 	
 		m_SubmitFence->WaitForFence();
 		m_SubmitFence->Reset();
-
+	
 		m_Swapchain->Present(m_CommandQueue, false);
 	}
 }

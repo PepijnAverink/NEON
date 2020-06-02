@@ -59,6 +59,7 @@ namespace Neon
 
 		// Framebuffer
 		Framebuffer*	  m_Framebuffer[c_BufferCount];
+		FramebufferAttachment* m_BackBufferAttachments[c_BufferCount];
 
 		// Buffers
 		VertexBuffer*	  m_VertexBuffer;

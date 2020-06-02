@@ -61,17 +61,20 @@ namespace Neon
 					adapterFound = true;
 					break;
 				}
-
+				adapter->Release();
 				adapterIndex++;
 			}
 
 			// Create the device
 			DX12_ThrowIfFailed(D3D12CreateDevice(adapter, D3D_FEATURE_LEVEL_11_0, IID_PPV_ARGS(&m_Device)));
+
+			adapter->Release();
+			dxgiFactory->Release();
 		}
 
 		DX12GraphicsContext::~DX12GraphicsContext()
 		{
-
+			m_Device->Release();
 		}
 
 		bool DX12GraphicsContext::Initialize()

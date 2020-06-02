@@ -5,6 +5,7 @@ NEON is a learning project to learn low-level rendering API's and their internal
 * Windows 32bit & 64bit
 
 ### Supported API's:
+* DirectX11
 * DirectX12
 * Vulkan
 

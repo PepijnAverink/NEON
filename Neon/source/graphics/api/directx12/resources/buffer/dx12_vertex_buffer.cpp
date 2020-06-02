@@ -20,7 +20,7 @@ namespace Neon
 			m_VertexBuffer->SetName(L"Vertex Buffer Resource Heap");
 		
 			// create upload heap
-			ID3D12Resource* vBufferUploadHeap;
+			ID3D12Resource* vBufferUploadHeap; // TODO:: this leaks memory
 			DX12GraphicsContext::GetInstance()->GetGraphicsDevice()->CreateCommittedResource(&CD3DX12_HEAP_PROPERTIES(D3D12_HEAP_TYPE_UPLOAD),  D3D12_HEAP_FLAG_NONE,  &CD3DX12_RESOURCE_DESC::Buffer(_vertexBufferDescriptor->Size),
 				D3D12_RESOURCE_STATE_GENERIC_READ,  nullptr, IID_PPV_ARGS(&vBufferUploadHeap));
 			vBufferUploadHeap->SetName(L"Vertex Buffer Upload Resource Heap");
@@ -45,7 +45,7 @@ namespace Neon
 
 		DX12VertexBuffer::~DX12VertexBuffer()
 		{
-
+			m_VertexBuffer->Release();
 		}
 
 		void* DX12VertexBuffer::Map() const

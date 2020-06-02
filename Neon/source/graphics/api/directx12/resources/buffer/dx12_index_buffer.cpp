@@ -45,7 +45,7 @@ namespace Neon
 
 		DX12IndexBuffer::~DX12IndexBuffer()
 		{
-
+			m_IndexBuffer->Release();
 		}
 
 		void* DX12IndexBuffer::Map() const

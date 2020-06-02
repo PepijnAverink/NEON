@@ -26,6 +26,11 @@ namespace Neon
 			}
 		}
 
+		DX12FramebufferAttachment::~DX12FramebufferAttachment()
+		{
+			m_Image->Release();
+		}
+
 		DX12FramebufferAttachment::DX12FramebufferAttachment(const FramebufferAttachmentDescriptor* _framebufferAttachmentDescriptor, ID3D12Resource* _image)
 			: FramebufferAttachment(_framebufferAttachmentDescriptor)
 			, m_Image(_image)

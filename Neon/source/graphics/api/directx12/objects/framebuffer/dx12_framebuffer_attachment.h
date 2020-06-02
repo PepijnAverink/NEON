@@ -11,6 +11,7 @@ namespace Neon
 		{
 		public:
 			DX12FramebufferAttachment(const FramebufferAttachmentDescriptor* _framebufferAttachmentDescriptor);
+			virtual ~DX12FramebufferAttachment();
 
 		private:
 			friend class DX12Swapchain;

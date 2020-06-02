@@ -50,7 +50,7 @@ namespace Neon
 
 		DX12Swapchain::~DX12Swapchain()
 		{
-
+			m_SwapChainObj->Release();
 		}
 
 		FramebufferAttachment* DX12Swapchain::GetFramebufferAttachment(const int _i) const

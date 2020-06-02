@@ -211,9 +211,9 @@
     <ClInclude Include="source\graphics\api\vulkan\objects\swapchain\vk_graphics_surface.h" />
     <ClInclude Include="source\graphics\api\vulkan\objects\swapchain\vk_swapchain.h" />
     <ClInclude Include="source\graphics\api\vulkan\objects\sync\vk_fence.h" />
-    <ClInclude Include="source\graphics\api\vulkan\pipeline\rasterizer\vk_cull_faces.h" />
-    <ClInclude Include="source\graphics\api\vulkan\pipeline\rasterizer\vk_cull_modes.h" />
-    <ClInclude Include="source\graphics\api\vulkan\pipeline\rasterizer\vk_fill_modes.h" />
+    <ClInclude Include="source\graphics\api\vulkan\pipeline\rasterizer\vk_cull_face.h" />
+    <ClInclude Include="source\graphics\api\vulkan\pipeline\rasterizer\vk_cull_mode.h" />
+    <ClInclude Include="source\graphics\api\vulkan\pipeline\rasterizer\vk_fill_mode.h" />
     <ClInclude Include="source\graphics\api\vulkan\pipeline\topology\vk_topology.h" />
     <ClInclude Include="source\graphics\api\vulkan\pipeline\vk_graphics_pipeline.h" />
     <ClInclude Include="source\graphics\api\vulkan\resources\buffer\vk_index_buffer.h" />
