@@ -1,5 +1,5 @@
 #include "./graphics/objects/command/command_pool.h"
-
+#include "./graphics/objects/command/command_buffer.h"
 #include "./graphics/graphics_driver.h"
 
 #if defined (NEON_SUPPORT_DIRECTX11)	
@@ -13,6 +13,13 @@
 #if defined(NEON_SUPPORT_VULKAN)
 #include "./graphics/api/vulkan/objects/command/vk_command_pool.h"
 #endif
+
+// Helper function
+template <typename element_t>
+auto iteratorOf(const std::vector<element_t> &vector, const element_t &value)
+{
+	return std::find(vector.begin(), vector.end(), value);
+}
 
 namespace Neon
 {
@@ -38,10 +45,17 @@ namespace Neon
 			return nullptr;
 		}
 
-		uint32_t CommandPool::AddCommandBuffer(const CommandBuffer* _commandBuffer)
+		void CommandPool::AddCommandBuffer(CommandBuffer* _commandBuffer)
 		{
 			m_CommandBufferCount++;
-			return (m_CommandBufferCount - 1);
+			m_CommandBuffers.push_back(_commandBuffer);
+		}
+
+		void CommandPool::RemoveCommandBuffer(CommandBuffer* _commandBuffer)
+		{
+			decltype(m_CommandBuffers)::const_iterator it = iteratorOf(m_CommandBuffers, _commandBuffer);
+			if (it != m_CommandBuffers.end())
+				m_CommandBuffers.erase(it);
 		}
 
 		const std::string CommandPool::GetCommandBufferName() const

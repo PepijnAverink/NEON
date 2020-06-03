@@ -10,6 +10,10 @@
 #include "./graphics/api/directx12/objects/command_generic/dx12_viewport.h"
 #include "./graphics/api/directx12/objects/command_generic/dx12_scissor.h"
 
+#include "./graphics/api/directx12/pipeline/dx12_graphics_pipeline.h"
+#include "./graphics/api/directx12/resources/buffer/dx12_vertex_buffer.h"
+#include "./graphics/api/directx12/resources/buffer/dx12_index_buffer.h"
+
 #include "./utilities/casting/casting_helper.h"
 
 namespace Neon
@@ -20,10 +24,8 @@ namespace Neon
 		DX12CommandBuffer::DX12CommandBuffer(const CommandBufferDescriptor* _commandBufferDescriptor)
 			: CommandBuffer(_commandBufferDescriptor)
 		{
-			auto _commandPool = NEON_CAST(DX12CommandPool*, _commandBufferDescriptor->CommandPool);
-			uint32_t index = _commandPool->AddCommandBuffer(this);
-
-			DX12GraphicsContext::GetInstance()->GetGraphicsDevice()->CreateCommandList(0, D3D12_COMMAND_LIST_TYPE_DIRECT, _commandPool->m_CommandAllocator, NULL, IID_PPV_ARGS(&m_CommandListObj));
+			DX12GraphicsContext::GetInstance()->GetGraphicsDevice()->CreateCommandList(0, D3D12_COMMAND_LIST_TYPE_DIRECT, 
+				NEON_CAST(DX12CommandPool*, _commandBufferDescriptor->CommandPool)->m_CommandAllocator, NULL, IID_PPV_ARGS(&m_CommandListObj));
 			DX12_ThrowIfFailed(m_CommandListObj->Close()); // CommandLiss are created in a recording state
 		}
 
@@ -32,7 +34,7 @@ namespace Neon
 			m_CommandListObj->Release();
 		}
 
-		void DX12CommandBuffer::StartRecording() const
+		void DX12CommandBuffer::StartRecording()
 		{
 			auto commandPool = NEON_CAST(DX12CommandPool*, m_CommandPool);
 			m_CommandListObj->Reset(commandPool->m_CommandAllocator, NULL);
@@ -43,7 +45,7 @@ namespace Neon
 			DX12_ThrowIfFailed(m_CommandListObj->Close());
 		}
 
-		void DX12CommandBuffer::Reset() const
+		void DX12CommandBuffer::Reset()
 		{
 			m_CommandPool->Reset();
 
@@ -62,14 +64,24 @@ namespace Neon
 			m_CommandListObj->IASetPrimitiveTopology(NEON_CAST(DX12GraphicsPipeline*, _graphicsPipeline)->m_InternalTopology);
 		}
 
-		void DX12CommandBuffer::SetVertexBuffer(VertexBuffer* _vertexBuffer) const
+		void DX12CommandBuffer::BindVertexBuffer(VertexBuffer* _vertexBuffer) const
 		{
 			m_CommandListObj->IASetVertexBuffers(0, 1, &NEON_CAST(DX12VertexBuffer*, _vertexBuffer)->m_VertexBufferView);
 		}
 
-		void DX12CommandBuffer::SetIndexBuffer(IndexBuffer* _indexBuffer) const
+		void DX12CommandBuffer::BindIndexBuffer(IndexBuffer* _indexBuffer) const
 		{
 			m_CommandListObj->IASetIndexBuffer(&NEON_CAST(DX12IndexBuffer*, _indexBuffer)->m_IndexBufferView);
+		}
+
+		void DX12CommandBuffer::BindTexture(Texture2D* _texture, uint32_t _bindPoint) const
+		{
+
+		}
+
+		void DX12CommandBuffer::BindTexture(FramebufferAttachment* _framebufferAttachment, uint32_t _bindPoint) const
+		{
+
 		}
 
 		void DX12CommandBuffer::SetViewport(Viewport* _viewport) const

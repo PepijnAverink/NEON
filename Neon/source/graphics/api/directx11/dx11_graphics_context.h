@@ -1,8 +1,6 @@
 #pragma once
 #include "./graphics/graphics_context.h"
 
-#include "./graphics/api/directx11/objects/command/dx11_command_buffer.h"
-
 #include <D3D11.h>
 #include <D3D11_4.h>
 
@@ -36,8 +34,6 @@ namespace Neon
 			ID3D11DeviceContext4*	 m_DeviceContext;
 
 			IDXGIFactory*			 m_Factory;
-
-			CommandBuffer* m_CommandBuffer;
 		};
 	}
 }

@@ -1,6 +1,9 @@
 #pragma once
 #include "./graphics/pipeline/inputLayout/input_layout_element_format.h"
 
+#include <dxgiformat.h>
+#include <d3d12shader.h>
+
 namespace Neon
 {
 	namespace Graphics

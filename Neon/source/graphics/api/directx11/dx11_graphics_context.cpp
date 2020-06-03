@@ -26,14 +26,6 @@ namespace Neon
 			GetAdapters();
 			CreateDevice();
 
-			// Setup commad buffer descriptor
-			CommandBufferDescriptor commandBufferDesc = {};
-			commandBufferDesc.Name = "Main-CommandBuffer:";
-			commandBufferDesc.Type = CommandBufferType::NEON_COMMAND_BUFFER_TYPE_DIRECT;
-			commandBufferDesc.CommandPool = nullptr;
-
-			m_CommandBuffer = CommandBuffer::Create(&commandBufferDesc);
-
 			return false;
 		}
 
@@ -55,7 +47,7 @@ namespace Neon
 				VideoAdapter* vadapter = new VideoAdapter();
 				vadapter->Name   = WStringToString(std::wstring(adapterDesc.Description));
 				vadapter->Vendor = GetVendorByPCI(adapterDesc.VendorId);
-				vadapter->Type   = (vadapter->Vendor == "unknown") ? NEON_VIDEO_ADAPTER_TYPE_SOFTWARE : NEON_VIDEO_ADAPTER_TYPE_HARDWARE;
+				vadapter->Type   = (vadapter->Vendor == "Unknown") ? NEON_VIDEO_ADAPTER_TYPE_SOFTWARE : NEON_VIDEO_ADAPTER_TYPE_HARDWARE;
 
 				vadapter->VideoMemory = (int)(adapterDesc.DedicatedVideoMemory / 1024 / 1024 / 1024);
 

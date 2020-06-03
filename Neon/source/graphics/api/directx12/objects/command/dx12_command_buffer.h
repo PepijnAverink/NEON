@@ -13,16 +13,19 @@ namespace Neon
 			DX12CommandBuffer(const CommandBufferDescriptor* _commandBufferDescriptor);
 			virtual ~DX12CommandBuffer();
 
-			virtual void StartRecording()  const override;
-			virtual void EndRecording()	         override;
+			virtual void StartRecording() override;
+			virtual void EndRecording()	  override;
 
-			virtual void Reset() const override;
+			virtual void Reset() override;
 
 			// Commands
 			virtual void SetGraphicsPipeline(GraphicsPipeline* _graphicsPipeline) override;
 
-			virtual void SetVertexBuffer(VertexBuffer* _vertexBuffer) const override;
-			virtual void SetIndexBuffer(IndexBuffer* _indexBuffer) const override;
+			virtual void BindVertexBuffer(VertexBuffer* _vertexBuffer) const override;
+			virtual void BindIndexBuffer(IndexBuffer* _indexBuffer) const override;
+
+			virtual void BindTexture(Texture2D* _texture, uint32_t _bindPoint) const override;
+			virtual void BindTexture(FramebufferAttachment* _framebufferAttachment, uint32_t _bindPoint) const override;
 
 			virtual void SetViewport(Viewport* _viewport) const override;
 			virtual void SetScissor(Scissor* _scissor) const override;

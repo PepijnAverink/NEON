@@ -38,6 +38,11 @@ namespace Neon
 			return nullptr;
 		}
 
+		CommandBuffer::~CommandBuffer()
+		{
+			m_CommandPool->RemoveCommandBuffer(this);
+		}
+
 		inline const std::string CommandBuffer::GetCommandBufferName() const
 		{
 #if defined(NEON_DEBUG)
@@ -53,6 +58,8 @@ namespace Neon
 #if defined(NEON_DEBUG)
 			, m_Name(_commandBufferDescriptor->Name)
 #endif
-		{  }
+		{  
+			m_CommandPool->AddCommandBuffer(this);
+		}
 	}
 }

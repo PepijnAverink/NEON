@@ -17,7 +17,7 @@ namespace Neon
 				case 0x163C: return "Intel";
 			}
 
-			return "unknown";
+			return "Unknown";
 		}
 	}
 }

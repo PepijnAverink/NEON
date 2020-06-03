@@ -20,10 +20,6 @@ namespace Neon
 		VKCommandBuffer::VKCommandBuffer(const CommandBufferDescriptor* _commandBufferDescriptor)
 			: CommandBuffer(_commandBufferDescriptor)
 		{
-			// Cast of commandPool
-			auto commandPool = NEON_CAST(VKCommandPool*, _commandBufferDescriptor->CommandPool);
-			commandPool->AddCommandBuffer(this);
-
 			// mcbBeginInfo
 			m_BeginInfo = {};
 			m_BeginInfo.sType = VK_STRUCTURE_TYPE_COMMAND_BUFFER_BEGIN_INFO;
@@ -32,7 +28,7 @@ namespace Neon
 			// Alloc info
 			VkCommandBufferAllocateInfo allocInfo = {};
 			allocInfo.sType					= VK_STRUCTURE_TYPE_COMMAND_BUFFER_ALLOCATE_INFO;
-			allocInfo.commandPool			= commandPool->m_CommandPoolObj;
+			allocInfo.commandPool			= NEON_CAST(VKCommandPool*, _commandBufferDescriptor->CommandPool)->m_CommandPoolObj;
 			allocInfo.level					= GetCommandBufferLevelFromType(_commandBufferDescriptor->Type);
 			allocInfo.commandBufferCount	= 1;
 		
@@ -40,7 +36,7 @@ namespace Neon
 			VK_ThrowIfFailed(vkAllocateCommandBuffers(VKGraphicsContext::GetInstance()->GetGraphicsDevice(), &allocInfo, &m_CommandBufferObj));
 		}
 
-		void VKCommandBuffer::StartRecording() const
+		void VKCommandBuffer::StartRecording()
 		{
 			vkBeginCommandBuffer(m_CommandBufferObj, &m_BeginInfo);
 		}
@@ -50,7 +46,7 @@ namespace Neon
 		 	VK_ThrowIfFailed(vkEndCommandBuffer(m_CommandBufferObj));
 		}
 
-		void VKCommandBuffer::Reset() const
+		void VKCommandBuffer::Reset()
 		{
 			vkResetCommandBuffer(m_CommandBufferObj, VK_COMMAND_BUFFER_RESET_RELEASE_RESOURCES_BIT);
 		}
@@ -62,16 +58,26 @@ namespace Neon
 			vkCmdBindPipeline(m_CommandBufferObj, VK_PIPELINE_BIND_POINT_GRAPHICS, s_GraphicsPipeline->m_GraphicsPipeline);
 		}
 
-		void VKCommandBuffer::SetVertexBuffer(VertexBuffer* _vertexBuffer) const
+		void VKCommandBuffer::BindVertexBuffer(VertexBuffer* _vertexBuffer) const
 		{
 			VkDeviceSize offsets[] = { 0 };
 			vkCmdBindVertexBuffers(m_CommandBufferObj, 0, 1, &NEON_CAST(VKVertexBuffer*, _vertexBuffer)->m_VertexBufferObj, offsets);
 		}
 
-		void VKCommandBuffer::SetIndexBuffer(IndexBuffer* _indexBuffer) const
+		void VKCommandBuffer::BindIndexBuffer(IndexBuffer* _indexBuffer) const
 		{
 			// Abstract the type
 			vkCmdBindIndexBuffer(m_CommandBufferObj, NEON_CAST(VKIndexBuffer*, _indexBuffer)->m_IndexBufferObj, 0, VK_INDEX_TYPE_UINT16);
+
+		}
+
+		void VKCommandBuffer::BindTexture(Texture2D* _texture, uint32_t _bindPoint) const
+		{
+
+		}
+
+		void VKCommandBuffer::BindTexture(FramebufferAttachment* _framebufferAttachment, uint32_t _bindPoint) const
+		{
 
 		}
 

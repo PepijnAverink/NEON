@@ -21,7 +21,6 @@ namespace Neon
 		private:
 			friend class DX12CommandQueue;
 			friend class DX12Swapchain;
-			friend class DX12GraphicsContext; // TODO:: Remove me
 			ID3D12Fence* m_FenceObj;
 			uint64_t     m_FenceValue;
 

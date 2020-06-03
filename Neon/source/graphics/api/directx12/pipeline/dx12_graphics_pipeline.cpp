@@ -5,11 +5,12 @@
 #include "./graphics/api/directx12/pipeline/rasterizer/dx12_cull_face.h"
 #include "./graphics/api/directx12/pipeline/rasterizer/dx12_fill_mode.h"
 #include "./graphics/api/directx12/pipeline/rasterizer/dx12_cull_mode.h"
+#include "./graphics/api/directx12/resources/shader/dx12_shader.h"
 #include "./graphics/api/directx12/dx12_error.h"
 
 #include <DX12/d3dx12.h>
 
-#include "./graphics/api/directx12/resources/shader/dx12_shader.h"
+#include "./utilities/casting/casting_helper.h"
 
 namespace Neon
 {

@@ -150,15 +150,6 @@
     <ClInclude Include="source\graphics\api\directx12\objects\swapchain\dx12_swapchain.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="source\graphics\resources\texture\render_texture2D.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="source\graphics\resources\texture\render_texture2D_descriptor.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="source\graphics\resources\texture\texture_format.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="source\graphics\pipeline\inputLayout\input_layout.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -477,6 +468,24 @@
     <ClInclude Include="source\graphics\api\vulkan\pipeline\rasterizer\vk_cull_face.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="source\graphics\objects\framebuffer\framebuffer_attachment_ds.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="source\graphics\api\directx11\objects\framebuffer\dx11_framebuffer_attachment_ds.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="source\graphics\api\directx11\objects\framebuffer\dx11_framebuffer_attachment_format.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="source\graphics\resources\texture\texture2D.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="source\graphics\resources\texture\texture2D_descriptor.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="source\graphics\api\directx11\resources\texture\dx11_texture2D.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="source\core\engine.cpp">
@@ -546,9 +555,6 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="source\graphics\api\directx12\objects\swapchain\dx12_swapchain.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="source\graphics\resources\texture\render_texture2D.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="source\graphics\pipeline\inputLayout\input_layout.cpp">
@@ -708,6 +714,18 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="source\graphics\api\directx11\objects\command_generic\dx11_viewport.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="source\graphics\objects\framebuffer\framebuffer_attachment_ds.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="source\graphics\api\directx11\objects\framebuffer\dx11_framebuffer_attachment_ds.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="source\graphics\resources\texture\texture2D.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="source\graphics\api\directx11\resources\texture\dx11_texture2D.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

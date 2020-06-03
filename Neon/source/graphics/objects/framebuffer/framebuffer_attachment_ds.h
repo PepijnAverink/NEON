@@ -1,20 +1,20 @@
 #pragma once
-#include "./graphics/objects/framebuffer/framebuffer_attachment_descriptor.h"
+#include "./graphics/objects/framebuffer/framebuffer_attachment.h"
 
 namespace Neon
 {
 	namespace Graphics
 	{
-		class FramebufferAttachment
+		class FramebufferAttachmentDS : public FramebufferAttachment
 		{
 		public:
 			static FramebufferAttachment* Create(const FramebufferAttachmentDescriptor* _framebufferAttachmentDescriptor);
-			virtual ~FramebufferAttachment() {}
+			virtual ~FramebufferAttachmentDS() {}
 
 			inline FramebufferAttachmentType GetType() const { return m_Type; }
 
 		protected:
-			FramebufferAttachment(const FramebufferAttachmentDescriptor* _framebufferAttachmentDescriptor);
+			FramebufferAttachmentDS(const FramebufferAttachmentDescriptor* _framebufferAttachmentDescriptor);
 
 			FramebufferAttachmentType m_Type;
 		};

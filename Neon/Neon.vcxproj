@@ -163,6 +163,8 @@
     <ClInclude Include="source\graphics\api\directx11\objects\command_generic\dx11_viewport.h" />
     <ClInclude Include="source\graphics\api\directx11\objects\framebuffer\dx11_framebuffer.h" />
     <ClInclude Include="source\graphics\api\directx11\objects\framebuffer\dx11_framebuffer_attachment.h" />
+    <ClInclude Include="source\graphics\api\directx11\objects\framebuffer\dx11_framebuffer_attachment_ds.h" />
+    <ClInclude Include="source\graphics\api\directx11\objects\framebuffer\dx11_framebuffer_attachment_format.h" />
     <ClInclude Include="source\graphics\api\directx11\objects\swapchain\dx11_graphics_surface.h" />
     <ClInclude Include="source\graphics\api\directx11\objects\swapchain\dx11_swapchain.h" />
     <ClInclude Include="source\graphics\api\directx11\objects\sync\dx11_fence.h" />
@@ -172,6 +174,7 @@
     <ClInclude Include="source\graphics\api\directx11\resources\buffer\dx11_index_buffer.h" />
     <ClInclude Include="source\graphics\api\directx11\resources\buffer\dx11_vertex_buffer.h" />
     <ClInclude Include="source\graphics\api\directx11\resources\shader\dx11_shader.h" />
+    <ClInclude Include="source\graphics\api\directx11\resources\texture\dx11_texture2D.h" />
     <ClInclude Include="source\graphics\api\directx12\dx12_error.h" />
     <ClInclude Include="source\graphics\api\directx12\dx12_graphics_context.h" />
     <ClInclude Include="source\graphics\api\directx12\objects\command\dx12_command_pool.h" />
@@ -247,6 +250,7 @@
     <ClInclude Include="source\graphics\objects\framebuffer\framebuffer.h" />
     <ClInclude Include="source\graphics\objects\framebuffer\framebuffer_attachment.h" />
     <ClInclude Include="source\graphics\objects\framebuffer\framebuffer_attachment_descriptor.h" />
+    <ClInclude Include="source\graphics\objects\framebuffer\framebuffer_attachment_ds.h" />
     <ClInclude Include="source\graphics\objects\framebuffer\framebuffer_attachment_transition_state.h" />
     <ClInclude Include="source\graphics\objects\framebuffer\framebuffer_attachment_type.h" />
     <ClInclude Include="source\graphics\objects\framebuffer\framebuffer_clear_flags.h" />
@@ -293,9 +297,8 @@
     <ClInclude Include="source\graphics\resources\shader\shader_descriptor.h" />
     <ClInclude Include="source\graphics\resources\shader\shader_flags.h" />
     <ClInclude Include="source\graphics\resources\shader\shader_reflection.h" />
-    <ClInclude Include="source\graphics\resources\texture\render_texture2D.h" />
-    <ClInclude Include="source\graphics\resources\texture\render_texture2D_descriptor.h" />
-    <ClInclude Include="source\graphics\resources\texture\texture_format.h" />
+    <ClInclude Include="source\graphics\resources\texture\texture2D.h" />
+    <ClInclude Include="source\graphics\resources\texture\texture2D_descriptor.h" />
     <ClInclude Include="source\platform\windows\core\window\windows_window.h" />
     <ClInclude Include="source\utilities\casting\casting_helper.h" />
     <ClInclude Include="source\utilities\hashing\hashing_helper.h" />
@@ -313,6 +316,7 @@
     <ClCompile Include="source\graphics\api\directx11\objects\command_generic\dx11_viewport.cpp" />
     <ClCompile Include="source\graphics\api\directx11\objects\framebuffer\dx11_framebuffer.cpp" />
     <ClCompile Include="source\graphics\api\directx11\objects\framebuffer\dx11_framebuffer_attachment.cpp" />
+    <ClCompile Include="source\graphics\api\directx11\objects\framebuffer\dx11_framebuffer_attachment_ds.cpp" />
     <ClCompile Include="source\graphics\api\directx11\objects\swapchain\dx11_graphics_surface.cpp" />
     <ClCompile Include="source\graphics\api\directx11\objects\swapchain\dx11_swapchain.cpp" />
     <ClCompile Include="source\graphics\api\directx11\objects\sync\dx11_fence.cpp" />
@@ -320,6 +324,7 @@
     <ClCompile Include="source\graphics\api\directx11\resources\buffer\dx11_index_buffer.cpp" />
     <ClCompile Include="source\graphics\api\directx11\resources\buffer\dx11_vertex_buffer.cpp" />
     <ClCompile Include="source\graphics\api\directx11\resources\shader\dx11_shader.cpp" />
+    <ClCompile Include="source\graphics\api\directx11\resources\texture\dx11_texture2D.cpp" />
     <ClCompile Include="source\graphics\api\directx12\dx12_graphics_context.cpp" />
     <ClCompile Include="source\graphics\api\directx12\objects\command\dx12_command_pool.cpp" />
     <ClCompile Include="source\graphics\api\directx12\objects\command\dx12_command_buffer.cpp" />
@@ -361,6 +366,7 @@
     <ClCompile Include="source\graphics\objects\command_generic\viewport.cpp" />
     <ClCompile Include="source\graphics\objects\framebuffer\framebuffer.cpp" />
     <ClCompile Include="source\graphics\objects\framebuffer\framebuffer_attachment.cpp" />
+    <ClCompile Include="source\graphics\objects\framebuffer\framebuffer_attachment_ds.cpp" />
     <ClCompile Include="source\graphics\objects\framebuffer\framebuffer_layout.cpp" />
     <ClCompile Include="source\graphics\objects\swapchain\graphics_surface.cpp" />
     <ClCompile Include="source\graphics\objects\swapchain\swapchain.cpp" />
@@ -376,7 +382,7 @@
     <ClCompile Include="source\graphics\resources\buffer\vertex_buffer.cpp" />
     <ClCompile Include="source\graphics\resources\memory\memory_pool.cpp" />
     <ClCompile Include="source\graphics\resources\shader\shader.cpp" />
-    <ClCompile Include="source\graphics\resources\texture\render_texture2D.cpp" />
+    <ClCompile Include="source\graphics\resources\texture\texture2D.cpp" />
     <ClCompile Include="source\platform\windows\core\system\windows_file_system.cpp" />
     <ClCompile Include="source\platform\windows\core\window\windows_window.cpp" />
     <ClCompile Include="source\platform\windows\main.cpp" />

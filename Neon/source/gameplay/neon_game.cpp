@@ -2,7 +2,7 @@
 #include "./core/window/window.h"
 
 // TEmp
-#include "./graphics/graphics_driver.h"
+#include "./graphics/resources/texture/texture2D.h"
 
 namespace Neon
 {
@@ -246,10 +246,25 @@ namespace Neon
 	
 			// Create IndexBuffer
 			m_IndexBuffer = IndexBuffer::Create(m_CommandBuffers[0], &indexBufferDesc);
-	
+		}
+		// ==================================================================
+		// Textures
+		// ==================================================================
+		{
+	//		// Setup Texture2DDesc
+	//		Texture2DDescriptor texture2DDesc = {};
+	//		texture2DDesc.Name		= "Main-Texture2D";
+	//		texture2DDesc.Width		= 16;
+	//		texture2DDesc.Height	= 16;
+	//		texture2DDesc.Color		= 0xFF00FF00;
+	//
+	//		// Create Texture
+	//		Texture2D* texture = Texture2D::Create(m_CommandBuffers[0], &texture2DDesc);
+
+			// Execute CommandBuffer
 			m_CommandBuffers[0]->EndRecording();
 			m_CommandQueue->ExecuteCommandBuffer(m_CommandBuffers[0], m_SubmitFence);
-	
+
 			m_SubmitFence->WaitForFence();
 			m_SubmitFence->Reset();
 		}
@@ -340,8 +355,8 @@ namespace Neon
 		m_CommandBuffers[frameIndex]->SetViewport(m_Viewport);
 		m_CommandBuffers[frameIndex]->SetScissor(m_Scissor);
 	
-		m_CommandBuffers[frameIndex]->SetVertexBuffer(m_VertexBuffer);
-		m_CommandBuffers[frameIndex]->SetIndexBuffer(m_IndexBuffer);
+		m_CommandBuffers[frameIndex]->BindVertexBuffer(m_VertexBuffer);
+		m_CommandBuffers[frameIndex]->BindIndexBuffer(m_IndexBuffer);
 	
 		m_CommandBuffers[frameIndex]->DrawIndexed(m_IndexBuffer->GetIndexCount(), 0, 0);
 	

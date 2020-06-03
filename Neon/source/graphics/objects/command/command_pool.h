@@ -3,6 +3,7 @@
 #include "./graphics/graphics_defines.h"
 
 #include <stdint.h>
+#include <vector>
 
 namespace Neon
 {
@@ -26,7 +27,8 @@ namespace Neon
 			static CommandPool* Create(CommandPoolDescriptor* _commandPoolDescriptor);
 			virtual ~CommandPool() {}
 
-			uint32_t AddCommandBuffer(const CommandBuffer* _commandBuffer);
+			void AddCommandBuffer(CommandBuffer* _commandBuffer);
+			void RemoveCommandBuffer(CommandBuffer* _commandBuffer);
 
 			// Reset the entire CommandPool object (and all CommandBuffers using this CommandPool)
 			virtual void Reset() const = 0;
@@ -42,8 +44,9 @@ namespace Neon
 #if defined(NEON_DEBUG)
 			std::string		   m_Name;
 #endif
-			uint32_t		  m_CommandBufferCount = 0;
-			CommandBufferType m_Type = CommandBufferType::NEON_COMMAND_BUFFER_TYPE_NONE;
+			uint32_t					m_CommandBufferCount = 0;
+			CommandBufferType			m_Type = CommandBufferType::NEON_COMMAND_BUFFER_TYPE_NONE;
+			std::vector<CommandBuffer*> m_CommandBuffers;
 		};
 	}
 }

@@ -1,5 +1,6 @@
 #pragma once
 #include "./graphics/objects/framebuffer/framebuffer_attachment_type.h"
+#include "./graphics/objects/framebuffer/framebuffer_attachment_format.h"
 
 #include <string>
 
@@ -12,11 +13,12 @@ namespace Neon
 		public:
 			FramebufferAttachmentDescriptor() = default;
 
-			std::string				  Name;
-			FramebufferAttachmentType Type;
+			std::string					Name;
+			FramebufferAttachmentType	Type;
+			FramebufferAttachmentFormat	Format;
 
-			int						  Width;
-			int						  Height;
+			int							Width;
+			int							Height;
 		};
 	}
 }

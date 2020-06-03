@@ -27,22 +27,27 @@ namespace Neon
 		class FramebufferAttachment;
 		enum  FramebufferAttachmentTransitionState;
 
+		class Texture2D;
+
 		class CommandBuffer
 		{
 		public:
 			static CommandBuffer* Create(const CommandBufferDescriptor* _commandBufferDescriptor);
-			virtual ~CommandBuffer() {}
+			virtual ~CommandBuffer();
 
-			virtual void StartRecording()  const = 0;
-			virtual void EndRecording()	         = 0;
+			virtual void StartRecording() = 0;
+			virtual void EndRecording()   = 0;
 
-			virtual void Reset() const = 0;
+			virtual void Reset() = 0;
 
 			// Commands
 			virtual void SetGraphicsPipeline(GraphicsPipeline* _graphicsPipeline) = 0;
 
-			virtual void SetVertexBuffer(VertexBuffer* _vertexBuffer) const = 0;
-			virtual void SetIndexBuffer(IndexBuffer* _indexBuffer) const = 0;
+			virtual void BindVertexBuffer(VertexBuffer* _vertexBuffer) const = 0;
+			virtual void BindIndexBuffer(IndexBuffer* _indexBuffer) const = 0;
+
+			virtual void BindTexture(Texture2D* _texture, uint32_t _bindPoint) const = 0;
+			virtual void BindTexture(FramebufferAttachment* _framebufferAttachment, uint32_t _bindPoint) const = 0;
 
 			virtual void SetViewport(Viewport* _viewport) const = 0;
 			virtual void SetScissor(Scissor* _scissor) const = 0;

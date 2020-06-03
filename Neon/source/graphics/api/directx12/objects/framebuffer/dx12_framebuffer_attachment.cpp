@@ -1,6 +1,8 @@
 #include "./graphics/api/directx12/objects/framebuffer/dx12_framebuffer_attachment.h"
 #include "./graphics/api/directx12/dx12_graphics_context.h"
 
+#include <./DX12/d3dx12.h>
+
 namespace Neon
 {
 	namespace Graphics

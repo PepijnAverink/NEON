@@ -4,14 +4,8 @@
 #include <DX12/d3dx12.h>
 #include "./graphics/api/directx12/dx12_error.h"
 
-#include "./graphics/api/directx12/resources/shader/dx12_shader.h"
-#include "./graphics/api/directx12/pipeline/inputLayout/dx12_input_layout.h"
+#include <dxgi1_4.h>
 
-#include "./graphics/objects/framebuffer/framebuffer_layout.h"
-#include "./graphics/api/directx12/objects/framebuffer/dx12_framebuffer_attachment.h"
-#include "./graphics/objects/framebuffer/framebuffer_attachment_transition_state.h"
-
-#include "./graphics/objects/framebuffer/framebuffer_clear_flags.h"
 namespace Neon
 {
 	namespace Graphics

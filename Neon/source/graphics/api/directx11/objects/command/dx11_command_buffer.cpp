@@ -24,19 +24,21 @@ namespace Neon
 		DX11CommandBuffer::~DX11CommandBuffer()
 		{ }
 
-		void DX11CommandBuffer::StartRecording() const
-		{
-
-		}
+		void DX11CommandBuffer::StartRecording()
+		{ }
 
 		void DX11CommandBuffer::EndRecording()
 		{
 			DX11_ThrowIfFailed(m_DeferedContext->FinishCommandList(FALSE, &m_DeferedListObj));
 		}
 
-		void DX11CommandBuffer::Reset() const
+		void DX11CommandBuffer::Reset()
 		{
-
+			if (m_DeferedListObj != nullptr)
+			{
+				m_DeferedListObj->Release();
+				m_DeferedListObj = nullptr;
+			}
 		}
 
 		void DX11CommandBuffer::SetGraphicsPipeline(GraphicsPipeline* _graphicsPipeline)
@@ -56,7 +58,7 @@ namespace Neon
 			m_DeferedContext->IASetPrimitiveTopology(D3D10_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
 		}
 
-		void DX11CommandBuffer::SetVertexBuffer(VertexBuffer* _vertexBuffer) const
+		void DX11CommandBuffer::BindVertexBuffer(VertexBuffer* _vertexBuffer) const
 		{
 			unsigned int stride = _vertexBuffer->GetVertexStride();
 			unsigned int offset = 0;
@@ -65,10 +67,20 @@ namespace Neon
 			m_DeferedContext->IASetVertexBuffers(0, 1, &NEON_CAST(DX11VertexBuffer*, _vertexBuffer)->m_VertexBuffer, &stride, &offset);
 		}
 
-		void DX11CommandBuffer::SetIndexBuffer(IndexBuffer* _indexBuffer) const
+		void DX11CommandBuffer::BindIndexBuffer(IndexBuffer* _indexBuffer) const
 		{
 			DX11IndexBuffer* index = NEON_CAST(DX11IndexBuffer*, _indexBuffer);
 			m_DeferedContext->IASetIndexBuffer(index->m_IndexBuffer, index->m_IndexBufferFormat, 0);
+		}
+
+		void DX11CommandBuffer::BindTexture(Texture2D* _texture, uint32_t _bindPoint) const
+		{
+
+		}
+
+		void DX11CommandBuffer::BindTexture(FramebufferAttachment* _framebufferAttachment, uint32_t _bindPoint) const
+		{
+
 		}
 
 		void DX11CommandBuffer::SetViewport(Viewport* _viewport) const
