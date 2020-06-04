@@ -71,6 +71,18 @@ namespace Neon
 
 		}
 
+		void VKCommandBuffer::BindComputeShader(ComputeShader* _computeShader)
+		{
+		}
+
+		void VKCommandBuffer::BindComputeBuffer(ComputeBuffer* _computeBuffer)
+		{
+		}
+
+		void VKCommandBuffer::DispatchCompute(const uint32_t _x, const uint32_t _y, const uint32_t _z)
+		{
+		}
+
 		void VKCommandBuffer::BindTexture(Texture2D* _texture, uint32_t _bindPoint) const
 		{
 

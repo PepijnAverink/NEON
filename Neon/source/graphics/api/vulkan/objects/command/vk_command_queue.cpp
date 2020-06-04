@@ -21,14 +21,13 @@ namespace Neon
 		void VKCommandQueue::ExecuteCommandBuffer(CommandBuffer* _commandBuffer, Fence* _signalFence) const
 		{
 			VkSubmitInfo submitInfo = {};
-			submitInfo.sType = VK_STRUCTURE_TYPE_SUBMIT_INFO;
-			submitInfo.waitSemaphoreCount = 0;
-			submitInfo.pWaitSemaphores	  = VK_NULL_HANDLE;
+			submitInfo.sType				= VK_STRUCTURE_TYPE_SUBMIT_INFO;
+			submitInfo.waitSemaphoreCount	= 0;
+			submitInfo.pWaitSemaphores		= VK_NULL_HANDLE;
 			submitInfo.signalSemaphoreCount = 0;
-			submitInfo.pSignalSemaphores = VK_NULL_HANDLE;
-
-			submitInfo.commandBufferCount = 1;
-			submitInfo.pCommandBuffers = &NEON_CAST(VKCommandBuffer*, _commandBuffer)->m_CommandBufferObj;
+			submitInfo.pSignalSemaphores	= VK_NULL_HANDLE;
+			submitInfo.commandBufferCount	= 1;
+			submitInfo.pCommandBuffers		= &NEON_CAST(VKCommandBuffer*, _commandBuffer)->m_CommandBufferObj;
 
 			// Submits the queue
 			VK_ThrowIfFailed(vkQueueSubmit(m_CommandQueueObj, 1, &submitInfo, NEON_CAST(VKFence*, _signalFence)->m_FenceObj));

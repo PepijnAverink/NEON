@@ -171,8 +171,10 @@
     <ClInclude Include="source\graphics\api\directx11\pipeline\dx11_graphics_pipeline.h" />
     <ClInclude Include="source\graphics\api\directx11\pipeline\inputLayout\dx11_input_layout.h" />
     <ClInclude Include="source\graphics\api\directx11\pipeline\inputLayout\dx11_input_layout_element_format.h" />
+    <ClInclude Include="source\graphics\api\directx11\resources\buffer\dx11_compute_buffer.h" />
     <ClInclude Include="source\graphics\api\directx11\resources\buffer\dx11_index_buffer.h" />
     <ClInclude Include="source\graphics\api\directx11\resources\buffer\dx11_vertex_buffer.h" />
+    <ClInclude Include="source\graphics\api\directx11\resources\shader\dx11_compute_shader.h" />
     <ClInclude Include="source\graphics\api\directx11\resources\shader\dx11_shader.h" />
     <ClInclude Include="source\graphics\api\directx11\resources\texture\dx11_texture2D.h" />
     <ClInclude Include="source\graphics\api\directx12\dx12_error.h" />
@@ -268,6 +270,8 @@
     <ClInclude Include="source\graphics\objects\sync\fence_status.h" />
     <ClInclude Include="source\graphics\objects\sync\resource_barrier.h" />
     <ClInclude Include="source\graphics\objects\sync\resource_barrier_descriptor.h" />
+    <ClInclude Include="source\graphics\pipeline\compute_graphics_pipeline.h" />
+    <ClInclude Include="source\graphics\pipeline\compute_graphics_pipeline_descriptor.h" />
     <ClInclude Include="source\graphics\pipeline\graphics_pipeline_descriptor.h" />
     <ClInclude Include="source\graphics\pipeline\inputLayout\input_layout_element.h" />
     <ClInclude Include="source\graphics\pipeline\inputLayout\input_layout_element_format.h" />
@@ -281,6 +285,8 @@
     <ClInclude Include="source\graphics\pipeline\topology\topology.h" />
     <ClInclude Include="source\graphics\resources\buffer\buffer_format.h" />
     <ClInclude Include="source\graphics\resources\buffer\buffer_usage.h" />
+    <ClInclude Include="source\graphics\resources\buffer\compute_buffer.h" />
+    <ClInclude Include="source\graphics\resources\buffer\compute_buffer_descriptor.h" />
     <ClInclude Include="source\graphics\resources\buffer\index_buffer.h" />
     <ClInclude Include="source\graphics\resources\buffer\index_buffer_descriptor.h" />
     <ClInclude Include="source\graphics\resources\buffer\uniform_buffer.h" />
@@ -293,6 +299,8 @@
     <ClInclude Include="source\graphics\resources\memory\memory_pool.h" />
     <ClInclude Include="source\graphics\resources\memory\memory_pool_descriptor.h" />
     <ClInclude Include="source\graphics\resources\memory\memory_access.h" />
+    <ClInclude Include="source\graphics\resources\shader\compute_shader.h" />
+    <ClInclude Include="source\graphics\resources\shader\compute_shader_descriptor.h" />
     <ClInclude Include="source\graphics\resources\shader\shader.h" />
     <ClInclude Include="source\graphics\resources\shader\shader_descriptor.h" />
     <ClInclude Include="source\graphics\resources\shader\shader_flags.h" />
@@ -321,8 +329,10 @@
     <ClCompile Include="source\graphics\api\directx11\objects\swapchain\dx11_swapchain.cpp" />
     <ClCompile Include="source\graphics\api\directx11\objects\sync\dx11_fence.cpp" />
     <ClCompile Include="source\graphics\api\directx11\pipeline\dx11_graphics_pipeline.cpp" />
+    <ClCompile Include="source\graphics\api\directx11\resources\buffer\dx11_compute_buffer.cpp" />
     <ClCompile Include="source\graphics\api\directx11\resources\buffer\dx11_index_buffer.cpp" />
     <ClCompile Include="source\graphics\api\directx11\resources\buffer\dx11_vertex_buffer.cpp" />
+    <ClCompile Include="source\graphics\api\directx11\resources\shader\dx11_compute_shader.cpp" />
     <ClCompile Include="source\graphics\api\directx11\resources\shader\dx11_shader.cpp" />
     <ClCompile Include="source\graphics\api\directx11\resources\texture\dx11_texture2D.cpp" />
     <ClCompile Include="source\graphics\api\directx12\dx12_graphics_context.cpp" />
@@ -372,15 +382,18 @@
     <ClCompile Include="source\graphics\objects\swapchain\swapchain.cpp" />
     <ClCompile Include="source\graphics\objects\sync\fence.cpp" />
     <ClCompile Include="source\graphics\objects\sync\resource_barrier.cpp" />
+    <ClCompile Include="source\graphics\pipeline\compute_graphics_pipeline.cpp" />
     <ClCompile Include="source\graphics\pipeline\inputLayout\input_layout_element.cpp" />
     <ClCompile Include="source\graphics\pipeline\inputLayout\input_layout.cpp" />
     <ClCompile Include="source\graphics\pipeline\graphics_pipeline.cpp" />
     <ClCompile Include="source\graphics\pipeline\rasterizer\rasterizer_state.cpp" />
+    <ClCompile Include="source\graphics\resources\buffer\compute_buffer.cpp" />
     <ClCompile Include="source\graphics\resources\buffer\index_buffer.cpp" />
     <ClCompile Include="source\graphics\resources\buffer\uniform_buffer.cpp" />
     <ClCompile Include="source\graphics\resources\buffer\vertex_array.cpp" />
     <ClCompile Include="source\graphics\resources\buffer\vertex_buffer.cpp" />
     <ClCompile Include="source\graphics\resources\memory\memory_pool.cpp" />
+    <ClCompile Include="source\graphics\resources\shader\compute_shader.cpp" />
     <ClCompile Include="source\graphics\resources\shader\shader.cpp" />
     <ClCompile Include="source\graphics\resources\texture\texture2D.cpp" />
     <ClCompile Include="source\platform\windows\core\system\windows_file_system.cpp" />

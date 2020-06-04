@@ -29,6 +29,9 @@ namespace Neon
 
 		class Texture2D;
 
+		class ComputeBuffer;
+		class ComputeShader;
+
 		class CommandBuffer
 		{
 		public:
@@ -45,6 +48,10 @@ namespace Neon
 
 			virtual void BindVertexBuffer(VertexBuffer* _vertexBuffer) const = 0;
 			virtual void BindIndexBuffer(IndexBuffer* _indexBuffer) const = 0;
+
+			virtual void BindComputeShader(ComputeShader* _computeShader) = 0;
+			virtual void BindComputeBuffer(ComputeBuffer* _computeBuffer) = 0;
+			virtual void DispatchCompute(const uint32_t _x, const uint32_t _y, const uint32_t _z) = 0;
 
 			virtual void BindTexture(Texture2D* _texture, uint32_t _bindPoint) const = 0;
 			virtual void BindTexture(FramebufferAttachment* _framebufferAttachment, uint32_t _bindPoint) const = 0;

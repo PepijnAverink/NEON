@@ -1,5 +1,7 @@
 #include "./graphics/api/directx12/objects/command/dx12_command_buffer.h"
 #include "./graphics/api/directx12/objects/command/dx12_command_pool.h"
+#include "./graphics/api/directx12/objects/command/dx12_command_buffer_type.h"
+
 #include "./graphics/api/directx12/objects/framebuffer/dx12_framebuffer.h"
 #include "./graphics/api/directx12/objects/framebuffer/dx12_framebuffer_attachment.h"
 #include "./graphics/api/directx12/objects/framebuffer/dx12_framebuffer_attachment_transition_state.h"
@@ -24,7 +26,7 @@ namespace Neon
 		DX12CommandBuffer::DX12CommandBuffer(const CommandBufferDescriptor* _commandBufferDescriptor)
 			: CommandBuffer(_commandBufferDescriptor)
 		{
-			DX12GraphicsContext::GetInstance()->GetGraphicsDevice()->CreateCommandList(0, D3D12_COMMAND_LIST_TYPE_DIRECT, 
+			DX12GraphicsContext::GetInstance()->GetGraphicsDevice()->CreateCommandList(0, GetDX12CommandBufferType(_commandBufferDescriptor->Type),
 				NEON_CAST(DX12CommandPool*, _commandBufferDescriptor->CommandPool)->m_CommandAllocator, NULL, IID_PPV_ARGS(&m_CommandListObj));
 			DX12_ThrowIfFailed(m_CommandListObj->Close()); // CommandLiss are created in a recording state
 		}
@@ -72,6 +74,18 @@ namespace Neon
 		void DX12CommandBuffer::BindIndexBuffer(IndexBuffer* _indexBuffer) const
 		{
 			m_CommandListObj->IASetIndexBuffer(&NEON_CAST(DX12IndexBuffer*, _indexBuffer)->m_IndexBufferView);
+		}
+
+		void DX12CommandBuffer::BindComputeShader(ComputeShader* _computeShader)
+		{
+		}
+
+		void DX12CommandBuffer::BindComputeBuffer(ComputeBuffer* _computeBuffer)
+		{
+		}
+
+		void DX12CommandBuffer::DispatchCompute(const uint32_t _x, const uint32_t _y, const uint32_t _z)
+		{
 		}
 
 		void DX12CommandBuffer::BindTexture(Texture2D* _texture, uint32_t _bindPoint) const

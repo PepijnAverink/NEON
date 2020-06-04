@@ -1,5 +1,7 @@
 #include "./graphics/api/directx11/objects/command/dx11_command_buffer.h"
 #include "./graphics/api/directx11/objects/framebuffer/dx11_framebuffer.h"
+#include "./graphics/api/directx11/resources/shader/dx11_compute_shader.h"
+#include "./graphics/api/directx11/resources/buffer/dx11_compute_buffer.h"
 #include "./graphics/api/directx11/objects/framebuffer/dx11_framebuffer_attachment.h"
 #include "./graphics/api/directx11/resources/buffer/dx11_vertex_buffer.h"
 #include "./graphics/api/directx11/resources/buffer/dx11_index_buffer.h"
@@ -71,6 +73,21 @@ namespace Neon
 		{
 			DX11IndexBuffer* index = NEON_CAST(DX11IndexBuffer*, _indexBuffer);
 			m_DeferedContext->IASetIndexBuffer(index->m_IndexBuffer, index->m_IndexBufferFormat, 0);
+		}
+
+		void DX11CommandBuffer::BindComputeShader(ComputeShader* _computeShader)
+		{
+			m_DeferedContext->CSSetShader(NEON_CAST(DX11ComputeShader*, _computeShader)->m_ComputeShader, NULL, 0);
+		}
+
+		void DX11CommandBuffer::BindComputeBuffer(ComputeBuffer* _computeBuffer)
+		{
+			m_DeferedContext->CSSetUnorderedAccessViews(0, 1, &NEON_CAST(DX11ComputeBuffer*, _computeBuffer)->m_ComputeBufferView, NULL);
+		}
+
+		void DX11CommandBuffer::DispatchCompute(const uint32_t _x, const uint32_t _y, const uint32_t _z)
+		{
+			m_DeferedContext->Dispatch(_x, _y, _z);
 		}
 
 		void DX11CommandBuffer::BindTexture(Texture2D* _texture, uint32_t _bindPoint) const

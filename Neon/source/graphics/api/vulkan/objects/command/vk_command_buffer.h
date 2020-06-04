@@ -25,6 +25,10 @@ namespace Neon
 			virtual void BindVertexBuffer(VertexBuffer* _vertexBuffer) const override;
 			virtual void BindIndexBuffer(IndexBuffer* _indexBuffer) const override;
 
+			virtual void BindComputeShader(ComputeShader* _computeShader) override;
+			virtual void BindComputeBuffer(ComputeBuffer* _computeBuffer) override;
+			virtual void DispatchCompute(const uint32_t _x, const uint32_t _y, const uint32_t _z) override;
+
 			virtual void BindTexture(Texture2D* _texture, uint32_t _bindPoint) const override;
 			virtual void BindTexture(FramebufferAttachment* _framebufferAttachment, uint32_t _bindPoint) const override;
 

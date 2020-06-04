@@ -9,6 +9,9 @@
 
 #include "./graphics/objects/swapchain/swapchain.h"
 
+#include "./graphics/resources/shader/compute_shader.h"
+#include "./graphics/resources/buffer/compute_buffer.h"
+
 #include "./graphics/resources/shader/shader.h"
 #include "./graphics/pipeline/graphics_pipeline.h"
 
@@ -52,6 +55,10 @@ namespace Neon
 
 		Fence*			  m_SubmitFence;
 		Fence*			  m_AcquireFence;
+
+		// Compute
+		ComputeBuffer*	  m_ComputeBuffer;
+		ComputeShader*	  m_ComputeShader;
 
 		// Pipeline
 		Shader*			  m_Shader;

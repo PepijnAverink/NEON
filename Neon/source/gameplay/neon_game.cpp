@@ -22,7 +22,7 @@ namespace Neon
 			// Setup GraphicsContextDesc
 			GraphicsContextDescriptor graphicsContextDesc = {};
 			graphicsContextDesc.Window = _window;
-			graphicsContextDesc.GraphicsApi = GraphicsAPI::VULKAN;
+			graphicsContextDesc.GraphicsApi = GraphicsAPI::DIRECTX11;
 			graphicsContextDesc.QueueLayout = queueLayout;
 
 			// Create GraphicsContext
@@ -71,8 +71,8 @@ namespace Neon
 		{
 			// Setup GraphicsSurfaceDesc
 			GraphicsSurfaceDescriptor graphicsSurfaceDesc = {};
-			graphicsSurfaceDesc.Name	= "Main-GraphicsSurface";
-			graphicsSurfaceDesc.Window	= _window;
+			graphicsSurfaceDesc.Name		= "Main-GraphicsSurface";
+			graphicsSurfaceDesc.Window		= _window;
 
 			// Create GraphicsSurface
 			m_GraphicsSurface = GraphicsSurface::Create(&graphicsSurfaceDesc);
@@ -108,16 +108,50 @@ namespace Neon
 			m_SubmitFence = Fence::Create(&SfenceDesc);
 		}
 		// ==================================================================
+		// Compute Shader
+		// ==================================================================
+		{
+			// Setup ComputeBufferDesc
+			ComputeBufferDescriptor computeBufferDesc = {};
+			computeBufferDesc.Name = "Main-ComputeBuffer";
+			computeBufferDesc.Size = 16 * 16 * sizeof(int);
+
+			m_ComputeBuffer = ComputeBuffer::Create(&computeBufferDesc);
+
+			// Setup ComputeShaderDesc
+			ComputeShaderDescriptor computeShaderDesc = {};
+			computeShaderDesc.ComputeShaderPath			= "./assets/shaders/compute_shader.hlsl";
+			computeShaderDesc.ComputeShaderFunctionName = "main";
+			computeShaderDesc.HotReload					= false;
+
+			// Create ComputeShader
+			m_ComputeShader = ComputeShader::Create(&computeShaderDesc);
+
+			// Dispatch compute
+			m_CommandBuffers[0]->BindComputeShader(m_ComputeShader);
+			m_CommandBuffers[0]->BindComputeBuffer(m_ComputeBuffer);
+			m_CommandBuffers[0]->DispatchCompute(16, 16, 1);
+
+
+			m_CommandBuffers[0]->EndRecording();
+			m_CommandQueue->ExecuteCommandBuffer(m_CommandBuffers[0], m_SubmitFence);
+
+			m_SubmitFence->WaitForFence();
+			m_SubmitFence->Reset();
+
+			m_ComputeBuffer->GetData();
+		}
+		// ==================================================================
 		// Pipeline
 		// ==================================================================
 		{
 			// Setup ShaderDesc
 			ShaderDescriptor shaderDesc = {};
-			shaderDesc.VertexShaderPath				= "./assets/shaders/vert.spv";
-		//	shaderDesc.VertexShaderPath				= "./assets/shaders/vertex_shader.hlsl";
+		//	shaderDesc.VertexShaderPath				= "./assets/shaders/vert.spv";
+			shaderDesc.VertexShaderPath				= "./assets/shaders/vertex_shader.hlsl";
 			shaderDesc.VertexShaderFunctionName		= "main";
-			shaderDesc.FragmentShaderPath			= "./assets/shaders/frag.spv";
-		//	shaderDesc.FragmentShaderPath			= "./assets/shaders/fragment_shader.hlsl";
+		//	shaderDesc.FragmentShaderPath			= "./assets/shaders/frag.spv";
+			shaderDesc.FragmentShaderPath			= "./assets/shaders/fragment_shader.hlsl";
 			shaderDesc.FragmentShaderFunctionName	= "main";
 			shaderDesc.HotReload					= false;
 
@@ -273,7 +307,7 @@ namespace Neon
 		// ==================================================================
 		{
 			// Set viewport and scissor
-			m_Viewport = Viewport::Create(0.0f, 0.0f, _window->GetWindowWidth(), _window->GetWindowHeight());
+			m_Viewport  = Viewport::Create(0.0f, 0.0f, _window->GetWindowWidth(), _window->GetWindowHeight());
 			m_Scissor   = Scissor::Create(0.0f, 0.0f, _window->GetWindowWidth(), _window->GetWindowHeight());
 
 		}

@@ -19,11 +19,12 @@ namespace Neon
 
 			friend class DX11GraphicsPipeline;
 			friend class DX11CommandBuffer;
-			ID3D11VertexShader* m_VertexShader;
-			ID3D11PixelShader*  m_FragmentShader;
 
-			ID3D10Blob* m_VertexShaderBuffer = 0;
-			ID3D10Blob* m_FragmentShaderBuffer = 0;
+			ID3D11VertexShader* m_VertexShader;
+			ID3D10Blob*			m_VertexShaderBuffer = 0;
+
+			ID3D11PixelShader*  m_FragmentShader;
+			ID3D10Blob*			m_FragmentShaderBuffer = 0;
 		};
 	}
 }

@@ -22,7 +22,7 @@ namespace Neon
 			DX11_ThrowIfFailed(D3DCompileFromFile(StringToWString(_shaderDescriptor->FragmentShaderPath).c_str(), NULL, NULL, _shaderDescriptor->FragmentShaderFunctionName.c_str(), 
 				"ps_4_0", D3D10_SHADER_ENABLE_STRICTNESS, 0, &m_FragmentShaderBuffer, &errorMessage));
 
-			// Create the vertex shader from the buffer.
+			// Create shaders from the buffer.
 			DX11_ThrowIfFailed(DX11GraphicsContext::GetInstance()->GetGraphicsDevice()->CreateVertexShader(m_VertexShaderBuffer->GetBufferPointer(), m_VertexShaderBuffer->GetBufferSize(), NULL, &m_VertexShader));
 			DX11_ThrowIfFailed(DX11GraphicsContext::GetInstance()->GetGraphicsDevice()->CreatePixelShader(m_FragmentShaderBuffer->GetBufferPointer(), m_FragmentShaderBuffer->GetBufferSize(), NULL, &m_FragmentShader));
 
